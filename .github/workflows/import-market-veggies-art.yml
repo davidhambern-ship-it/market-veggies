@@ -1,0 +1,35 @@
+name: Import Market Veggies website artwork
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-market-veggies-art.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-art:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download approved artwork
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl -fL --retry 3 'https://export-download.canva.com/bdbb991a-3007-43e7-945f-d04c685cb049/0/0001-3460408578142216446.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T011750Z&X-Amz-Expires=73842&X-Amz-Signature=8497d33fcff5537c5d26f5255a7d49657f4d01eb7af21bd4a2960a7867412511&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Tue%2C%2006%20Oct%202026%2021%3A48%3A32%20GMT' -o assets/home-header-day.png
+          curl -fL --retry 3 'https://export-download.canva.com/2bb79113-04de-4b7a-9e9b-c1c851fcb20e/0/0001-7861551311787897178.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T134527Z&X-Amz-Expires=29067&X-Amz-Signature=2a551af0d88d629a152ddf9bbf8581e1b905a9d6a5b539248114e54d5252e399&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Tue%2C%2006%20Oct%202026%2021%3A49%3A54%20GMT' -o assets/home-header-night.png
+          curl -fL --retry 3 'https://export-download.canva.com/8ad66512-9b24-4378-9cdf-fb4d145a4d00/0/0001-6366356237069349863.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T020206Z&X-Amz-Expires=73282&X-Amz-Signature=a275b3beb553acc1a41894d6037cfbbb807773fd6c48cb216ac14af70a199db2&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Tue%2C%2006%20Oct%202026%2022%3A23%3A28%20GMT' -o assets/market-veggies-logo.png
+          file assets/home-header-day.png assets/home-header-night.png assets/market-veggies-logo.png
+      - name: Commit artwork
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/home-header-day.png assets/home-header-night.png assets/market-veggies-logo.png
+          git diff --cached --quiet && exit 0
+          git commit -m "Add approved Market Veggies header and logo artwork [skip ci]"
+          git push
