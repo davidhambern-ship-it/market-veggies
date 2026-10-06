@@ -15,3 +15,82 @@
 @media(max-width:620px){.container{width:min(100% - 26px,1180px)}.hero{min-height:640px}.hero-bg{background-position:58% center}.hero-bg:after{background:linear-gradient(0deg,rgba(18,45,24,.92),rgba(18,45,24,.4) 72%)}.hero-copy{padding:250px 0 45px;width:100%}.hero h1{font-size:3.25rem}.section{padding:66px 0}.grid-3,.character-grid,.shop-grid{grid-template-columns:1fr}.character-list{grid-template-columns:1fr 1fr}.book-band{padding:30px 24px}.footer-grid{grid-template-columns:1fr}.footer-bottom{flex-direction:column}.recipe-detail{padding:22px}.page-hero{padding:58px 0 48px}}
 /* Original Market Veggies Canva artwork integration */
 .veggie-avatar.photo{overflow:hidden;padding:0;background:#fff}.veggie-avatar.photo img{width:100%;height:100%;object-fit:cover}.character-media.canva-art img{object-fit:cover}.character-media.book-cover{background:#fff}.character-media.book-cover img{object-fit:contain;padding:10px}.recipe-emoji.art{overflow:hidden;padding:0}.recipe-emoji.art img{width:100%;height:100%;object-fit:cover}.store-extra-art{width:100%;height:190px;object-fit:cover;border-radius:20px;margin-bottom:22px}.footer .brand img{width:175px;height:72px;object-fit:contain}@media(max-width:620px){.brand img{width:130px;height:50px}}
+
+/* Homepage banner rotator + official circular logo */
+.brand{min-width:auto}
+.brand img{
+  width:68px;
+  height:68px;
+  object-fit:contain;
+  object-position:center;
+  border-radius:50%;
+  background:transparent;
+  padding:0;
+  box-shadow:none
+}
+.nav{min-height:82px;height:82px}
+.home-banner{
+  position:relative;
+  width:100%;
+  background:#0b4ea2;
+  overflow:hidden;
+  border-bottom:1px solid rgba(0,0,0,.08)
+}
+.banner-track{
+  position:relative;
+  width:100%;
+  aspect-ratio:3/1;
+  max-height:min(33.333vw,724px);
+  margin:0 auto
+}
+.banner-slide{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  opacity:0;
+  transition:opacity .8s ease;
+  pointer-events:none
+}
+.banner-slide.active{opacity:1;pointer-events:auto}
+.banner-dots{
+  position:absolute;
+  left:50%;
+  bottom:14px;
+  transform:translateX(-50%);
+  display:flex;
+  gap:8px;
+  z-index:4;
+  padding:6px 9px;
+  border-radius:999px;
+  background:rgba(0,0,0,.22);
+  backdrop-filter:blur(5px)
+}
+.banner-dot{
+  width:10px;
+  height:10px;
+  border:0;
+  border-radius:50%;
+  padding:0;
+  background:rgba(255,255,255,.55);
+  cursor:pointer
+}
+.banner-dot.active{background:#fff;transform:scale(1.15)}
+.footer .brand img{width:90px;height:90px}
+@media(max-width:900px){
+  .nav{height:76px;min-height:76px}
+  .brand img{width:60px;height:60px}
+  .navlinks{top:76px}
+}
+@media(max-width:620px){
+  .brand img{width:54px;height:54px}
+  .home-banner{background:#0b4ea2}
+  .banner-track{aspect-ratio:3/1;max-height:none}
+  .banner-dots{bottom:7px;padding:4px 7px}
+  .banner-dot{width:8px;height:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  .banner-slide{transition:none}
+}
