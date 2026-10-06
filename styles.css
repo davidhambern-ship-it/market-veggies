@@ -94,3 +94,70 @@
 @media(prefers-reduced-motion:reduce){
   .banner-slide{transition:none}
 }
+
+/* Homepage mission hero: original banner artwork rotates behind the existing message */
+.mission-hero{
+  position:relative;
+  min-height:clamp(560px,37vw,710px);
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  isolation:isolate;
+  background:#123f25
+}
+.mission-bg-rotator,
+.mission-bg-slide,
+.mission-bg-shade{
+  position:absolute;
+  inset:0
+}
+.mission-bg-rotator{z-index:-3}
+.mission-bg-slide{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  opacity:0;
+  transition:opacity 1s ease
+}
+.mission-bg-slide.active{opacity:1}
+.mission-bg-shade{
+  z-index:-2;
+  background:linear-gradient(90deg,rgba(10,31,18,.78),rgba(10,31,18,.58) 48%,rgba(10,31,18,.72));
+}
+.mission-hero-content{
+  max-width:1080px;
+  text-align:center;
+  color:#fff;
+  padding:72px 20px
+}
+.mission-hero .eyebrow{color:#dff4bb}
+.mission-hero h1{
+  max-width:1050px;
+  margin:.55rem auto 1rem;
+  font-size:clamp(3rem,5.7vw,6.1rem);
+  line-height:.98;
+  letter-spacing:-.045em;
+  text-shadow:0 4px 24px rgba(0,0,0,.48)
+}
+.mission-hero p{
+  max-width:920px;
+  margin:0 auto;
+  color:#f6fbf3;
+  font-size:clamp(1rem,1.45vw,1.28rem);
+  text-shadow:0 2px 12px rgba(0,0,0,.58)
+}
+.mission-cards-section{padding-top:58px}
+@media(max-width:900px){
+  .mission-hero{min-height:620px}
+  .mission-bg-slide{object-position:center}
+  .mission-bg-shade{background:rgba(10,31,18,.67)}
+  .mission-hero-content{padding:70px 16px}
+}
+@media(max-width:620px){
+  .mission-hero{min-height:600px}
+  .mission-bg-slide{object-fit:cover}
+  .mission-hero h1{font-size:clamp(2.65rem,12vw,4.1rem)}
+  .mission-hero p{font-size:1rem}
+  .mission-cards-section{padding-top:44px}
+}
