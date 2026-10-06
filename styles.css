@@ -161,3 +161,35 @@
   .mission-hero p{font-size:1rem}
   .mission-cards-section{padding-top:44px}
 }
+
+/* Exact user-provided hero images: preserve their 1920x711 composition on desktop */
+.mission-hero{
+  min-height:0;
+  aspect-ratio:1920/711;
+}
+.mission-bg-slide{
+  object-fit:contain;
+  object-position:center;
+  background:#0b4ea2;
+}
+.mission-bg-shade{
+  background:linear-gradient(90deg,rgba(9,28,16,.72),rgba(9,28,16,.56) 50%,rgba(9,28,16,.72));
+}
+.mission-hero-content{
+  padding:clamp(30px,4vw,72px) 20px;
+}
+.mission-hero h1{
+  font-size:clamp(2.6rem,4.7vw,5.4rem);
+}
+@media(max-width:760px){
+  .mission-hero{
+    aspect-ratio:auto;
+    min-height:560px;
+  }
+  .mission-bg-slide{
+    object-fit:cover;
+  }
+  .mission-bg-shade{
+    background:rgba(9,28,16,.7);
+  }
+}
