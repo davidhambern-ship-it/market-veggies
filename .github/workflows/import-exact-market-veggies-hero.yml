@@ -1,0 +1,34 @@
+name: Import exact Market Veggies hero images
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-exact-market-veggies-hero.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-exact-hero:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download exact resized user-provided banners
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl -fL --retry 3 'https://export-download.canva.com/ba54948e-266c-4d46-9ac9-21f5ecb367ee/0/0001-2298479877780926944.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T151540Z&X-Amz-Expires=29641&X-Amz-Signature=29cf8508b4df03a748ac384e19e3d87cbe5d6848a7036b6330abf40b7b44c510&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Tue%2C%2006%20Oct%202026%2023%3A29%3A41%20GMT' -o assets/hero-blue-exact.png
+          curl -fL --retry 3 'https://export-download.canva.com/93f27550-5d94-456d-be05-350f7e7adcc3/0/0001-5099718845116506150.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T232833Z&X-Amz-Expires=86433&X-Amz-Signature=d7bde7b0056e7e7b7074e1946e0c49a46d2d5b241cac1026edd2af85e47f2212&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Tue%2C%2006%20Oct%202026%2023%3A29%3A06%20GMT' -o assets/hero-white-exact.png
+          file assets/hero-blue-exact.png assets/hero-white-exact.png
+      - name: Commit exact hero images
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hero-blue-exact.png assets/hero-white-exact.png
+          git diff --cached --quiet && exit 0
+          git commit -m "Add exact resized Market Veggies hero images [skip ci]"
+          git push
