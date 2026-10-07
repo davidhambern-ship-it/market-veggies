@@ -1,0 +1,33 @@
+name: Import Carry intro card image
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-carry-intro.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-carry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download exact Carry intro image
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl -fL --retry 3 'https://export-download.canva.com/78c3d7f0-5674-48ca-9a40-6436c238a935/0/0001-381072392447735107.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T211547Z&X-Amz-Expires=55002&X-Amz-Signature=3d18b24a7d89aada85c58dc5c84b40a818d01e75f3e23b4e09b58d773b3f8a91&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Wed%2C%2007%20Oct%202026%2012%3A32%3A29%20GMT' -o assets/carry-intro-card.png
+          file assets/carry-intro-card.png
+      - name: Commit Carry intro image
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/carry-intro-card.png
+          git diff --cached --quiet && exit 0
+          git commit -m "Add Carry market intro card image [skip ci]"
+          git push
