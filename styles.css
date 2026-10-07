@@ -1002,3 +1002,37 @@
     height:225px;
   }
 }
+
+/* Homepage keyword marker highlights */
+.home-page .hl{
+  display:inline;
+  padding:0 .06em .02em;
+  border-radius:.16em;
+  -webkit-box-decoration-break:clone;
+  box-decoration-break:clone;
+  font-weight:inherit;
+}
+.home-page .hl-orange{
+  background:linear-gradient(
+    180deg,
+    transparent 0 56%,
+    rgba(255,132,28,.82) 56% 91%,
+    transparent 91% 100%
+  );
+}
+.home-page .hl-yellow{
+  background:linear-gradient(
+    180deg,
+    transparent 0 56%,
+    rgba(255,225,58,.90) 56% 91%,
+    transparent 91% 100%
+  );
+}
+.home-page .hl-green{
+  background:linear-gradient(
+    180deg,
+    transparent 0 56%,
+    rgba(112,201,82,.82) 56% 91%,
+    transparent 91% 100%
+  );
+}
