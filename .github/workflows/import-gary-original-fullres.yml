@@ -1,0 +1,33 @@
+name: Import Gary original full resolution
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-gary-original-fullres.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-gary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download original Gary image at full resolution
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl -fL --retry 3 'https://export-download.canva.com/78d44c6e-3afc-4c0d-a629-71f23e97f862/0/0001-3149660274355062479.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T000158Z&X-Amz-Expires=50081&X-Amz-Signature=010f012030a188e3720fd73f1b3fdf992c06ecc7c1254950ab204347e937d1d3&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Wed%2C%2007%20Oct%202026%2013%3A56%3A39%20GMT' -o assets/gary-intro-card-fullres.png
+          file assets/gary-intro-card-fullres.png
+      - name: Commit full-resolution Gary image
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/gary-intro-card-fullres.png
+          git diff --cached --quiet && exit 0
+          git commit -m "Add original full-resolution Gary intro image [skip ci]"
+          git push
