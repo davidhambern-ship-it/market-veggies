@@ -20,14 +20,14 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p assets
-          curl -fL --retry 3 'https://sdmntprcentralus.oaiusercontent.com/files/00000000-bf3c-81f5-82ff-178cc49603ac/raw?se=2026-10-07T15%3A37%3A01Z&sp=r&sv=2026-02-06&sr=b&scid=66f1d7de-fc40-59bc-958a-d9976cad6f75&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T13%3A42%3A10Z&ske=2026-10-08T13%3A42%3A10Z&sks=b&skv=2026-02-06&sig=AFH/ZXEGMjq/X9Jrql2DTsgwc9GwjdeqDwzCu3%2BaeEY%3D' -o assets/mission-kids-kitchen-black.png
-          file assets/mission-kids-kitchen-black.png
+          curl -fL --retry 3 'https://sdmntprnorthcentralus.oaiusercontent.com/files/00000000-d54c-822f-8380-7ba69ebb6ed7/raw?se=2026-10-07T15%3A58%3A03Z&sp=r&sv=2026-02-06&sr=b&scid=1f97ab2e-2afe-5e2b-b99e-b738461eba69&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T12%3A41%3A31Z&ske=2026-10-08T12%3A41%3A31Z&sks=b&skv=2026-02-06&sig=mBdNCc3JDpH8m4xd2kHugsxv726%2BGv/ZSFbwLBXnnJA%3D' -o assets/mission-kids-kitchen-black-final.png
+          file assets/mission-kids-kitchen-black-final.png
       - name: Commit approved image
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/mission-kids-kitchen-black.png
+          git add assets/mission-kids-kitchen-black-final.png
           git diff --cached --quiet && exit 0
-          git commit -m "Add Black kids kitchen card image [skip ci]"
+          git commit -m "Add final Black kids kitchen card image [skip ci]"
           git push
