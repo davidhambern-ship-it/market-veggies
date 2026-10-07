@@ -1,0 +1,38 @@
+name: Import Market Crew card assets
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-market-crew-cards.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download generated Market Crew assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl -fL --retry 3 'https://export-download.canva.com/6ae1646e-e2e8-4491-923f-3601e89e7137/0/0001-2427958429341156223.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T162324Z&X-Amz-Expires=74766&X-Amz-Signature=ad45435c867239696bfc244ae181b1dd77c721ba1726505f67b1293d8ab75ee1&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Wed%2C%2007%20Oct%202026%2013%3A09%3A30%20GMT' -o assets/artie-card.png
+          curl -fL --retry 3 'https://export-download.canva.com/3961e051-4cd6-4e38-b97f-68d3fab3eee9/0/0001-6991230750526008388.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T085204Z&X-Amz-Expires=14895&X-Amz-Signature=a2aa2c20e9994859049176c0e334234669f20438b6bc9aac01b9f0fef4a6609e&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Wed%2C%2007%20Oct%202026%2013%3A00%3A19%20GMT' -o assets/tommy-card.png
+          curl -fL --retry 3 'https://export-download.canva.com/8313066b-0732-4ffe-9b99-44b3b35c9de5/0/0001-4604322947147361803.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T010245Z&X-Amz-Expires=42899&X-Amz-Signature=43474680c11cc47d80f06cc808a5a0460a512a147617fef07de3b2c0bac31dce&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Wed%2C%2007%20Oct%202026%2012%3A57%3A44%20GMT' -o assets/nanner-card.png
+          curl -fL --retry 3 'https://export-download.canva.com/8de9db17-4d5f-48c5-a321-281860fef8d5/0/0001-4541272554234370610.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T112921Z&X-Amz-Expires=91456&X-Amz-Signature=d9268254ec477756a77ee464a215e561835f95b6c1f23b0636313c40020dca5c&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Wed%2C%2007%20Oct%202026%2012%3A53%3A37%20GMT' -o assets/artie-card-bg.png
+          curl -fL --retry 3 'https://export-download.canva.com/267d7f86-c144-4c63-b408-2cd93af96506/0/0001-5915996338178283586.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T074402Z&X-Amz-Expires=17158&X-Amz-Signature=85f14923a30e1015c923323f1d6abfb8f394fe4980101f690c6945416ad0bf82&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Wed%2C%2007%20Oct%202026%2012%3A30%3A00%20GMT' -o assets/tommy-card-bg.png
+          curl -fL --retry 3 'https://export-download.canva.com/ab1e10fc-6b73-4dc5-bfa0-1f49ad8e8a6e/0/0001-3959182299324297872.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T111728Z&X-Amz-Expires=4918&X-Amz-Signature=11a5aab6a0647ccb9f68292ccfafb514e66105842bdc8147169698a3b130783a&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Wed%2C%2007%20Oct%202026%2012%3A39%3A26%20GMT' -o assets/nanner-card-bg.png
+          file assets/artie-card.png assets/tommy-card.png assets/nanner-card.png assets/artie-card-bg.png assets/tommy-card-bg.png assets/nanner-card-bg.png
+      - name: Commit card assets
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/artie-card.png assets/tommy-card.png assets/nanner-card.png assets/artie-card-bg.png assets/tommy-card-bg.png assets/nanner-card-bg.png
+          git diff --cached --quiet && exit 0
+          git commit -m "Add Artie Tommy and Nanner Market Crew card assets [skip ci]"
+          git push
