@@ -1,0 +1,33 @@
+name: Import Carry card background
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-carry-card-bg.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-carry-bg:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download exact Carry market background
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl -fL --retry 3 'https://export-download.canva.com/b8beed2b-fcee-4411-bfe2-83bc379d890f/0/0001-9203624065147944538.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T115016Z&X-Amz-Expires=88541&X-Amz-Signature=295e6a417eb2ce5578e7520223ffea3bf4889279de2f7ea2be28d6ee7e637ff1&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Wed%2C%2007%20Oct%202026%2012%3A25%3A57%20GMT' -o assets/carry-card-market-bg.png
+          file assets/carry-card-market-bg.png
+      - name: Commit Carry card background
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/carry-card-market-bg.png
+          git diff --cached --quiet && exit 0
+          git commit -m "Add Carry card market background [skip ci]"
+          git push
