@@ -23,3 +23,42 @@ document.addEventListener('visibilitychange',()=>{
 });
 showMissionBackground(0);
 startMissionRotation();
+
+
+// Home page interaction reveal pass
+(function initHomeMotion(){
+  const home=document.body.classList.contains('home-page');
+  if(!home)return;
+
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const groups=[
+    [...document.querySelectorAll('.mission-cards-section .mission-card')],
+    [...document.querySelectorAll('.section.alt .section-head, .character-feature, .crew-card')],
+    [...document.querySelectorAll('.recipe-adventures-section .section-head, .book-recipe-card')],
+    [...document.querySelectorAll('.book-band > *')]
+  ];
+
+  const targets=[];
+  groups.forEach(group=>{
+    group.forEach((el,index)=>{
+      el.classList.add('mv-reveal');
+      el.style.setProperty('--mv-delay', Math.min(index*90,360)+'ms');
+      targets.push(el);
+    });
+  });
+
+  if(reduce || !('IntersectionObserver' in window)){
+    targets.forEach(el=>el.classList.add('mv-in-view'));
+    return;
+  }
+
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(!entry.isIntersecting)return;
+      entry.target.classList.add('mv-in-view');
+      observer.unobserve(entry.target);
+    });
+  },{threshold:.12,rootMargin:'0px 0px -7% 0px'});
+
+  targets.forEach(el=>observer.observe(el));
+})();
