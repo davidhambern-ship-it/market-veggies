@@ -1036,3 +1036,21 @@
     transparent 91% 100%
   );
 }
+
+/* Override keyword marker treatment: use actual word colors */
+.home-page .hl{
+  background:none !important;
+  padding:0 !important;
+  border-radius:0 !important;
+  -webkit-box-decoration-break:slice;
+  box-decoration-break:slice;
+}
+.home-page .hl-orange{
+  color:#f47c20 !important;
+}
+.home-page .hl-yellow{
+  color:#ffd633 !important;
+}
+.home-page .hl-green{
+  color:#5fbf3f !important;
+}
