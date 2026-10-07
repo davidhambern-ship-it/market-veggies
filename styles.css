@@ -856,3 +856,59 @@
     padding:105px 22px 24px;
   }
 }
+
+/* Home recipes + activities illustrated section */
+.home-page .recipe-adventures-section{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  background:
+    linear-gradient(rgba(5,82,174,.08),rgba(5,82,174,.08)),
+    url("assets/recipes-section-veggie-bg.png") center center / cover no-repeat;
+  border-top:5px solid #ffd938;
+  border-bottom:5px solid #ffd938;
+}
+.home-page .recipe-adventures-section::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:linear-gradient(
+    180deg,
+    rgba(5,82,174,.12) 0%,
+    rgba(5,82,174,.03) 32%,
+    rgba(5,82,174,.04) 70%,
+    rgba(5,82,174,.14) 100%
+  );
+  pointer-events:none;
+}
+.home-page .recipe-adventures-section .container{
+  position:relative;
+  z-index:1;
+}
+.home-page .recipe-adventures-section .section-head{
+  max-width:850px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.home-page .recipe-adventures-section .section-head h2,
+.home-page .recipe-adventures-section .section-head p{
+  color:#fff;
+  text-shadow:0 3px 12px rgba(0,39,92,.42);
+}
+.home-page .recipe-adventures-section .section-head .eyebrow{
+  color:#ffe03b;
+  text-shadow:0 2px 8px rgba(0,36,83,.35);
+}
+@media(max-width:900px){
+  .home-page .recipe-adventures-section{
+    background-size:auto 100%;
+    background-position:center center;
+  }
+}
+@media(max-width:620px){
+  .home-page .recipe-adventures-section{
+    background-size:auto 100%;
+    background-position:center center;
+  }
+}
