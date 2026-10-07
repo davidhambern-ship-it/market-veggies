@@ -1,0 +1,35 @@
+name: Import mission card graphics
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-mission-card-graphics.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download approved mission card graphics
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl -fL --retry 3 'https://sdmntprcentralus.oaiusercontent.com/files/00000000-a764-81f5-9b29-f6e906fec07f/raw?se=2026-10-07T13%3A19%3A27Z&sp=r&sv=2026-02-06&sr=b&scid=f2c6024a-d7fd-5dc3-91cf-45302231baff&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T01%3A03%3A49Z&ske=2026-10-08T01%3A03%3A49Z&sks=b&skv=2026-02-06&sig=tMr3cGrVaCtkjxDFbN%2BT7HhmQgufvJ6NfxcN1ps7%2Bv8%3D' -o assets/mission-healthy-food-familiar.png
+          curl -fL --retry 3 'https://sdmntprcentralus.oaiusercontent.com/files/00000000-58ac-81f5-8fdd-cf7e6b2a037e/raw?se=2026-10-07T13%3A19%3A29Z&sp=r&sv=2026-02-06&sr=b&scid=74d56dc5-f478-589b-a64d-163e1ee9d12b&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T01%3A02%3A03Z&ske=2026-10-08T01%3A02%3A03Z&sks=b&skv=2026-02-06&sig=a6jYoTxnJziKvMx1xiU5PT3JA9zwe4aKOIfhTnkP/T4%3D' -o assets/mission-kids-kitchen.png
+          curl -fL --retry 3 'https://sdmntprcentralus.oaiusercontent.com/files/00000000-6c38-81f5-8f93-47e4eeadb48c/raw?se=2026-10-07T13%3A19%3A30Z&sp=r&sv=2026-02-06&sr=b&scid=9906f670-a60c-5ab6-b746-8c8420a289e0&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T00%3A55%3A32Z&ske=2026-10-08T00%3A55%3A32Z&sks=b&skv=2026-02-06&sig=e4tbGOrE7Tillc0Wm1nQ23cClDWj0i0IQ4PQjyoqnPE%3D' -o assets/mission-fuel-movement.png
+          file assets/mission-healthy-food-familiar.png assets/mission-kids-kitchen.png assets/mission-fuel-movement.png
+      - name: Commit mission card graphics
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/mission-healthy-food-familiar.png assets/mission-kids-kitchen.png assets/mission-fuel-movement.png
+          git diff --cached --quiet && exit 0
+          git commit -m "Add mission card graphics [skip ci]"
+          git push
