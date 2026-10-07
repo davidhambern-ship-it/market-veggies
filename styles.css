@@ -1136,7 +1136,7 @@
   transition:left .22s ease,right .22s ease,background .22s ease;
 }
 .home-page .navlinks a:hover{
-  color:#0752a8;
+  color:#8ed8ff;
   transform:translateY(-1px);
 }
 .home-page .navlinks a:hover::after,
@@ -1337,4 +1337,8 @@
     opacity:1!important;
     transform:none!important;
   }
+}
+
+.home-page .navlinks a:focus-visible{
+  color:#8ed8ff;
 }
