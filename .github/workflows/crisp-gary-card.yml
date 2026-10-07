@@ -1,0 +1,47 @@
+name: Crisp Gary card image
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/crisp-gary-card.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create sharper high-resolution copy of existing Gary image
+        run: |
+          python -m pip install --quiet pillow
+          python - <<'PY'
+          from PIL import Image, ImageFilter, ImageEnhance
+
+          src = "assets/gary-intro-card.png"
+          out = "assets/gary-intro-card-crisp.webp"
+
+          im = Image.open(src).convert("RGB")
+
+          # Preserve the approved image exactly; only resize + light sharpening.
+          target = (im.width * 2, im.height * 2)
+          im = im.resize(target, Image.Resampling.LANCZOS)
+          im = im.filter(ImageFilter.UnsharpMask(radius=1.15, percent=135, threshold=2))
+          im = ImageEnhance.Contrast(im).enhance(1.015)
+
+          im.save(out, "WEBP", quality=94, method=6)
+          print("created", out, im.size)
+          PY
+
+      - name: Commit processed Gary image
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/gary-intro-card-crisp.webp
+          git diff --cached --quiet && exit 0
+          git commit -m "Create crisp Gary intro card image [skip ci]"
+          git push
