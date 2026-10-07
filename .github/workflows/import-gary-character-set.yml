@@ -1,0 +1,37 @@
+name: Import Gary character set
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-gary-character-set.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Gary artwork set
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/characters/gary
+          curl -fL --retry 3 'https://sdmntprcentralus.oaiusercontent.com/files/00000000-6600-81f5-8813-2d324064c96f/raw?se=2026-10-07T18%3A56%3A58Z&sp=r&sv=2026-02-06&sr=b&scid=72e04a74-ac91-5a99-b835-df84e1d3d0d7&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T12%3A25%3A47Z&ske=2026-10-08T12%3A25%3A47Z&sks=b&skv=2026-02-06&sig=WT2J4wm73/veDPAxKvW8VhqJSEOqpb/GD54mJiQ3Uuw%3D' -o assets/characters/gary/gary-superhero.png
+          curl -fL --retry 3 'https://sdmntprcentralus.oaiusercontent.com/files/00000000-da34-81f5-ba83-d1b53f538645/raw?se=2026-10-07T18%3A57%3A02Z&sp=r&sv=2026-02-06&sr=b&scid=d88400d0-2007-5356-8e9f-09b7252fcb2d&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T00%3A55%3A54Z&ske=2026-10-08T00%3A55%3A54Z&sks=b&skv=2026-02-06&sig=e%2BK101bcplXp1yx0ahkcNrooOh6cAvcruR7rFzjglJo%3D' -o assets/characters/gary/gary-pointing.png
+          curl -fL --retry 3 'https://sdmntprcentralus.oaiusercontent.com/files/00000000-9698-81f5-9bed-adbc5a7f3e71/raw?se=2026-10-07T18%3A57%3A03Z&sp=r&sv=2026-02-06&sr=b&scid=5db371dc-d860-5308-8adf-8420017e658a&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T00%3A44%3A36Z&ske=2026-10-08T00%3A44%3A36Z&sks=b&skv=2026-02-06&sig=QZPUP6hSgz1T2m0y%2B8g6pNkmYn/Hfb1af0LzdXwhqlw%3D' -o assets/characters/gary/gary-standoff.png
+          curl -fL --retry 3 'https://sdmntprcentralus.oaiusercontent.com/files/00000000-9e50-81f5-8882-7a3b113cea82/raw?se=2026-10-07T18%3A57%3A05Z&sp=r&sv=2026-02-06&sr=b&scid=da9875ef-d5a2-54de-8b29-666ec5e3e763&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T12%3A06%3A30Z&ske=2026-10-08T12%3A06%3A30Z&sks=b&skv=2026-02-06&sig=YncwB8U46Yv3PsQ14ZrTQeAJa1adXBmnOekeW5bteNw%3D' -o assets/characters/gary/gary-sky.png
+          curl -fL --retry 3 'https://sdmntprcentralus.oaiusercontent.com/files/00000000-9af4-81f5-86b8-ad09132c1bcb/raw?se=2026-10-07T18%3A57%3A06Z&sp=r&sv=2026-02-06&sr=b&scid=136a8c99-b4e4-57f0-a619-ab9b9e3c2df2&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T12%3A25%3A47Z&ske=2026-10-08T12%3A25%3A47Z&sks=b&skv=2026-02-06&sig=Pf7Ar7LogBhGcpmzQT0XOosagpLLGrkwPGa8SSRCWL8%3D' -o assets/characters/gary/gary-sparkle.png
+          file assets/characters/gary/*.png
+      - name: Commit Gary artwork
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/characters/gary/
+          git diff --cached --quiet && exit 0
+          git commit -m "Add Gary character explainer artwork [skip ci]"
+          git push
