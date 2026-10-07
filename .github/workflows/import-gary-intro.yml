@@ -1,0 +1,33 @@
+name: Import Gary intro card image
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-gary-intro.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-gary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download exact Gary intro image
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl -fL --retry 3 'https://export-download.canva.com/29258f8d-8bab-420f-b5ec-4a5caa057bbb/0/0001-462137180630529662.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T142718Z&X-Amz-Expires=75225&X-Amz-Signature=f8354723c23092e490265aa2ca76f6c25f8e3597d4c2253740e46aae2d3d4c0d&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Wed%2C%2007%20Oct%202026%2011%3A21%3A03%20GMT' -o assets/gary-intro-card.png
+          file assets/gary-intro-card.png
+      - name: Commit Gary intro image
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/gary-intro-card.png
+          git diff --cached --quiet && exit 0
+          git commit -m "Add Gary market intro card image [skip ci]"
+          git push
