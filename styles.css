@@ -704,3 +704,64 @@
   margin:0;
   color:#52665a;
 }
+
+/* Unified Market Crew character cards */
+.market-theme .mini-character.crew-card{
+  position:relative;
+  overflow:hidden;
+  padding:22px;
+  border:4px solid #fff;
+  box-shadow:0 8px 0 #9ccfe9,0 18px 35px rgba(7,54,105,.22);
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+}
+.market-theme .crew-card.carry-card{
+  background-image:
+    linear-gradient(180deg,rgba(7,52,119,.04),rgba(7,52,119,.18)),
+    url("assets/carry-card-market-bg.png");
+}
+.market-theme .crew-card.artie-card{
+  background-image:
+    linear-gradient(180deg,rgba(7,52,119,.04),rgba(7,52,119,.18)),
+    url("assets/artie-card-bg.png");
+}
+.market-theme .crew-card.tommy-card{
+  background-image:
+    linear-gradient(180deg,rgba(7,52,119,.04),rgba(7,52,119,.18)),
+    url("assets/tommy-card-bg.png");
+}
+.market-theme .crew-card.nanner-card{
+  background-image:
+    linear-gradient(180deg,rgba(7,52,119,.04),rgba(7,52,119,.18)),
+    url("assets/nanner-card-bg.png");
+}
+.market-theme .crew-card .veggie-avatar{
+  width:88px;
+  height:88px;
+  margin-bottom:18px;
+  border:4px solid #fff;
+  background:#fff;
+  box-shadow:0 7px 18px rgba(0,0,0,.24);
+}
+.market-theme .crew-card .veggie-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.market-theme .crew-card .mini-character-copy{
+  padding:16px 17px 18px;
+  border-radius:18px;
+  background:rgba(255,255,255,.90);
+  border:2px solid rgba(255,255,255,.98);
+  box-shadow:0 8px 20px rgba(4,37,86,.18);
+  backdrop-filter:blur(4px);
+}
+.market-theme .crew-card .mini-character-copy h3{
+  margin:0 0 7px;
+  color:#0752a8;
+}
+.market-theme .crew-card .mini-character-copy p{
+  margin:0;
+  color:#52665a;
+}
