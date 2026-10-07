@@ -1,0 +1,33 @@
+name: Import Gary full resolution direct
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-gary-fullres-direct.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-gary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download exact approved Gary image
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl -fL --retry 3 'https://sdmntprcentralus.oaiusercontent.com/files/00000000-d130-81f5-9369-38872eb5f5d6/raw?se=2026-10-07T12%3A31%3A13Z&sp=r&sv=2026-02-06&sr=b&scid=1879a9f4-a1ed-5c87-88b7-e94b20bcbaee&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T11%3A06%3A59Z&ske=2026-10-08T11%3A06%3A59Z&sks=b&skv=2026-02-06&sig=QrBkitk8nuGh92vgRQgSkiRkTJi0UqK0PvLU4mE/SOY%3D' -o assets/gary-intro-card-fullres.jpg
+          file assets/gary-intro-card-fullres.jpg
+      - name: Commit exact full-resolution Gary image
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/gary-intro-card-fullres.jpg
+          git diff --cached --quiet && exit 0
+          git commit -m "Add exact full-resolution Gary card image [skip ci]"
+          git push
