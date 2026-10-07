@@ -1,0 +1,35 @@
+name: Import recipe card images
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-recipe-card-images.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download approved recipe images
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl -fL --retry 3 'https://sdmntprcentralus.oaiusercontent.com/files/00000000-eaf8-81f5-b321-2e2b3f76d50b/raw?se=2026-10-07T14%3A18%3A37Z&sp=r&sv=2026-02-06&sr=b&scid=51561ea2-0618-5caa-910c-abc76b974e1e&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T12%3A25%3A47Z&ske=2026-10-08T12%3A25%3A47Z&sks=b&skv=2026-02-06&sig=9mQKCKfhbUGSU%2BifcUBt4tTKtfpjZbjrYqLEl2BLPnY%3D' -o assets/recipe-gary-guacamole.png
+          curl -fL --retry 3 'https://sdmntprcentralus.oaiusercontent.com/files/00000000-86f0-81f5-b8f4-847a2ed9cfa7/raw?se=2026-10-07T14%3A18%3A38Z&sp=r&sv=2026-02-06&sr=b&scid=80345c50-3613-5892-af07-39fdf6162567&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T00%3A02%3A55Z&ske=2026-10-08T00%3A02%3A55Z&sks=b&skv=2026-02-06&sig=TYreRLdXCegmoe8oCE7VaWEXRCEPzbM6ehEFtfJnq%2B0%3D' -o assets/recipe-carry-soup.png
+          curl -fL --retry 3 'https://sdmntprcentralus.oaiusercontent.com/files/00000000-d724-81f5-a9b1-8009434a5d3c/raw?se=2026-10-07T14%3A18%3A40Z&sp=r&sv=2026-02-06&sr=b&scid=27dc12be-804c-5397-8893-0dd15557c0b5&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T00%3A44%3A18Z&ske=2026-10-08T00%3A44%3A18Z&sks=b&skv=2026-02-06&sig=NfM9c1Ljx1JJAa8Up9x%2BLjpl7W4O4/VbuBSthHduzQY%3D' -o assets/recipe-artie-refresher.png
+          file assets/recipe-gary-guacamole.png assets/recipe-carry-soup.png assets/recipe-artie-refresher.png
+      - name: Commit recipe images
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/recipe-gary-guacamole.png assets/recipe-carry-soup.png assets/recipe-artie-refresher.png
+          git diff --cached --quiet && exit 0
+          git commit -m "Add Gary Carry and Artie recipe card images [skip ci]"
+          git push
