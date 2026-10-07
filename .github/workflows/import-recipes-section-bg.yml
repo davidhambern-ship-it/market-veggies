@@ -1,0 +1,33 @@
+name: Import recipes section background
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-recipes-section-bg.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-bg:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download approved recipes section background
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl -fL --retry 3 'https://export-download.canva.com/f79b6f3a-312f-4e8b-b571-5e2243b2eb1b/0/0001-592741589177833765.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T010811Z&X-Amz-Expires=50520&X-Amz-Signature=9f66b1ab00e7e8ffaee03f151531cb109866c5f78263b4e84b093973baa7d5b4&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Wed%2C%2007%20Oct%202026%2015%3A10%3A11%20GMT' -o assets/recipes-section-veggie-bg.png
+          file assets/recipes-section-veggie-bg.png
+      - name: Commit recipes section background
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/recipes-section-veggie-bg.png
+          git diff --cached --quiet && exit 0
+          git commit -m "Add recipes section veggie background [skip ci]"
+          git push
