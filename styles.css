@@ -1054,3 +1054,287 @@
 .home-page .hl-green{
   color:#5fbf3f !important;
 }
+
+
+/* =========================================================
+   HOME INTERACTION + MOTION PASS
+   ========================================================= */
+
+.home-page .btn{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  transition:
+    transform .24s cubic-bezier(.2,.8,.2,1),
+    box-shadow .24s ease,
+    background .24s ease,
+    color .24s ease,
+    border-color .24s ease;
+}
+.home-page .btn:active{
+  transform:translateY(0) scale(.97);
+}
+.home-page .btn:focus-visible,
+.home-page .navlinks a:focus-visible{
+  outline:4px solid rgba(255,214,51,.75);
+  outline-offset:4px;
+}
+
+/* Orange -> blue */
+.home-page .btn.orange:hover,
+.home-page .btn.orange:focus-visible{
+  color:#fff;
+  background:linear-gradient(135deg,#0752a8,#1b86df);
+  box-shadow:0 14px 28px rgba(7,82,168,.30);
+  transform:translateY(-4px) scale(1.025);
+}
+
+/* Yellow -> green */
+.home-page .btn.yellow{
+  color:#173b22;
+  background:linear-gradient(135deg,#ffe04d,#f4c928);
+  box-shadow:0 10px 24px rgba(245,200,66,.28);
+}
+.home-page .btn.yellow:hover,
+.home-page .btn.yellow:focus-visible{
+  color:#fff;
+  background:linear-gradient(135deg,#2f7d32,#59ae43);
+  box-shadow:0 14px 28px rgba(47,125,50,.30);
+  transform:translateY(-4px) scale(1.025);
+}
+
+/* Ghost buttons still react */
+.home-page .btn.ghost:hover,
+.home-page .btn.ghost:focus-visible{
+  color:#0752a8;
+  border-color:#74b9ef;
+  background:#eef8ff;
+  box-shadow:0 12px 24px rgba(7,82,168,.16);
+  transform:translateY(-4px);
+}
+.home-page .btn.darkghost:hover,
+.home-page .btn.darkghost:focus-visible{
+  color:#173b22!important;
+  background:#ffe04d!important;
+  border-color:#ffe04d!important;
+}
+
+/* Navigation gets a sliding underline */
+.home-page .navlinks a{
+  position:relative;
+  transition:color .2s ease,transform .2s ease;
+}
+.home-page .navlinks a::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  right:50%;
+  bottom:-7px;
+  height:3px;
+  border-radius:999px;
+  background:#ef7d25;
+  transition:left .22s ease,right .22s ease,background .22s ease;
+}
+.home-page .navlinks a:hover{
+  color:#0752a8;
+  transform:translateY(-1px);
+}
+.home-page .navlinks a:hover::after,
+.home-page .navlinks a:focus-visible::after{
+  left:0;
+  right:0;
+  background:#f5c842;
+}
+
+/* Gentle living motion in the rotating hero */
+@keyframes mvHeroDrift{
+  from{transform:scale(1.00)}
+  to{transform:scale(1.035)}
+}
+.home-page .mission-bg-slide.active{
+  animation:mvHeroDrift 6.5s ease-out both;
+}
+
+/* Mission cards */
+.home-page .mission-cards-section .mission-card{
+  position:relative;
+  overflow:hidden;
+  transform:translateZ(0);
+  transition:
+    transform .28s cubic-bezier(.2,.8,.2,1),
+    box-shadow .28s ease,
+    border-color .28s ease,
+    background-position .45s ease;
+}
+.home-page .mission-cards-section .mission-card .icon,
+.home-page .mission-cards-section .mission-card-copy{
+  transition:transform .28s cubic-bezier(.2,.8,.2,1);
+}
+.home-page .mission-cards-section .mission-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  border:3px solid transparent;
+  pointer-events:none;
+  transition:border-color .25s ease,box-shadow .25s ease;
+}
+.home-page .mission-cards-section .mission-card:hover{
+  transform:translateY(-11px) scale(1.018);
+  box-shadow:0 18px 0 rgba(7,82,168,.12),0 30px 52px rgba(6,47,101,.25);
+}
+.home-page .mission-cards-section .mission-card:nth-child(1):hover{transform:translateY(-11px) rotate(-.55deg) scale(1.018)}
+.home-page .mission-cards-section .mission-card:nth-child(3):hover{transform:translateY(-11px) rotate(.55deg) scale(1.018)}
+.home-page .mission-cards-section .mission-card:hover::after{
+  border-color:rgba(255,214,51,.72);
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.50);
+}
+.home-page .mission-cards-section .mission-card:hover .icon{
+  transform:translateY(-5px) rotate(-7deg) scale(1.10);
+}
+.home-page .mission-cards-section .mission-card:hover .mission-card-copy{
+  transform:translateY(-3px);
+}
+
+/* Main Gary feature */
+.home-page .character-feature{
+  transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s ease;
+}
+.home-page .character-feature img{
+  transition:transform .65s cubic-bezier(.2,.8,.2,1),filter .4s ease;
+}
+.home-page .character-feature .overlay{
+  transition:transform .3s ease;
+}
+.home-page .character-feature:hover{
+  transform:translateY(-8px);
+  box-shadow:0 26px 52px rgba(4,40,82,.28);
+}
+.home-page .character-feature:hover img{
+  transform:scale(1.065);
+  filter:saturate(1.08);
+}
+.home-page .character-feature:hover .overlay{
+  transform:translateY(-7px);
+}
+
+/* Small crew cards */
+.home-page .crew-card{
+  transition:
+    transform .28s cubic-bezier(.2,.8,.2,1),
+    box-shadow .28s ease,
+    background-position .45s ease;
+}
+.home-page .crew-card .veggie-avatar,
+.home-page .crew-card .mini-character-copy{
+  transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s ease;
+}
+.home-page .crew-card:hover{
+  transform:translateY(-9px) scale(1.02);
+  box-shadow:0 11px 0 #f5c842,0 24px 42px rgba(7,54,105,.28);
+  background-position:center 46%;
+}
+.home-page .crew-card:hover .veggie-avatar{
+  transform:translateY(-4px) rotate(-4deg) scale(1.07);
+  box-shadow:0 10px 24px rgba(0,0,0,.28);
+}
+.home-page .crew-card:hover .mini-character-copy{
+  transform:translateY(-2px);
+}
+
+/* Recipe cards */
+.home-page .book-recipe-card{
+  transition:
+    transform .3s cubic-bezier(.2,.8,.2,1),
+    box-shadow .3s ease,
+    border-color .3s ease;
+}
+.home-page .book-recipe-card .recipe-art img{
+  transition:transform .62s cubic-bezier(.2,.8,.2,1),filter .4s ease;
+}
+.home-page .book-recipe-card .recipe-book-badge,
+.home-page .book-recipe-card .recipe-snippet{
+  transition:transform .26s ease,background .26s ease,border-color .26s ease;
+}
+.home-page .book-recipe-card:hover{
+  transform:translateY(-12px) scale(1.018);
+  border-color:#ffe04d;
+  box-shadow:0 12px 0 rgba(7,82,168,.24),0 32px 54px rgba(2,29,71,.30);
+}
+.home-page .book-recipe-card:hover .recipe-art img{
+  transform:scale(1.075);
+  filter:saturate(1.08);
+}
+.home-page .book-recipe-card:hover .recipe-book-badge{
+  transform:translateY(-3px) rotate(-2deg);
+  background:#ffe04d;
+  border-color:#ffe04d;
+}
+.home-page .book-recipe-card:hover .recipe-snippet{
+  transform:translateY(-2px);
+  border-color:#7bc4ef;
+  background:#f5fbff;
+}
+
+/* Book section */
+.home-page .book-band{
+  transition:transform .3s ease,box-shadow .3s ease;
+}
+.home-page .book-band::before{
+  transition:transform .55s ease,opacity .4s ease;
+}
+.home-page .book-art{
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s ease;
+}
+.home-page .book-band:hover{
+  transform:translateY(-6px);
+  box-shadow:0 26px 58px rgba(14,59,34,.20);
+}
+.home-page .book-band:hover::before{
+  transform:scale(1.14) translate(-12px,12px);
+  opacity:.24;
+}
+.home-page .book-band:hover .book-art{
+  transform:rotate(0deg) translateY(-7px) scale(1.015);
+  box-shadow:0 30px 68px rgba(0,0,0,.34);
+}
+
+/* Scroll reveals added by app.js */
+.home-page .mv-reveal{
+  opacity:0;
+  transform:translateY(30px);
+  transition:
+    opacity .72s ease,
+    transform .72s cubic-bezier(.2,.8,.2,1);
+  transition-delay:var(--mv-delay,0ms);
+}
+.home-page .mv-reveal.mv-in-view{
+  opacity:1;
+  transform:none;
+}
+
+/* Keep touch/mobile behavior clean */
+@media (hover:hover) and (pointer:fine){
+  .home-page .mission-cards-section .mission-card,
+  .home-page .character-feature,
+  .home-page .crew-card,
+  .home-page .book-recipe-card,
+  .home-page .book-band{
+    cursor:default;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .home-page *,
+  .home-page *::before,
+  .home-page *::after{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.001ms!important;
+  }
+  .home-page .mv-reveal{
+    opacity:1!important;
+    transform:none!important;
+  }
+}
