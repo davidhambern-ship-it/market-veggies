@@ -129,6 +129,8 @@
   background:#2f7d32;
   color:#fff;
 }
+.characters-page .tomato-debate-options[hidden],
+.characters-page .tomato-debate-result[hidden]{display:none!important}
 .characters-page .tomato-debate-options{
   display:flex;
   flex-wrap:wrap;
@@ -462,7 +464,7 @@
           <div class="character-art-zone">
             <div class="character-name-ribbon"><span>🍅</span> TOMMY THE TOMATO</div>
             <div class="tommy-art-frame" id="tommyArtFrame" data-pose="heart">
-              <img id="tommyMainArt" src="assets/tommy-card.png" alt="Tommy the Tomato smiling in the Market Veggies market">
+              <img id="tommyMainArt" src="assets/characters/tommy/tommy-lycopene.png" alt="Tommy the Tomato celebrating the power of red">
             </div>
             <div class="tommy-speech" id="tommySpeech">“Juicy. Loyal. Full of heart. That’s kind of my whole thing.”</div>
           </div>
@@ -477,7 +479,9 @@
                 data-title="Lycopene"
                 data-copy="Tomatoes contain lycopene, a red carotenoid plant pigment. It is one of the compounds that gives many ripe tomatoes their bright red color."
                 data-speech="“Red is more than my favorite color — it’s part of my plant chemistry.”"
-                data-pose="heart">
+                data-pose="heart"
+                data-image="assets/characters/tommy/tommy-lycopene.png"
+                data-image-alt="Tommy celebrating his bright red color">
                 <span>❤️</span><b>Lycopene</b>
               </button>
 
@@ -485,7 +489,9 @@
                 data-title="Vitamin C"
                 data-copy="Tomatoes provide vitamin C, a nutrient that supports normal immune function and helps the body make collagen."
                 data-speech="“I bring the C too. Teamwork means everybody contributes.”"
-                data-pose="bounce">
+                data-pose="bounce"
+                data-image="assets/characters/tommy/tommy-vitamin-c.png"
+                data-image-alt="Tommy proudly holding a vitamin C shield">
                 <span>✨</span><b>Vitamin C</b>
               </button>
 
@@ -493,7 +499,9 @@
                 data-title="Potassium"
                 data-copy="Tomatoes contribute potassium, an essential mineral involved in normal muscle, nerve and fluid-balance functions."
                 data-speech="“Muscles, nerves, movement — there’s a lot happening behind the scenes.”"
-                data-pose="power">
+                data-pose="power"
+                data-image="assets/characters/tommy/tommy-potassium.png"
+                data-image-alt="Tommy running with energy">
                 <span>⚡</span><b>Potassium</b>
               </button>
 
@@ -501,7 +509,9 @@
                 data-title="Mostly water"
                 data-copy="Fresh tomatoes are mostly water. That juicy texture is one reason tomatoes can add moisture, freshness and color to meals."
                 data-speech="“They don’t call me juicy for nothing.”"
-                data-pose="float">
+                data-pose="float"
+                data-image="assets/characters/tommy/tommy-hydration.png"
+                data-image-alt="Tommy splashing through water">
                 <span>💧</span><b>Mostly water</b>
               </button>
 
@@ -509,7 +519,9 @@
                 data-title="Kitchen range"
                 data-copy="Tomatoes can show up raw, roasted, simmered into sauce, blended into soup, chopped into salsa or tucked into sandwiches and salads."
                 data-speech="“Fresh, roasted, sauced, salsa’d — I’ve got range.”"
-                data-pose="cook">
+                data-pose="cook"
+                data-image="assets/characters/tommy/tommy-kitchen.png"
+                data-image-alt="Tommy presenting tasty tomato dishes">
                 <span>🍳</span><b>Kitchen range</b>
               </button>
 
@@ -517,7 +529,9 @@
                 data-title="Fruit or vegetable?"
                 data-copy="Botanically, a tomato is a fruit because it develops from a flower and contains seeds. In cooking, tomatoes are usually treated like vegetables because of how they are used in savory dishes."
                 data-speech="“Science class says fruit. The kitchen says vegetable. I say: why choose?”"
-                data-pose="debate">
+                data-pose="debate"
+                data-image="assets/characters/tommy/tommy-fruit-or-vegetable.png"
+                data-image-alt="Tommy choosing between fruits and vegetables">
                 <span>🤔</span><b>Fruit or veggie?</b>
               </button>
             </div>
@@ -528,7 +542,7 @@
               <p id="tommyFactCopy">Tomatoes contain lycopene, a red carotenoid plant pigment. It is one of the compounds that gives many ripe tomatoes their bright red color.</p>
 
               <div class="tommy-debate-wrap">
-                <button class="tomato-debate" id="tomatoDebate" type="button">🍅 Settle the Tomato Debate!</button>
+                <button class="tomato-debate" id="tomatoDebate" type="button" aria-expanded="false" aria-controls="tomatoDebateOptions">🍅 Settle the Tomato Debate!</button>
                 <div class="tomato-debate-options" id="tomatoDebateOptions" hidden>
                   <button type="button" class="tomato-debate-choice" data-answer="fruit">Fruit</button>
                   <button type="button" class="tomato-debate-choice" data-answer="vegetable">Vegetable</button>
@@ -595,6 +609,32 @@
   if(!buttons.length)return;
 
   const frame=document.getElementById('tommyArtFrame');
+  const artwork=document.getElementById('tommyMainArt');
+  let artworkRequest=0;
+
+  // Load each new illustration before swapping, so slower mobile connections
+  // keep the previous picture visible instead of flashing a broken image.
+  function showArtwork(src,alt,pose){
+    if(!artwork||!src)return;
+    const request=++artworkRequest;
+    const next=new Image();
+    next.onload=()=>{
+      if(request!==artworkRequest)return;
+      artwork.src=src;
+      artwork.alt=alt||'Tommy the Tomato';
+      if(frame){
+        frame.dataset.pose='';
+        requestAnimationFrame(()=>{
+          if(request===artworkRequest)frame.dataset.pose=pose||'heart';
+        });
+      }
+    };
+    next.onerror=()=>{
+      // Preserve the last successful illustration if a file cannot load.
+      if(request===artworkRequest)console.warn('Tommy illustration unavailable:',src);
+    };
+    next.src=src;
+  }
   const title=document.getElementById('tommyFactTitle');
   const copy=document.getElementById('tommyFactCopy');
   const speech=document.getElementById('tommySpeech');
@@ -635,12 +675,10 @@
     if(copy)copy.textContent=btn.dataset.copy||'';
     if(speech)speech.textContent=btn.dataset.speech||'';
 
-    if(frame){
-      frame.dataset.pose='';
-      requestAnimationFrame(()=>{frame.dataset.pose=btn.dataset.pose||'heart'});
-    }
+    showArtwork(btn.dataset.image,btn.dataset.imageAlt,btn.dataset.pose);
 
     if(options)options.hidden=true;
+    if(debate)debate.setAttribute('aria-expanded','false');
     if(result){
       result.hidden=true;
       result.classList.remove('pop');
@@ -651,7 +689,17 @@
 
   debate?.addEventListener('click',()=>{
     if(!options)return;
-    options.hidden=!options.hidden;
+    const opening=options.hidden;
+    if(opening){
+      // The debate is its own illustrated question, even if another fact
+      // was selected before the child opened this activity.
+      const debateFact=buttons[buttons.length-1];
+      setFact(debateFact);
+      options.hidden=false;
+    }else{
+      options.hidden=true;
+    }
+    debate.setAttribute('aria-expanded',String(opening));
     if(result)result.hidden=true;
   });
 
@@ -668,10 +716,9 @@
         requestAnimationFrame(()=>result.classList.add('pop'));
       }
       if(speech)speech.textContent=answer.quote;
-      if(frame){
-        frame.dataset.pose='';
-        requestAnimationFrame(()=>{frame.dataset.pose='debate'});
-      }
+      // Keep Tommy's fruit/vegetable showdown artwork visible for every answer.
+      const debateFact=buttons[buttons.length-1];
+      showArtwork(debateFact.dataset.image,debateFact.dataset.imageAlt,'debate');
     });
   });
 })();
