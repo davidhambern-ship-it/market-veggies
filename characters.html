@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Meet the Characters | Market Veggies</title><meta name="description" content="Meet Gary, Carry, Artie, Tommy, Nanner and Gingy and learn what makes their foods special."><meta name="theme-color" content="#2f7d32"><link rel="icon" type="image/webp" href="assets/favicon.webp"><link rel="stylesheet" href="styles.css?v=20261007-character-stories"></head><body class="market-theme characters-page"><div class="topbar">FRESH PRODUCE • BIG ADVENTURES • HEALTHY HABITS THAT FEEL LIKE FUN</div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Meet the Characters | Market Veggies</title><meta name="description" content="Meet Gary, Carry, Artie, Tommy, Nanner and Gingy and learn what makes their foods special."><meta name="theme-color" content="#2f7d32"><link rel="icon" type="image/webp" href="assets/favicon.webp"><link rel="stylesheet" href="styles.css?v=20261008-carry-explainer"></head><body class="market-theme characters-page"><div class="topbar">FRESH PRODUCE • BIG ADVENTURES • HEALTHY HABITS THAT FEEL LIKE FUN</div>
 <header class="site-header"><nav class="nav container">
 <a class="brand" href="index.html"><img src="assets/market-veggies-logo.png" alt="Market Veggies"></a>
 <div class="navlinks">
@@ -96,14 +96,86 @@
         <article class="character-story-slide carry-story" data-character="carry">
           <div class="character-art-zone">
             <div class="character-name-ribbon"><span>🥕</span> CARRY THE CARROT</div>
-            <div class="standard-character-art"><img src="assets/carry-intro-card.png" alt="Carry the Carrot"></div>
+            <div class="carry-art-frame">
+              <img id="carryMainArt" src="assets/characters/carry/carry-wave.png" alt="Carry the Carrot waving">
+            </div>
+            <div class="carry-speech" id="carrySpeech">“I might be a little shy… but that doesn’t mean I don’t have something important to bring to the table.”</div>
           </div>
+
           <div class="character-story-copy">
             <span class="story-kicker">CARRY'S STORY</span>
-            <h3>Quiet courage. <span>Serious crunch.</span></h3>
-            <p class="story-summary">Carry is shy, thoughtful and determined. Her story is about finding the courage to participate even when being noticed feels uncomfortable.</p>
-            <div class="simple-fact-cloud"><span>👁️ Beta-carotene → vitamin A</span><span>🌾 Dietary fiber</span><span>🥕 Crunchy raw or cooked</span></div>
-            <p>Carrots are especially known for beta-carotene, which the body can convert to vitamin A. They also provide fiber and work in everything from snacks to soups.</p>
+            <h3>Quiet courage. <span>Bright benefits.</span></h3>
+            <p class="story-summary">Carry is thoughtful, a little shy, and stronger than she sometimes realizes. Her story is about finding the courage to step forward, try something new, and discover that standing out can actually be one of your strengths.</p>
+
+            <div class="carry-fact-grid" role="tablist" aria-label="Explore carrot facts">
+              <button class="carry-fact active" type="button" role="tab" aria-selected="true"
+                data-title="Beta-carotene"
+                data-copy="Carrots are rich in beta-carotene, one of the plant pigments that gives orange produce its color. The body can convert beta-carotene into vitamin A."
+                data-image="assets/characters/carry/carry-wave.png"
+                data-speech="“That bright orange color isn’t just for decoration!”">
+                <span>🥕</span><b>Beta-carotene</b>
+              </button>
+
+              <button class="carry-fact" type="button" role="tab" aria-selected="false"
+                data-title="Vision support"
+                data-copy="Vitamin A plays an important role in normal vision and helps the eyes function properly. Carrots are one way to add provitamin A carotenoids to a varied diet."
+                data-image="assets/characters/carry/carry-binoculars.png"
+                data-speech="“I can’t give you superhero eyesight… but I can help support the eyes you already have!”">
+                <span>👁️</span><b>Vision support</b>
+              </button>
+
+              <button class="carry-fact" type="button" role="tab" aria-selected="false"
+                data-title="Growth + body support"
+                data-copy="Vitamin A also supports normal growth and development and contributes to healthy immune function. Carrots are food—not medicine—but they can be a useful part of a balanced diet."
+                data-image="assets/characters/carry/carry-growth.png"
+                data-speech="“Growing bodies have a lot of work to do!”">
+                <span>🛡️</span><b>Growth + support</b>
+              </button>
+
+              <button class="carry-fact" type="button" role="tab" aria-selected="false"
+                data-title="Fiber"
+                data-copy="Carrots provide dietary fiber along with their vitamins and plant pigments. Fiber is one reason vegetables are an important part of everyday meals and snacks."
+                data-image="assets/characters/carry/carry-basket.png"
+                data-speech="“Crunch comes with benefits!”">
+                <span>🌾</span><b>Fiber</b>
+              </button>
+
+              <button class="carry-fact" type="button" role="tab" aria-selected="false"
+                data-title="So many ways to eat me"
+                data-copy="Carrots can be eaten raw for crunch, roasted for sweetness, shredded into meals, or cooked into soups and sauces. Different textures can help kids discover the version they enjoy most."
+                data-image="assets/characters/carry/carry-cooking.png"
+                data-speech="“Raw, roasted, shredded, blended… I’ve got range.”">
+                <span>🍲</span><b>So many ways</b>
+              </button>
+
+              <button class="carry-fact" type="button" role="tab" aria-selected="false"
+                data-title="Bright color, big confidence"
+                data-copy="Carry’s orange color becomes part of her story lesson: being noticeable, different, or a little nervous does not mean you have to hide. Sometimes standing out is part of what makes you special."
+                data-image="assets/characters/carry/carry-growth.png"
+                data-speech="“Sometimes the thing that makes you stand out is exactly what makes you special.”">
+                <span>🌈</span><b>Bright confidence</b>
+              </button>
+            </div>
+
+            <div class="carry-explainer" aria-live="polite">
+              <span class="carry-explainer-label">TAP A CARROT POWER</span>
+              <h4 id="carryFactTitle">Beta-carotene</h4>
+              <p id="carryFactCopy">Carrots are rich in beta-carotene, one of the plant pigments that gives orange produce its color. The body can convert beta-carotene into vitamin A.</p>
+
+              <div class="carry-crunch-wrap">
+                <button class="pick-crunch" id="pickCrunch" type="button">🥕 Pick Your Crunch!</button>
+                <div class="crunch-options" id="crunchOptions" hidden>
+                  <button type="button" class="crunch-choice" data-crunch-title="RAW — CRUNCHY" data-crunch-copy="Fresh carrot sticks have a crisp bite and work well with dips.">Raw</button>
+                  <button type="button" class="crunch-choice" data-crunch-title="ROASTED — SWEETER" data-crunch-copy="Roasting softens carrots and brings out more of their natural sweetness.">Roasted</button>
+                  <button type="button" class="crunch-choice" data-crunch-title="SOUP — SOFT & COZY" data-crunch-copy="Cooked carrots become tender and blend easily into soups like Carry’s Special Soup.">Soup</button>
+                </div>
+                <div class="crunch-result-box" id="crunchResultBox" hidden>
+                  <b id="crunchResultTitle"></b>
+                  <p id="crunchResultCopy"></p>
+                  <span>“See? You don’t have to like carrots one way. You just have to find <em>your</em> way.”</span>
+                </div>
+              </div>
+            </div>
           </div>
         </article>
 
