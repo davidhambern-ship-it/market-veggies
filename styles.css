@@ -2432,6 +2432,63 @@
   font-weight:900;
 }
 .characters-page .tomato-debate-result.pop{animation:crushPop .35s ease}
+/* Keep Tommy's full explainer within the original desktop carousel footprint.
+   Only Tommy is compacted; Gary, Carry, and Artie retain their layouts. */
+@media(min-width:981px){
+  .characters-page .tommy-story .character-story-copy{
+    padding:24px 34px;
+  }
+  .characters-page .tommy-story .character-story-copy h3{
+    font-size:clamp(2.05rem,2.7vw,3.1rem);
+    line-height:1.04;
+    margin:.35rem 0 .55rem;
+  }
+  .characters-page .tommy-story .story-summary{
+    font-size:.91rem;
+    line-height:1.42;
+    margin-bottom:12px;
+  }
+  .characters-page .tommy-art-frame{
+    width:min(84%,470px);
+  }
+  .characters-page .tommy-fact-grid{
+    gap:7px;
+    margin:0 0 12px;
+  }
+  .characters-page .tommy-fact{
+    min-height:67px;
+    padding:7px 10px;
+    border-radius:14px;
+    gap:2px;
+  }
+  .characters-page .tommy-fact span{font-size:1.04rem}
+  .characters-page .tommy-fact b{font-size:.77rem}
+  .characters-page .tommy-explainer{
+    min-height:0;
+    padding:13px 16px;
+    border-radius:17px;
+  }
+  .characters-page .tommy-explainer h4{
+    font-size:1.2rem;
+    margin:.15rem 0 .25rem;
+  }
+  .characters-page .tommy-explainer > p{
+    font-size:.87rem;
+    line-height:1.38;
+  }
+  .characters-page .tommy-debate-wrap{margin-top:9px}
+  .characters-page .tomato-debate{padding:8px 12px;font-size:.86rem}
+  .characters-page .tomato-debate-options{gap:6px;margin-top:8px}
+  .characters-page .tomato-debate-choice{padding:6px 10px;font-size:.81rem}
+  .characters-page .tomato-debate-result{
+    margin-top:8px;
+    padding:9px 11px;
+    font-size:.85rem;
+    line-height:1.35;
+  }
+  .characters-page .tomato-debate-result b{margin-bottom:2px}
+  .characters-page .tomato-debate-result p{margin-bottom:4px}
+}
 @media(max-width:980px){
   .characters-page .tommy-art-frame{width:min(74%,500px);aspect-ratio:1/1}
 }
