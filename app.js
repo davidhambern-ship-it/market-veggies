@@ -346,3 +346,133 @@ startMissionRotation();
 
   showSlide(0);
 })();
+
+// Tommy the Tomato: artwork-backed nutrition explorer and fruit/vegetable challenge.
+(function initTommyExplainer(){
+  const buttons=[...document.querySelectorAll('.tommy-fact')];
+  if(!buttons.length)return;
+
+  const frame=document.getElementById('tommyArtFrame');
+  const artwork=document.getElementById('tommyMainArt');
+  let artworkRequest=0;
+
+  // Load each new illustration before swapping, so slower mobile connections
+  // keep the previous picture visible instead of flashing a broken image.
+  function showArtwork(src,alt,pose){
+    if(!artwork||!src)return;
+    const request=++artworkRequest;
+    if(artwork.getAttribute('src')===src){
+      artwork.alt=alt||'Tommy the Tomato';
+      if(frame){
+        frame.dataset.pose='';
+        requestAnimationFrame(()=>{
+          if(request===artworkRequest)frame.dataset.pose=pose||'heart';
+        });
+      }
+      return;
+    }
+    const next=new Image();
+    next.onload=()=>{
+      if(request!==artworkRequest)return;
+      artwork.src=src;
+      artwork.alt=alt||'Tommy the Tomato';
+      if(frame){
+        frame.dataset.pose='';
+        requestAnimationFrame(()=>{
+          if(request===artworkRequest)frame.dataset.pose=pose||'heart';
+        });
+      }
+    };
+    next.onerror=()=>{
+      // Preserve the last successful illustration if a file cannot load.
+      if(request===artworkRequest)console.warn('Tommy illustration unavailable:',src);
+    };
+    next.src=src;
+  }
+  const title=document.getElementById('tommyFactTitle');
+  const copy=document.getElementById('tommyFactCopy');
+  const speech=document.getElementById('tommySpeech');
+  const debate=document.getElementById('tomatoDebate');
+  const options=document.getElementById('tomatoDebateOptions');
+  const choices=[...document.querySelectorAll('.tomato-debate-choice')];
+  const result=document.getElementById('tomatoDebateResult');
+  const resultTitle=document.getElementById('tomatoDebateTitle');
+  const resultCopy=document.getElementById('tomatoDebateCopy');
+  const resultQuote=document.getElementById('tomatoDebateQuote');
+
+  const answers={
+    fruit:{
+      title:'BOTANICALLY: FRUIT ✅',
+      copy:'A tomato develops from a flower and contains seeds, so botanists classify it as a fruit.',
+      quote:'“Science class gets this point.”'
+    },
+    vegetable:{
+      title:'IN THE KITCHEN: VEGETABLE ✅',
+      copy:'Cooks usually group tomatoes with vegetables because they are used mostly in savory meals rather than sweet desserts.',
+      quote:'“The kitchen gets a point too.”'
+    },
+    both:{
+      title:'YOU FOUND THE WHOLE ANSWER! 🍅',
+      copy:'Tomato is botanically a fruit and culinarily treated like a vegetable. The two labels are answering different questions.',
+      quote:'“Why pick one team when I can play both?”'
+    }
+  };
+
+  function setFact(btn){
+    buttons.forEach(b=>{
+      const active=b===btn;
+      b.classList.toggle('active',active);
+      b.setAttribute('aria-selected',active?'true':'false');
+    });
+
+    if(title)title.textContent=btn.dataset.title||'';
+    if(copy)copy.textContent=btn.dataset.copy||'';
+    if(speech)speech.textContent=btn.dataset.speech||'';
+
+    showArtwork(btn.dataset.image,btn.dataset.imageAlt,btn.dataset.pose);
+
+    if(options)options.hidden=true;
+    if(debate)debate.setAttribute('aria-expanded','false');
+    if(result){
+      result.hidden=true;
+      result.classList.remove('pop');
+    }
+  }
+
+  buttons.forEach(btn=>btn.addEventListener('click',()=>setFact(btn)));
+
+  debate?.addEventListener('click',()=>{
+    if(!options)return;
+    const opening=options.hidden;
+    if(opening){
+      // The debate is its own illustrated question, even if another fact
+      // was selected before the child opened this activity.
+      const debateFact=buttons[buttons.length-1];
+      setFact(debateFact);
+      options.hidden=false;
+    }else{
+      options.hidden=true;
+    }
+    debate.setAttribute('aria-expanded',String(opening));
+    if(result)result.hidden=true;
+  });
+
+  choices.forEach(choice=>{
+    choice.addEventListener('click',()=>{
+      const answer=answers[choice.dataset.answer];
+      if(!answer)return;
+      if(resultTitle)resultTitle.textContent=answer.title;
+      if(resultCopy)resultCopy.textContent=answer.copy;
+      if(resultQuote)resultQuote.textContent=answer.quote;
+      if(result){
+        result.hidden=false;
+        result.classList.remove('pop');
+        requestAnimationFrame(()=>result.classList.add('pop'));
+      }
+      if(speech)speech.textContent=answer.quote;
+      // Keep Tommy's fruit/vegetable showdown artwork visible for every answer.
+      const debateFact=buttons[buttons.length-1];
+      showArtwork(debateFact.dataset.image,debateFact.dataset.imageAlt,'debate');
+    });
+  });
+})();
