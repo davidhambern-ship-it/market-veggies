@@ -1,0 +1,37 @@
+name: Import Carry character set
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-carry-character-set.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Carry artwork set
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/characters/carry
+          curl -fL --retry 3 'https://sdmntprnorthcentralus.oaiusercontent.com/files/00000000-a1d0-822f-b297-9ae2b86828a2/raw?se=2026-10-08T10%3A05%3A50Z&sp=r&sv=2026-02-06&sr=b&scid=eb037f8f-6ba2-5211-a88d-d653c0c8e34c&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T23%3A54%3A03Z&ske=2026-10-08T23%3A54%3A03Z&sks=b&skv=2026-02-06&sig=zrBaXvZIMfDisgmRCClEIau0pp5SfFS%2BgUU7OIG50A8%3D' -o assets/characters/carry/carry-wave.png
+          curl -fL --retry 3 'https://sdmntprnorthcentralus.oaiusercontent.com/files/00000000-08f8-822f-ad1a-0e4abe66f5a4/raw?se=2026-10-08T10%3A05%3A52Z&sp=r&sv=2026-02-06&sr=b&scid=de0be7fd-5b4e-5a3f-aa0d-1aaf53e0a71d&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T11%3A28%3A33Z&ske=2026-10-08T11%3A28%3A33Z&sks=b&skv=2026-02-06&sig=qiLQzXSQYLbVozcWA4AbwoxtesmwbtgYxMCbOzPzILU%3D' -o assets/characters/carry/carry-binoculars.png
+          curl -fL --retry 3 'https://sdmntprcentralus.oaiusercontent.com/files/00000000-f258-81f5-ac13-f13c982c72cc/raw?se=2026-10-08T10%3A05%3A53Z&sp=r&sv=2026-02-06&sr=b&scid=a8bea969-67cb-5165-9ef3-a0c6e64a937d&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T23%3A51%3A59Z&ske=2026-10-08T23%3A51%3A59Z&sks=b&skv=2026-02-06&sig=8hZYqMMHw2f0tjgjSkT6BRlu42JuKU0GrlXpIwYzBJo%3D' -o assets/characters/carry/carry-growth.png
+          curl -fL --retry 3 'https://sdmntprnorthcentralus.oaiusercontent.com/files/00000000-665c-822f-ae8a-f86348cf3237/raw?se=2026-10-08T10%3A05%3A54Z&sp=r&sv=2026-02-06&sr=b&scid=d50ee1ae-c07c-5e29-bf95-d4d9f1c9954f&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T23%3A07%3A52Z&ske=2026-10-08T23%3A07%3A52Z&sks=b&skv=2026-02-06&sig=edmFqsfn6IqqfqQEE7A6JY%2B4jN2G2KX1lxcQC5iRJdU%3D' -o assets/characters/carry/carry-basket.png
+          curl -fL --retry 3 'https://sdmntprcacentral.oaiusercontent.com/files/00000000-e0d0-820d-bc8b-71f37ff5bcfa/raw?se=2026-10-08T10%3A05%3A56Z&sp=r&sv=2026-02-06&sr=b&scid=82257610-8317-5002-9bfb-680f30b7e1a7&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-08T08%3A19%3A44Z&ske=2026-10-09T08%3A19%3A44Z&sks=b&skv=2026-02-06&sig=ld/6eVjCkUK7nArAoXhz3dSg0DY2QG3nl5Y5QX/9snc%3D' -o assets/characters/carry/carry-cooking.png
+          file assets/characters/carry/*.png
+      - name: Commit Carry artwork
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/characters/carry/
+          git diff --cached --quiet && exit 0
+          git commit -m "Add Carry character explainer artwork [skip ci]"
+          git push
