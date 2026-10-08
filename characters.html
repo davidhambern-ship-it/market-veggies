@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Meet the Characters | Market Veggies</title><meta name="description" content="Meet Gary, Carry, Artie, Tommy, Nanner and Gingy and learn what makes their foods special."><meta name="theme-color" content="#2f7d32"><link rel="icon" type="image/webp" href="assets/favicon.webp"><link rel="stylesheet" href="styles.css?v=20261008-carry-explainer"></head><body class="market-theme characters-page"><div class="topbar">FRESH PRODUCE • BIG ADVENTURES • HEALTHY HABITS THAT FEEL LIKE FUN</div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Meet the Characters | Market Veggies</title><meta name="description" content="Meet Gary, Carry, Artie, Tommy, Nanner and Gingy and learn what makes their foods special."><meta name="theme-color" content="#2f7d32"><link rel="icon" type="image/webp" href="assets/favicon.webp"><link rel="stylesheet" href="styles.css?v=20261008-artie-explainer"></head><body class="market-theme characters-page"><div class="topbar">FRESH PRODUCE • BIG ADVENTURES • HEALTHY HABITS THAT FEEL LIKE FUN</div>
 <header class="site-header"><nav class="nav container">
 <a class="brand" href="index.html"><img src="assets/market-veggies-logo.png" alt="Market Veggies"></a>
 <div class="navlinks">
@@ -182,14 +182,90 @@
         <article class="character-story-slide artie-story" data-character="artie">
           <div class="character-art-zone">
             <div class="character-name-ribbon"><span>🌿</span> ARTIE THE ARTICHOKE</div>
-            <div class="standard-character-art"><img src="assets/artie-card.png" alt="Artie the Artichoke"></div>
+            <div class="artie-art-frame">
+              <img id="artieMainArt" src="assets/characters/artie/artie-default.png" alt="Artie the Artichoke smiling">
+            </div>
+            <div class="artie-speech" id="artieSpeech">“Hey, I know I look a little different. That’s kind of the point.”</div>
           </div>
+
           <div class="character-story-copy">
             <span class="story-kicker">ARTIE'S COOL ENERGY</span>
-            <h3>Different can be <span>really good.</span></h3>
-            <p class="story-summary">Artie brings a calmer kind of confidence. His story encourages kids to explore something unfamiliar instead of deciding they dislike it before they know it.</p>
-            <div class="simple-fact-cloud"><span>🌾 Fiber</span><span>🍃 Folate</span><span>💚 Edible leaves + heart</span></div>
-            <p>Artichokes provide fiber and folate, and they are naturally interactive: pull a leaf, scrape the tender part, and work your way toward the heart.</p>
+            <h3>There’s something good <span>under the layers.</span></h3>
+            <p class="story-summary">Artie is calm, curious, and comfortable being a little different. His story encourages kids to explore unfamiliar foods instead of deciding what they think before they’ve really given something a chance.</p>
+
+            <div class="artie-fact-grid" role="tablist" aria-label="Explore artichoke facts">
+              <button class="artie-fact active" type="button" role="tab" aria-selected="true"
+                data-title="Fiber"
+                data-copy="Artichokes are especially notable for dietary fiber. Fiber helps support normal digestion and is one reason vegetables are an important part of everyday meals."
+                data-image="assets/characters/artie/artie-default.png"
+                data-speech="“I’ve got layers… and they’re doing more than looking cool.”">
+                <span>🌾</span><b>Fiber</b>
+              </button>
+
+              <button class="artie-fact" type="button" role="tab" aria-selected="false"
+                data-title="Folate"
+                data-copy="Artichokes provide folate, a B vitamin the body uses for normal cell growth and development."
+                data-image="assets/characters/artie/artie-investigates.png"
+                data-speech="“Growing takes work. Good thing I came prepared.”">
+                <span>🍃</span><b>Folate</b>
+              </button>
+
+              <button class="artie-fact" type="button" role="tab" aria-selected="false"
+                data-title="Vitamin C"
+                data-copy="Artichokes also contribute vitamin C, which supports normal immune function and helps the body make collagen."
+                data-image="assets/characters/artie/artie-investigates.png"
+                data-speech="“Cool on the outside. Helpful on the inside.”">
+                <span>✨</span><b>Vitamin C</b>
+              </button>
+
+              <button class="artie-fact" type="button" role="tab" aria-selected="false"
+                data-title="Minerals"
+                data-copy="Artichokes contribute minerals including magnesium and potassium as part of their overall nutrient profile."
+                data-image="assets/characters/artie/artie-leaf-layers.png"
+                data-speech="“You really thought I was just leaves?”">
+                <span>⚡</span><b>Minerals</b>
+              </button>
+
+              <button class="artie-fact" type="button" role="tab" aria-selected="false"
+                data-title="The heart"
+                data-copy="The tender artichoke heart sits beneath layers of leaves. It makes a perfect lesson for Artie: sometimes the best part takes a little patience and exploration."
+                data-image="assets/characters/artie/artie-heart.png"
+                data-speech="“The good stuff isn’t always sitting right on top.”">
+                <span>💚</span><b>The heart</b>
+              </button>
+
+              <button class="artie-fact" type="button" role="tab" aria-selected="false"
+                data-title="Try it your way"
+                data-copy="Artichokes can be steamed, roasted, grilled, added to dips, mixed into meals, or used in Artie’s Cool Refresher from the Market Veggies books."
+                data-image="assets/characters/artie/artie-refresher.png"
+                data-speech="“New doesn’t mean weird. New means you haven’t found your favorite way yet.”">
+                <span>🍽️</span><b>Try it your way</b>
+              </button>
+            </div>
+
+            <div class="artie-explainer" aria-live="polite">
+              <span class="artie-explainer-label">TAP AN ARTIE LAYER</span>
+              <h4 id="artieFactTitle">Fiber</h4>
+              <p id="artieFactCopy">Artichokes are especially notable for dietary fiber. Fiber helps support normal digestion and is one reason vegetables are an important part of everyday meals.</p>
+
+              <div class="artie-peel-wrap">
+                <button class="peel-heart" id="peelHeart" type="button">🌿 Peel to the Heart!</button>
+                <div class="peel-progress" id="peelProgress" hidden>
+                  <div class="peel-steps" aria-label="Artichoke layers">
+                    <span class="peel-step active">Outer leaves</span>
+                    <span class="peel-step">Inner leaves</span>
+                    <span class="peel-step">The choke</span>
+                    <span class="peel-step">The heart</span>
+                  </div>
+                  <div class="peel-result-box" id="peelResultBox">
+                    <b id="peelResultTitle">OUTER LEAVES</b>
+                    <p id="peelResultCopy">Start on the outside. Pull away the firm outer leaves and keep exploring inward.</p>
+                    <span id="peelResultQuote">“One layer at a time.”</span>
+                  </div>
+                  <button class="peel-next" id="peelNext" type="button">Peel another layer →</button>
+                </div>
+              </div>
+            </div>
           </div>
         </article>
 
