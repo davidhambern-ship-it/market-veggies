@@ -233,5 +233,116 @@ startMissionRotation();
     });
   });
 
+
+  const artieButtons=[...document.querySelectorAll('.artie-fact')];
+  const artieArt=document.getElementById('artieMainArt');
+  const artieTitle=document.getElementById('artieFactTitle');
+  const artieCopy=document.getElementById('artieFactCopy');
+  const artieSpeech=document.getElementById('artieSpeech');
+  const peelHeart=document.getElementById('peelHeart');
+  const peelProgress=document.getElementById('peelProgress');
+  const peelSteps=[...document.querySelectorAll('.peel-step')];
+  const peelResultBox=document.getElementById('peelResultBox');
+  const peelResultTitle=document.getElementById('peelResultTitle');
+  const peelResultCopy=document.getElementById('peelResultCopy');
+  const peelResultQuote=document.getElementById('peelResultQuote');
+  const peelNext=document.getElementById('peelNext');
+  let peelIndex=0;
+
+  const peelStages=[
+    {
+      title:'OUTER LEAVES',
+      copy:'Start on the outside. Pull away the firm outer leaves and keep exploring inward.',
+      quote:'“One layer at a time.”',
+      image:'assets/characters/artie/artie-leaf-layers.png'
+    },
+    {
+      title:'INNER LEAVES',
+      copy:'The leaves become softer and more tender as you move toward the center.',
+      quote:'“Getting warmer… keep going.”',
+      image:'assets/characters/artie/artie-investigates.png'
+    },
+    {
+      title:'THE CHOKE',
+      copy:'Near the center is the fuzzy choke. A grown-up can help remove this part before eating the heart.',
+      quote:'“Almost there. Don’t stop now.”',
+      image:'assets/characters/artie/artie-investigates.png'
+    },
+    {
+      title:'YOU FOUND THE HEART! 💚',
+      copy:'Under all those layers is the tender artichoke heart — the part Artie says is worth the exploring.',
+      quote:'“See? Sometimes the best part takes a little exploring.”',
+      image:'assets/characters/artie/artie-heart.png'
+    }
+  ];
+
+  function swapArtieImage(src){
+    if(!artieArt||!src||artieArt.getAttribute('src')===src)return;
+    artieArt.classList.add('swap-out');
+    window.setTimeout(()=>{
+      artieArt.src=src;
+      artieArt.onload=()=>{
+        artieArt.classList.remove('swap-out');
+        artieArt.classList.add('swap-in');
+        window.setTimeout(()=>artieArt.classList.remove('swap-in'),420);
+      };
+    },140);
+  }
+
+  function setArtieFact(btn){
+    artieButtons.forEach(b=>{
+      const active=b===btn;
+      b.classList.toggle('active',active);
+      b.setAttribute('aria-selected',active?'true':'false');
+    });
+
+    if(artieTitle) artieTitle.textContent=btn.dataset.title||'';
+    if(artieCopy) artieCopy.textContent=btn.dataset.copy||'';
+    if(artieSpeech) artieSpeech.textContent=btn.dataset.speech||'';
+    if(peelProgress) peelProgress.hidden=true;
+    peelIndex=0;
+    peelSteps.forEach((step,i)=>step.classList.toggle('active',i===0));
+    if(peelNext){
+      peelNext.textContent='Peel another layer →';
+      peelNext.classList.remove('done');
+    }
+    swapArtieImage(btn.dataset.image);
+  }
+
+  function renderPeelStage(){
+    const stage=peelStages[peelIndex];
+    if(!stage)return;
+    peelSteps.forEach((step,i)=>step.classList.toggle('active',i===peelIndex));
+    if(peelResultTitle) peelResultTitle.textContent=stage.title;
+    if(peelResultCopy) peelResultCopy.textContent=stage.copy;
+    if(peelResultQuote) peelResultQuote.textContent=stage.quote;
+    if(peelResultBox){
+      peelResultBox.classList.remove('pop');
+      requestAnimationFrame(()=>peelResultBox.classList.add('pop'));
+    }
+    if(artieSpeech) artieSpeech.textContent=stage.quote;
+    swapArtieImage(stage.image);
+
+    if(peelNext){
+      const done=peelIndex===peelStages.length-1;
+      peelNext.textContent=done?'Start over ↺':'Peel another layer →';
+      peelNext.classList.toggle('done',done);
+    }
+  }
+
+  artieButtons.forEach(btn=>btn.addEventListener('click',()=>setArtieFact(btn)));
+
+  peelHeart?.addEventListener('click',()=>{
+    if(!peelProgress)return;
+    peelIndex=0;
+    peelProgress.hidden=false;
+    renderPeelStage();
+  });
+
+  peelNext?.addEventListener('click',()=>{
+    peelIndex=peelIndex===peelStages.length-1?0:peelIndex+1;
+    renderPeelStage();
+  });
+
   showSlide(0);
 })();
