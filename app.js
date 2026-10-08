@@ -169,5 +169,69 @@ startMissionRotation();
     }
   });
 
+
+  const carryButtons=[...document.querySelectorAll('.carry-fact')];
+  const carryArt=document.getElementById('carryMainArt');
+  const carryTitle=document.getElementById('carryFactTitle');
+  const carryCopy=document.getElementById('carryFactCopy');
+  const carrySpeech=document.getElementById('carrySpeech');
+  const pickCrunch=document.getElementById('pickCrunch');
+  const crunchOptions=document.getElementById('crunchOptions');
+  const crunchChoices=[...document.querySelectorAll('.crunch-choice')];
+  const crunchResultBox=document.getElementById('crunchResultBox');
+  const crunchResultTitle=document.getElementById('crunchResultTitle');
+  const crunchResultCopy=document.getElementById('crunchResultCopy');
+
+  function setCarryFact(btn){
+    carryButtons.forEach(b=>{
+      const active=b===btn;
+      b.classList.toggle('active',active);
+      b.setAttribute('aria-selected',active?'true':'false');
+    });
+
+    if(carryTitle) carryTitle.textContent=btn.dataset.title||'';
+    if(carryCopy) carryCopy.textContent=btn.dataset.copy||'';
+    if(carrySpeech) carrySpeech.textContent=btn.dataset.speech||'';
+
+    if(crunchOptions) crunchOptions.hidden=true;
+    if(crunchResultBox){
+      crunchResultBox.hidden=true;
+      crunchResultBox.classList.remove('pop');
+    }
+
+    const src=btn.dataset.image;
+    if(carryArt&&src&&carryArt.getAttribute('src')!==src){
+      carryArt.classList.add('swap-out');
+      window.setTimeout(()=>{
+        carryArt.src=src;
+        carryArt.onload=()=>{
+          carryArt.classList.remove('swap-out');
+          carryArt.classList.add('swap-in');
+          window.setTimeout(()=>carryArt.classList.remove('swap-in'),420);
+        };
+      },140);
+    }
+  }
+
+  carryButtons.forEach(btn=>btn.addEventListener('click',()=>setCarryFact(btn)));
+
+  pickCrunch?.addEventListener('click',()=>{
+    if(!crunchOptions)return;
+    crunchOptions.hidden=!crunchOptions.hidden;
+    if(crunchResultBox) crunchResultBox.hidden=true;
+  });
+
+  crunchChoices.forEach(choice=>{
+    choice.addEventListener('click',()=>{
+      if(crunchResultTitle) crunchResultTitle.textContent=choice.dataset.crunchTitle||'';
+      if(crunchResultCopy) crunchResultCopy.textContent=choice.dataset.crunchCopy||'';
+      if(crunchResultBox){
+        crunchResultBox.hidden=false;
+        crunchResultBox.classList.remove('pop');
+        requestAnimationFrame(()=>crunchResultBox.classList.add('pop'));
+      }
+    });
+  });
+
   showSlide(0);
 })();
