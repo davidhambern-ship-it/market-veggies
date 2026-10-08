@@ -1,0 +1,37 @@
+name: Import Artie character set
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-artie-character-set.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Artie artwork set
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/characters/artie
+          curl -fL --retry 3 'https://sdmntprwestus.oaiusercontent.com/files/00000000-3550-8230-99e6-abe4b097b498/raw?se=2026-10-08T10%3A43%3A34Z&sp=r&sv=2026-02-06&sr=b&scid=298ae024-4c08-5d56-93cd-b2a108e8b7cf&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T23%3A56%3A03Z&ske=2026-10-08T23%3A56%3A03Z&sks=b&skv=2026-02-06&sig=O1m4hbLUAMPx6NW6REyd5qEEQ1z7QaFRVEZabLY%2BXRg%3D' -o assets/characters/artie/artie-default.png
+          curl -fL --retry 3 'https://sdmntprbrazilsouth.oaiusercontent.com/files/00000000-e134-820e-8014-8d84b6381571/raw?se=2026-10-08T10%3A43%3A38Z&sp=r&sv=2026-02-06&sr=b&scid=4bfbf7b2-8b99-5ab1-86c5-e37d48452458&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-08T09%3A33%3A58Z&ske=2026-10-09T09%3A33%3A58Z&sks=b&skv=2026-02-06&sig=qQZN6Cn6Cck5EzuzmD1y/8ExH0ny7JBytFopUMguM0g%3D' -o assets/characters/artie/artie-investigates.png
+          curl -fL --retry 3 'https://sdmntprbrazilsouth.oaiusercontent.com/files/00000000-9544-820e-81a5-a8822510eb74/raw?se=2026-10-08T10%3A43%3A41Z&sp=r&sv=2026-02-06&sr=b&scid=14f301ef-0afe-5948-9c48-aea36f5d1f89&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T12%3A25%3A47Z&ske=2026-10-08T12%3A25%3A47Z&sks=b&skv=2026-02-06&sig=/eZjgRq8Z%2BZHgpa6FxUGyq2lGfE426ENU/uoFpikvDw%3D' -o assets/characters/artie/artie-leaf-layers.png
+          curl -fL --retry 3 'https://sdmntprnorthcentralus.oaiusercontent.com/files/00000000-6af8-822f-a63c-8dfbaa328184/raw?se=2026-10-08T10%3A43%3A42Z&sp=r&sv=2026-02-06&sr=b&scid=7c27671d-5319-5c88-b7dd-570e53dcc158&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T23%3A42%3A44Z&ske=2026-10-08T23%3A42%3A44Z&sks=b&skv=2026-02-06&sig=BIl5QcpdkMgBydp7Er0GrQHnK5ChG9Wuf5GnlYo6XCI%3D' -o assets/characters/artie/artie-heart.png
+          curl -fL --retry 3 'https://sdmntprcentralus.oaiusercontent.com/files/00000000-de94-81f5-9c02-a6545974bb85/raw?se=2026-10-08T10%3A43%3A43Z&sp=r&sv=2026-02-06&sr=b&scid=76c6436c-5f2b-5b08-aa50-4ec06966b073&skoid=d1cabc79-3240-4866-94fe-6005330cb49e&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-07T12%3A41%3A29Z&ske=2026-10-08T12%3A41%3A29Z&sks=b&skv=2026-02-06&sig=D2Oi6wdPaBwjbXVYg6wwy8NKmtk7J%2BohRs384RwnYLw%3D' -o assets/characters/artie/artie-refresher.png
+          file assets/characters/artie/*.png
+      - name: Commit Artie artwork
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/characters/artie/
+          git diff --cached --quiet && exit 0
+          git commit -m "Add Artie character explainer artwork [skip ci]"
+          git push
