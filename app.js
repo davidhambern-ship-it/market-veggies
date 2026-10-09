@@ -476,3 +476,133 @@ startMissionRotation();
     });
   });
 })();
+
+/* Nanner: six nutrition scenes and in-place ripeness mini-lesson. */
+(function initNannerExplainer(){
+  const buttons=[...document.querySelectorAll('.nanner-fact')];
+  const art=document.getElementById('nannerMainArt');
+  if(!buttons.length||!art)return;
+
+  const title=document.getElementById('nannerFactTitle');
+  const copy=document.getElementById('nannerFactCopy');
+  const speech=document.getElementById('nannerSpeech');
+  const factView=document.getElementById('nannerFactView');
+  const game=document.getElementById('nannerRemixGame');
+  const open=document.getElementById('nannerStartRemix');
+  const close=document.getElementById('nannerCloseRemix');
+  const stageButtons=[...document.querySelectorAll('.nanner-stage')];
+  const stageTitle=document.getElementById('nannerStageTitle');
+  const stageCopy=document.getElementById('nannerStageCopy');
+  const fallback='assets/nanner-card.png';
+  const stages={
+    green:{
+      title:'GREEN — FIRM & STARCHY',
+      copy:'A green banana is generally firmer and contains more starch. Some families like cooking greener bananas instead of eating them raw.',
+      speech:'“Green and growing! My sweetness is still on its way.”'
+    },
+    yellow:{
+      title:'YELLOW — SOFT & SWEET',
+      copy:'As bananas ripen, some starch turns into sugars. A yellow banana is generally softer, sweeter and easy to enjoy as a snack.',
+      speech:'“Bright yellow and ready for your next adventure!”'
+    },
+    spotted:{
+      title:'SPOTTED — RIPE & READY TO MASH',
+      copy:'Brown spots can mean a banana is very ripe, softer and sweeter. If it still smells and looks safe to eat, it can be great for baking or smoothies.',
+      speech:'“Don’t judge me by my spots — I’m great in banana bread!”'
+    }
+  };
+  let imageRequest=0;
+  const missing=new Set();
+
+  function setArtwork(src,alt){
+    if(!src)return;
+    const request=++imageRequest;
+    if(art.getAttribute('src')===src){
+      art.alt=alt||'Nanner the Banana';
+      return;
+    }
+    // The approved six-image set is staged separately. The original mascot art
+    // remains visible until each illustration is successfully loaded from GitHub.
+    if(missing.has(src)){
+      art.src=fallback;
+      art.alt='Nanner the Banana';
+      return;
+    }
+    const image=new Image();
+    image.onload=()=>{
+      if(request!==imageRequest)return;
+      art.src=src;
+      art.alt=alt||'Nanner the Banana';
+      art.classList.remove('nanner-swapping');
+      void art.offsetWidth;
+      art.classList.add('nanner-swapping');
+    };
+    image.onerror=()=>{
+      missing.add(src);
+      if(request!==imageRequest)return;
+      art.src=fallback;
+      art.alt='Nanner the Banana';
+    };
+    image.src=src;
+  }
+
+  function resetGame(){
+    if(game)game.hidden=true;
+    if(factView)factView.hidden=false;
+    stageButtons.forEach(btn=>btn.setAttribute('aria-pressed','false'));
+  }
+
+  function setFact(button,moveFocus){
+    if(!button)return;
+    buttons.forEach(btn=>{
+      const active=btn===button;
+      btn.classList.toggle('active',active);
+      btn.setAttribute('aria-selected',String(active));
+      btn.tabIndex=active?0:-1;
+    });
+    if(title)title.textContent=button.dataset.title||'';
+    if(copy)copy.textContent=button.dataset.copy||'';
+    if(speech)speech.textContent=button.dataset.speech||'';
+    resetGame();
+    setArtwork(button.dataset.image,button.dataset.imageAlt);
+    if(moveFocus)button.focus();
+  }
+
+  buttons.forEach((button,i)=>{
+    button.addEventListener('click',()=>setFact(button,false));
+    button.addEventListener('keydown',event=>{
+      if(!['ArrowRight','ArrowLeft','Home','End'].includes(event.key))return;
+      event.preventDefault();
+      const next=event.key==='Home'?0:event.key==='End'?buttons.length-1:
+        (i+(event.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;
+      setFact(buttons[next],true);
+    });
+  });
+
+  open?.addEventListener('click',()=>{
+    // Open the activity inside the existing explainer instead of extending
+    // the whole carousel's 690px desktop footprint.
+    setFact(buttons[4],false);
+    if(factView)factView.hidden=true;
+    if(game)game.hidden=false;
+    if(stageTitle)stageTitle.textContent='Which banana would you pick?';
+    if(stageCopy)stageCopy.textContent='Choose green, yellow or spotted to discover how bananas change as they ripen.';
+    stageButtons[0]?.focus();
+  });
+
+  stageButtons.forEach(button=>button.addEventListener('click',()=>{
+    const stage=stages[button.dataset.stage];
+    if(!stage)return;
+    stageButtons.forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+    if(stageTitle)stageTitle.textContent=stage.title;
+    if(stageCopy)stageCopy.textContent=stage.copy;
+    if(speech)speech.textContent=stage.speech;
+    setArtwork(buttons[4].dataset.image,buttons[4].dataset.imageAlt);
+  }));
+
+  close?.addEventListener('click',()=>{
+    const active=buttons.find(btn=>btn.classList.contains('active'))||buttons[0];
+    setFact(active,false);
+    open?.focus();
+  });
+})();
