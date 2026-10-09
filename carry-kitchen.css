@@ -346,3 +346,93 @@
   .recipes-page .ck-art-board .ck-slice-flash,
   .recipes-page .ck-finish-feedback{animation:none!important}
 }
+
+/* Carry object-based stable vegetable canvas (not baked-in prep photographs).
+   The board stays put; each independent food piece responds to knife/grater cuts. */
+.recipes-page .ck-prep-panel .ck-live-board{
+  background:#f5d8aa;
+  overflow:hidden;
+  border-radius:16px;
+  box-shadow:inset 0 1px 0 rgba(255,248,221,.55);
+  transform:translateZ(0);
+}
+.recipes-page .ck-live-board .ck-live-svg{
+  width:100%;
+  height:auto;
+  display:block;
+  aspect-ratio:960/475;
+  overflow:hidden;
+  touch-action:manipulation;
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none;
+  filter:none;
+}
+.recipes-page .ck-live-board .ck-whole-ingredient{
+  animation:ckIngredientMove .28s cubic-bezier(.2,.8,.3,1) both;
+  transform-box:fill-box;
+}
+.recipes-page .ck-live-board .ck-new-piece,
+.recipes-page .ck-live-board .ck-cut-piece{
+  animation:ckIngredientFall .33s cubic-bezier(.17,.78,.28,1) both;
+  animation-delay:var(--ck-delay,0ms);
+  transform-box:fill-box;
+}
+.recipes-page .ck-live-board .ck-live-tool{
+  transform-origin:690px 174px;
+  transform-box:view-box;
+  filter:drop-shadow(3px 6px 3px rgba(107,66,32,.16));
+}
+.recipes-page .ck-live-board.ck-just-cut .ck-live-knife{
+  animation:ckKnifeCut .33s cubic-bezier(.2,.8,.22,1) both;
+}
+.recipes-page .ck-live-board.ck-just-cut .ck-live-grater{
+  animation:ckGraterScrape .33s cubic-bezier(.2,.8,.22,1) both;
+}
+.recipes-page .ck-live-board .ck-cut-sparks{
+  opacity:0;
+  transform-box:fill-box;
+  transform-origin:52% 35%;
+  pointer-events:none;
+}
+.recipes-page .ck-live-board.ck-just-cut .ck-cut-sparks{
+  animation:ckCutFlash .31s ease-out both;
+}
+.recipes-page .ck-live-board:focus-within{
+  outline:3px solid #e9af39;
+  outline-offset:1px;
+}
+@keyframes ckIngredientMove{
+  0%{opacity:.86;filter:brightness(1.12)}
+  100%{opacity:1;filter:none}
+}
+@keyframes ckIngredientFall{
+  0%{opacity:.25;translate:0 -18px;scale:.72}
+  65%{opacity:1;translate:0 3px;scale:1.06}
+  100%{opacity:1;translate:0 0;scale:1}
+}
+@keyframes ckKnifeCut{
+  0%{transform:translate(9px,-22px) rotate(-7deg)}
+  48%{transform:translate(-26px,14px) rotate(8deg)}
+  100%{transform:translate(0,0) rotate(0deg)}
+}
+@keyframes ckGraterScrape{
+  0%{transform:translate(14px,-13px) rotate(7deg)}
+  50%{transform:translate(-23px,11px) rotate(-6deg)}
+  100%{transform:translate(0,0) rotate(0deg)}
+}
+@keyframes ckCutFlash{
+  0%{opacity:0;scale:.8}
+  30%{opacity:.96;scale:1.08}
+  100%{opacity:0;scale:1.32}
+}
+@media(prefers-reduced-motion:reduce){
+  .recipes-page .ck-live-board .ck-whole-ingredient,
+  .recipes-page .ck-live-board .ck-new-piece,
+  .recipes-page .ck-live-board .ck-cut-piece,
+  .recipes-page .ck-live-board.ck-just-cut .ck-live-tool,
+  .recipes-page .ck-live-board.ck-just-cut .ck-cut-sparks{
+    animation:none!important;
+    transition:none!important;
+  }
+}
