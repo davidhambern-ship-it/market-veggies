@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Recipes + Activities | Market Veggies</title><meta name="description" content="Kid-friendly recipes paired with playful movement activities from Market Veggies."><meta name="theme-color" content="#2f7d32"><link rel="icon" type="image/webp" href="assets/favicon.webp"><link rel="stylesheet" href="styles.css?v=20261009-kitchenquest"><link rel="stylesheet" href="kitchen-quest.css?v=20261009-rollback"></head><body class="market-theme recipes-page"><div class="topbar">FRESH PRODUCE • BIG ADVENTURES • HEALTHY HABITS THAT FEEL LIKE FUN</div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Recipes + Activities | Market Veggies</title><meta name="description" content="Kid-friendly recipes paired with playful movement activities from Market Veggies."><meta name="theme-color" content="#2f7d32"><link rel="icon" type="image/webp" href="assets/favicon.webp"><link rel="stylesheet" href="styles.css?v=20261009-kitchenquest"><link rel="stylesheet" href="kitchen-quest.css?v=20261009-rollback"><link rel="stylesheet" href="carry-kitchen.css?v=20261009-carry-level2"></head><body class="market-theme recipes-page"><div class="topbar">FRESH PRODUCE • BIG ADVENTURES • HEALTHY HABITS THAT FEEL LIKE FUN</div>
 <header class="site-header"><nav class="nav container">
 <a class="brand" href="index.html"><img src="assets/market-veggies-logo.png" alt="Market Veggies"></a>
 <div class="navlinks">
@@ -30,17 +30,17 @@
     <div class="kq-section-heading">
       <span class="eyebrow">PICK A COOKING STATION</span>
       <h2 id="kqKitchenHeading">Welcome to the <span>Market Kitchen!</span></h2>
-      <p>Gary's station is open now. Complete his recipe, collect your rewards, and visit the other chefs as their kitchens open.</p>
+      <p>Gary and Carry's cooking stations are now open! Choose a chef, play their recipe, earn stamps, and grow your garden.</p>
     </div>
-    <div class="kq-stations" aria-label="Market Veggies kitchen stations">
-      <div class="kq-station active"><span class="kq-station-emoji" aria-hidden="true">🧄</span><b>Gary</b><small>Guacamole · Play now</small></div>
-      <div class="kq-station"><span class="kq-station-emoji" aria-hidden="true">🥕</span><b>Carry</b><small>Special Soup · Coming soon</small></div>
+    <div class="kq-stations" id="kqStations" aria-label="Market Veggies kitchen stations">
+      <button class="kq-station active" data-station="gary" type="button" aria-pressed="true"><span class="kq-station-emoji" aria-hidden="true">🧄</span><b>Gary</b><small>Guacamole · Play now</small></button>
+      <button class="kq-station" data-station="carry" type="button" aria-pressed="false"><span class="kq-station-emoji" aria-hidden="true">🥕</span><b>Carry</b><small>Special Soup · Play now</small></button>
       <div class="kq-station"><span class="kq-station-emoji" aria-hidden="true">🌿</span><b>Artie</b><small>Cool Refresher · Coming soon</small></div>
       <div class="kq-station"><span class="kq-station-emoji" aria-hidden="true">🍅</span><b>Tommy</b><small>Pizza Pitas · Coming soon</small></div>
       <div class="kq-station"><span class="kq-station-emoji" aria-hidden="true">🍌</span><b>Nanner</b><small>Oat Bites · Coming soon</small></div>
       <div class="kq-station"><span class="kq-station-emoji" aria-hidden="true">🫚</span><b>Gingy</b><small>Kitchen surprise · Coming soon</small></div>
     </div>
-    <div class="kq-layout">
+    <div class="kq-layout" id="kqGaryLevel">
       <div class="kq-game" aria-label="Play Gary's Guacamole cooking game">
         <div id="kqConfetti" aria-hidden="true"></div>
         <div class="kq-game-header">
@@ -65,6 +65,29 @@
         </div>
       </aside>
     </div>
+    <div class="kq-layout ck-layout" id="ckApp" hidden aria-label="Carry's Special Soup cooking game">
+      <div class="kq-game" aria-label="Play Carry's Special Soup">
+        <div id="ckConfetti" aria-hidden="true"></div>
+        <div class="kq-game-header">
+          <div class="kq-chef-avatar"><img src="assets/characters/carry/carry-wave.png" alt="Carry the Carrot" loading="lazy"></div>
+          <div><h2>Carry's Special Soup</h2><p>Kitchen Quest · Level Two · No timer, just fun</p></div>
+          <span class="kq-game-topicon" aria-hidden="true">🥕</span>
+        </div>
+        <div class="kq-progress-bar" id="ckTracker" aria-label="Carry's recipe progress"></div>
+        <div class="kq-stage" id="ckStage"></div>
+        <div id="ckStatus" role="status" aria-live="polite" aria-atomic="true">Carry says: Every big adventure starts with a little courage!</div>
+      </div>
+      <aside class="kq-sidebar" aria-label="Carry's recipe rewards and food science">
+        <div class="kq-passport"><h3>🏆 Chef Passport &amp; Garden</h3><div id="ckReward"></div></div>
+        <div class="kq-science">
+          <h3>🧠 Carry's Food Science</h3>
+          <p><strong>Carrots:</strong> contain beta-carotene, which the body can convert to vitamin A to support normal vision.</p>
+          <p><strong>Cooking:</strong> softens carrots and can make some beta-carotene more accessible during digestion.</p>
+          <p><strong>Moving:</strong> the body uses energy during play; exercise doesn't activate food nutrients.</p>
+          <p><strong>Kitchen safety:</strong> a grown-up handles real hot pots and sharp tools.</p>
+        </div>
+      </aside>
+    </div>
   </div>
 </section>
 <section class="section kq-activity-section" aria-labelledby="kqActivityHeading">
@@ -74,13 +97,14 @@
       <h2 id="kqActivityHeading">Welcome to the <span>Activities Lab!</span></h2>
       <p>Turn your new cooking knowledge into a fun garden mini-game and learn what food and movement do for your body.</p>
     </div>
-    <div id="kqActivity" class="kq-activity"></div>
+    <div id="kqGaryActivityWrap"><div id="kqActivity" class="kq-activity"></div></div>
+    <div id="ckActivity" class="kq-activity ck-activity" hidden></div>
   </div>
 </section>
 </div>
-<section class="section kq-library-section"><div class="container"><div class="kq-section-heading"><span class="eyebrow">THE FAMILY RECIPE SHELF</span><h2>More recipes. <span>More adventures.</span></h2><p>These family recipes are ready to explore. Their virtual kitchen levels are coming next.</p></div><div class="recipe-grid">
+<section class="section kq-library-section"><div class="container"><div class="kq-section-heading"><span class="eyebrow">THE FAMILY RECIPE SHELF</span><h2>More recipes. <span>More adventures.</span></h2><p>These family recipes are ready to explore. Try Gary and Carry’s virtual kitchens above; more levels will open soon.</p></div><div class="recipe-grid">
 <article class="recipe-detail"><div class="recipe-head"><div class="recipe-emoji">🥕</div><div><span class="eyebrow">CARRY'S RECIPE</span><h2>Crunchy Carrot Wraps</h2></div></div><h3>YOU'LL NEED</h3><ul><li>Whole-grain tortillas</li><li>Shredded carrots</li><li>Cucumber strips</li><li>Hummus or another favorite spread</li><li>Optional leafy greens</li></ul><h3>MAKE IT</h3><ol><li>Spread hummus over the tortilla.</li><li>Let kids arrange the vegetables.</li><li>Roll, slice and crunch.</li></ol><div class="move-box"><strong>🏃 Orange Power Relay</strong>Set up a short relay using marching, hopping, side-steps and a silly finish-line dance.</div></article>
 <article class="recipe-detail"><div class="recipe-head"><div class="recipe-emoji">🍅</div><div><span class="eyebrow">TOMMY'S RECIPE</span><h2>Tomato Pizza Pitas</h2></div></div><h3>YOU'LL NEED</h3><ul><li>Whole-grain pita rounds</li><li>Tomato sauce</li><li>Shredded cheese</li><li>Colorful chopped vegetables</li></ul><h3>MAKE IT</h3><ol><li>Spread sauce over each pita.</li><li>Let kids design a veggie face.</li><li>Add cheese and bake with adult supervision until warm and melty.</li></ol><div class="move-box"><strong>⚡ Market Move Circuit</strong>Do 20 seconds each of jumping, reaching, balancing, marching and dancing. Repeat if everybody wants another round.</div></article>
 <article class="recipe-detail"><div class="recipe-head"><div class="recipe-emoji">🍌</div><div><span class="eyebrow">NANNER'S RECIPE</span><h2>Banana Oat Bites</h2></div></div><h3>YOU'LL NEED</h3><ul><li>Ripe banana</li><li>Rolled oats</li><li>Cinnamon</li><li>Optional nut or seed butter if appropriate for your household</li></ul><h3>MAKE IT</h3><ol><li>Mash the banana.</li><li>Mix in oats and cinnamon.</li><li>Shape into small bites and bake with adult supervision until set.</li></ol><div class="move-box"><strong>🧘 Banana Balance Challenge</strong>Invent five safe balance poses. Hold each one, switch sides and let kids name their own poses.</div></article>
 <article class="recipe-detail"><div class="recipe-head"><div class="recipe-emoji">🧄</div><div><span class="eyebrow">GARY'S RECIPE</span><h2>Garlic Garden Toast</h2></div></div><h3>YOU'LL NEED</h3><ul><li>Whole-grain bread</li><li>Olive oil</li><li>A small amount of minced garlic</li><li>Chopped tomato and herbs</li></ul><h3>MAKE IT</h3><ol><li>Mix a small amount of garlic with olive oil.</li><li>Brush lightly onto bread and toast with adult supervision.</li><li>Top with tomato and herbs.</li></ol><div class="move-box"><strong>🌱 Garden Scavenger Walk</strong>Walk indoors or outdoors and find five colors, five shapes and five things that remind you of a garden or market.</div></article>
-</div><div class="callout" style="margin-top:28px"><strong>For grown-ups:</strong> adjust ingredients for allergies, swallowing needs, age and your family's nutrition guidance. Activities should match each child's abilities and environment.</div></div></section></main><footer class="footer"><div class="container"><div class="footer-grid"><div><a class="brand" href="index.html"><img src="assets/market-veggies-logo.png" alt="Market Veggies"></a><p>Fresh produce. Big adventures. Stories, recipes and activities built to make healthy habits fun.</p></div><div><h4>Explore</h4><div class="footer-links"><a href="characters.html">Characters</a><a href="recipes.html">Recipes + Activities</a><a href="about.html">About the Series</a><a href="shop.html">Bookstore</a></div></div><div><h4>For Grown-Ups</h4><div class="footer-links"><a href="parents.html">Parents & Educators</a><a href="parents.html#nutrition">Nutrition approach</a><a href="parents.html#schools">Schools & groups</a></div></div></div><div class="footer-bottom"><span>© Market Veggies: Adventures of Produce</span><span>Nutrition content is educational and is not medical advice.</span></div></div></footer><script src="app.js?v=20261009-kitchenquest"></script><script src="kitchen-quest.js?v=20261009-rollback"></script></body></html>
+</div><div class="callout" style="margin-top:28px"><strong>For grown-ups:</strong> adjust ingredients for allergies, swallowing needs, age and your family's nutrition guidance. Activities should match each child's abilities and environment.</div></div></section></main><footer class="footer"><div class="container"><div class="footer-grid"><div><a class="brand" href="index.html"><img src="assets/market-veggies-logo.png" alt="Market Veggies"></a><p>Fresh produce. Big adventures. Stories, recipes and activities built to make healthy habits fun.</p></div><div><h4>Explore</h4><div class="footer-links"><a href="characters.html">Characters</a><a href="recipes.html">Recipes + Activities</a><a href="about.html">About the Series</a><a href="shop.html">Bookstore</a></div></div><div><h4>For Grown-Ups</h4><div class="footer-links"><a href="parents.html">Parents & Educators</a><a href="parents.html#nutrition">Nutrition approach</a><a href="parents.html#schools">Schools & groups</a></div></div></div><div class="footer-bottom"><span>© Market Veggies: Adventures of Produce</span><span>Nutrition content is educational and is not medical advice.</span></div></div></footer><script src="app.js?v=20261009-kitchenquest"></script><script src="kitchen-quest.js?v=20261009-rollback"></script><script src="carry-kitchen.js?v=20261009-carry-level2"></script></body></html>
