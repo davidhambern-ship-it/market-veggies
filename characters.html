@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Meet the Characters | Market Veggies</title><meta name="description" content="Meet Gary, Carry, Artie, Tommy, Nanner and Gingy and learn what makes their foods special."><meta name="theme-color" content="#2f7d32"><link rel="icon" type="image/webp" href="assets/favicon.webp"><link rel="stylesheet" href="styles.css?v=20261008-tommy-frame-fixed"></head><body class="market-theme characters-page"><div class="topbar">FRESH PRODUCE • BIG ADVENTURES • HEALTHY HABITS THAT FEEL LIKE FUN</div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Meet the Characters | Market Veggies</title><meta name="description" content="Meet Gary, Carry, Artie, Tommy, Nanner and Gingy and learn what makes their foods special."><meta name="theme-color" content="#2f7d32"><link rel="icon" type="image/webp" href="assets/favicon.webp"><link rel="stylesheet" href="styles.css?v=20261009-nanner-explainer"></head><body class="market-theme characters-page"><div class="topbar">FRESH PRODUCE • BIG ADVENTURES • HEALTHY HABITS THAT FEEL LIKE FUN</div>
 <header class="site-header"><nav class="nav container">
 <a class="brand" href="index.html"><img src="assets/market-veggies-logo.png" alt="Market Veggies"></a>
 <div class="navlinks">
@@ -370,14 +370,84 @@
         <article class="character-story-slide nanner-story" data-character="nanner">
           <div class="character-art-zone">
             <div class="character-name-ribbon"><span>🍌</span> NANNER THE BANANA</div>
-            <div class="standard-character-art"><img src="assets/nanner-card.png" alt="Nanner the Banana"></div>
+            <div class="nanner-art-frame" id="nannerArtFrame">
+              <img id="nannerMainArt" src="assets/nanner-card.png" alt="Nanner the Banana smiling and ready for adventure" decoding="async">
+            </div>
+            <div class="nanner-speech" id="nannerSpeech" aria-live="polite">“You bring the adventure. I’ll bring some fuel!”</div>
           </div>
           <div class="character-story-copy">
-            <span class="story-kicker">NANNER'S STORY</span>
-            <h3>Peel. Smile. <span>Move.</span></h3>
-            <p class="story-summary">Nanner keeps the mood up and the crew moving. He is the grab-and-go friend who believes an adventure is always better when everybody has some energy.</p>
-            <div class="simple-fact-cloud"><span>⚡ Carbohydrates</span><span>💛 Potassium</span><span>🌟 Vitamin B6</span></div>
-            <p>Bananas provide carbohydrates, potassium and vitamin B6. They are soft, portable and easy to add to breakfast, snacks and smoothies.</p>
+            <span class="story-kicker">NANNER'S GOOD VIBES</span>
+            <h3>Peel. Smile. <span>Move!</span></h3>
+            <p class="story-summary">Nanner is the cheerful, grab-and-go friend who brings energy, encouragement and a big smile to every Market Veggies adventure.</p>
+            <div class="nanner-fact-grid" role="tablist" aria-label="Explore banana nutrition facts">
+              <button class="nanner-fact active" type="button" role="tab" aria-selected="true" tabindex="0"
+                data-title="Fuel for Fun"
+                data-copy="Bananas provide carbohydrates, which your body breaks down and uses for energy during play, learning and everyday activities."
+                data-speech="“You bring the adventure. I’ll bring some fuel!”"
+                data-image="assets/characters/nanner/nanner-fuel-for-fun.png"
+                data-image-alt="Nanner running with energy on a sunny path">
+                <span aria-hidden="true">⚡</span><b>Fuel for Fun</b>
+              </button>
+              <button class="nanner-fact" type="button" role="tab" aria-selected="false" tabindex="-1"
+                data-title="Potassium Power"
+                data-copy="Bananas provide potassium, an important mineral that helps your muscles and nerves work normally and supports healthy fluid balance."
+                data-speech="“Every move takes teamwork — even inside your body!”"
+                data-image="assets/characters/nanner/nanner-potassium-power.png"
+                data-image-alt="Nanner dancing and stretching outdoors">
+                <span aria-hidden="true">💛</span><b>Potassium Power</b>
+              </button>
+              <button class="nanner-fact" type="button" role="tab" aria-selected="false" tabindex="-1"
+                data-title="B6 Boost"
+                data-copy="Vitamin B6 helps your body use nutrients from food. It also supports the nervous system, which helps send messages around your body."
+                data-speech="“There’s a whole team working behind the scenes!”"
+                data-image="assets/characters/nanner/nanner-vitamin-b6.png"
+                data-image-alt="Nanner in a colorful vitamin B6 teamwork control center">
+                <span aria-hidden="true">🌟</span><b>B6 Boost</b>
+              </button>
+              <button class="nanner-fact" type="button" role="tab" aria-selected="false" tabindex="-1"
+                data-title="Fiber Friend"
+                data-copy="Bananas contain dietary fiber. Fiber helps keep digestion moving and can be one part of a varied, balanced diet."
+                data-speech="“A little fiber is one way to be kind to your tummy!”"
+                data-image="assets/characters/nanner/nanner-fiber-friend.png"
+                data-image-alt="Nanner on a happy digestion path with a smiling tummy">
+                <span aria-hidden="true">🌿</span><b>Fiber Friend</b>
+              </button>
+              <button class="nanner-fact" type="button" role="tab" aria-selected="false" tabindex="-1"
+                data-title="Ripeness Remix"
+                data-copy="Bananas change as they ripen! Greener bananas are firmer and starchier; yellow bananas get softer and sweeter, and spotted bananas are often great for baking."
+                data-speech="“Green, yellow, spotted — I’ve got stages!”"
+                data-image="assets/characters/nanner/nanner-ripeness-remix.png"
+                data-image-alt="Nanner explaining green, yellow, and spotted banana ripeness">
+                <span aria-hidden="true">🍌</span><b>Ripeness Remix</b>
+              </button>
+              <button class="nanner-fact" type="button" role="tab" aria-selected="false" tabindex="-1"
+                data-title="Snack Superstar"
+                data-copy="Try banana slices in oatmeal or yogurt, blended in a smoothie, or mashed into pancakes and muffins. There are lots of tasty ways to use bananas!"
+                data-speech="“Breakfast? Snacks? Smoothies? I’m ready!”"
+                data-image="assets/characters/nanner/nanner-snack-superstar.png"
+                data-image-alt="Nanner showing banana smoothies and breakfast snacks">
+                <span aria-hidden="true">🥣</span><b>Snack Superstar</b>
+              </button>
+            </div>
+            <div class="nanner-explainer">
+              <div id="nannerFactView" aria-live="polite">
+                <span class="nanner-explainer-label">TAP A BANANA POWER</span>
+                <h4 id="nannerFactTitle">Fuel for Fun</h4>
+                <p id="nannerFactCopy">Bananas provide carbohydrates, which your body breaks down and uses for energy during play, learning and everyday activities.</p>
+                <button class="nanner-remix-button" id="nannerStartRemix" type="button">🍌 Try Nanner's Ripeness Remix!</button>
+              </div>
+              <div id="nannerRemixGame" hidden aria-live="polite">
+                <span class="nanner-explainer-label">NANNER'S RIPENESS REMIX</span>
+                <h4 id="nannerStageTitle">Which banana would you pick?</h4>
+                <div class="nanner-stage-buttons" role="group" aria-label="Choose a banana ripeness stage">
+                  <button class="nanner-stage" type="button" data-stage="green" aria-pressed="false"><span class="nanner-stage-icon nanner-stage-green" aria-hidden="true">🍌</span>Green</button>
+                  <button class="nanner-stage" type="button" data-stage="yellow" aria-pressed="false"><span class="nanner-stage-icon nanner-stage-yellow" aria-hidden="true">🍌</span>Yellow</button>
+                  <button class="nanner-stage" type="button" data-stage="spotted" aria-pressed="false"><span class="nanner-stage-icon nanner-stage-spotted" aria-hidden="true">🍌</span>Spotted</button>
+                </div>
+                <p id="nannerStageCopy">Choose green, yellow or spotted to discover how bananas change as they ripen.</p>
+                <button class="nanner-back-button" id="nannerCloseRemix" type="button">← Back to Nanner's facts</button>
+              </div>
+            </div>
           </div>
         </article>
 
@@ -412,4 +482,4 @@
 
     <p class="source-note">Food and nutrition information here is general education for families and is not a substitute for individualized medical or nutrition advice.</p>
   </div>
-</section></main><footer class="footer"><div class="container"><div class="footer-grid"><div><a class="brand" href="index.html"><img src="assets/market-veggies-logo.png" alt="Market Veggies"></a><p>Fresh produce. Big adventures. Stories, recipes and activities built to make healthy habits fun.</p></div><div><h4>Explore</h4><div class="footer-links"><a href="characters.html">Characters</a><a href="recipes.html">Recipes + Activities</a><a href="about.html">About the Series</a><a href="shop.html">Bookstore</a></div></div><div><h4>For Grown-Ups</h4><div class="footer-links"><a href="parents.html">Parents & Educators</a><a href="parents.html#nutrition">Nutrition approach</a><a href="parents.html#schools">Schools & groups</a></div></div></div><div class="footer-bottom"><span>© Market Veggies: Adventures of Produce</span><span>Nutrition content is educational and is not medical advice.</span></div></div></footer><script src="app.js?v=20261008-tommy-interactive"></script></body></html>
+</section></main><footer class="footer"><div class="container"><div class="footer-grid"><div><a class="brand" href="index.html"><img src="assets/market-veggies-logo.png" alt="Market Veggies"></a><p>Fresh produce. Big adventures. Stories, recipes and activities built to make healthy habits fun.</p></div><div><h4>Explore</h4><div class="footer-links"><a href="characters.html">Characters</a><a href="recipes.html">Recipes + Activities</a><a href="about.html">About the Series</a><a href="shop.html">Bookstore</a></div></div><div><h4>For Grown-Ups</h4><div class="footer-links"><a href="parents.html">Parents & Educators</a><a href="parents.html#nutrition">Nutrition approach</a><a href="parents.html#schools">Schools & groups</a></div></div></div><div class="footer-bottom"><span>© Market Veggies: Adventures of Produce</span><span>Nutrition content is educational and is not medical advice.</span></div></div></footer><script src="app.js?v=20261009-nanner-explainer"></script></body></html>
