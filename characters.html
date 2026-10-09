@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Meet the Characters | Market Veggies</title><meta name="description" content="Meet Gary, Carry, Artie, Tommy, Nanner and Gingy and learn what makes their foods special."><meta name="theme-color" content="#2f7d32"><link rel="icon" type="image/webp" href="assets/favicon.webp"><link rel="stylesheet" href="styles.css?v=20261009-nanner-explainer"></head><body class="market-theme characters-page"><div class="topbar">FRESH PRODUCE • BIG ADVENTURES • HEALTHY HABITS THAT FEEL LIKE FUN</div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Meet the Characters | Market Veggies</title><meta name="description" content="Meet Gary, Carry, Artie, Tommy, Nanner and Gingy and learn what makes their foods special."><meta name="theme-color" content="#2f7d32"><link rel="icon" type="image/webp" href="assets/favicon.webp"><link rel="stylesheet" href="styles.css?v=20261009-gingy-explainer"></head><body class="market-theme characters-page"><div class="topbar">FRESH PRODUCE • BIG ADVENTURES • HEALTHY HABITS THAT FEEL LIKE FUN</div>
 <header class="site-header"><nav class="nav container">
 <a class="brand" href="index.html"><img src="assets/market-veggies-logo.png" alt="Market Veggies"></a>
 <div class="navlinks">
@@ -454,14 +454,84 @@
         <article class="character-story-slide gingy-story" data-character="gingy">
           <div class="character-art-zone">
             <div class="character-name-ribbon"><span>🫚</span> GINGY THE GINGER</div>
-            <div class="gingy-placeholder" aria-hidden="true">🫚</div>
+            <div class="gingy-art-frame" id="gingyArtFrame">
+              <img id="gingyMainArt" src="assets/Gingy_Card_02.png" alt="Gingy adding flavor to a bright, colorful stir-fry" width="1122" height="1402" decoding="async">
+            </div>
+            <div class="gingy-speech" id="gingySpeech" aria-live="polite">“A little zing can wake up your whole plate!”</div>
           </div>
           <div class="character-story-copy">
-            <span class="story-kicker">GINGY'S STORY</span>
+            <span class="story-kicker">GINGY'S ZESTY ADVENTURES</span>
             <h3>A little zing <span>changes everything.</span></h3>
-            <p class="story-summary">Gingy is warm, bold and impossible to ignore. His story is about discovering how a small amount of something different can completely change the experience.</p>
-            <div class="simple-fact-cloud"><span>🌱 Aromatic root</span><span>🌎 Used worldwide</span><span>🔥 Warm, spicy flavor</span></div>
-            <p>Ginger is a fragrant root used in cuisines around the world. Fresh, dried or ground, it helps kids experience how herbs and spices can make foods more interesting.</p>
+            <p class="story-summary">Gingy is the small-but-mighty flavor explorer. Find out how this knobby little plant brings big personality to foods from around the world!</p>
+            <div class="gingy-fact-grid" role="tablist" aria-label="Explore fun facts about ginger">
+              <button class="gingy-fact active" type="button" role="tab" aria-selected="true" tabindex="0" aria-controls="gingyFactView"
+                data-title="Flavor Kick"
+                data-copy="Ginger has a zesty, slightly peppery flavor. Just a little can add a bold new taste to a savory dish."
+                data-speech="“A little zing can wake up your whole plate!”"
+                data-image="assets/Gingy_Card_02.png"
+                data-image-alt="Gingy sprinkling flavor into a colorful stir-fry">
+                <span aria-hidden="true">🔥</span><b>Flavor Kick</b>
+              </button>
+              <button class="gingy-fact" type="button" role="tab" aria-selected="false" tabindex="-1" aria-controls="gingyFactView"
+                data-title="Root of It All"
+                data-copy="Ginger grows underground as a rhizome — a thick plant stem that sends out roots and new shoots. The rhizome is the part we use in cooking!"
+                data-speech="“I grow underground, but I'm not actually a root!”"
+                data-image="assets/Gingy_Card_03.png"
+                data-image-alt="Gingy exploring a ginger rhizome growing beneath the soil">
+                <span aria-hidden="true">🌱</span><b>Root of It All</b>
+              </button>
+              <button class="gingy-fact" type="button" role="tab" aria-selected="false" tabindex="-1" aria-controls="gingyFactView"
+                data-title="Warm &amp; Cozy"
+                data-copy="Ginger's spicy flavor is popular in warm drinks, soups and other cozy recipes. A grown-up can help you prepare hot foods and drinks safely."
+                data-speech="“A cozy cup gets a little zing!”"
+                data-image="assets/Gingy_Card_08.png"
+                data-image-alt="Gingy showing off a warm cup of ginger tea">
+                <span aria-hidden="true">☕</span><b>Warm &amp; Cozy</b>
+              </button>
+              <button class="gingy-fact" type="button" role="tab" aria-selected="false" tabindex="-1" aria-controls="gingyFactView"
+                data-title="Kitchen Traveler"
+                data-copy="Ginger is used in cuisines around the world, in stir-fries, curries, baked treats and drinks. One ingredient can have lots of delicious adventures!"
+                data-speech="“Sweet, savory, or sippable — I love to travel!”"
+                data-image="assets/Gingy_Card_05.png"
+                data-image-alt="Gingy among dishes and flavors from around the world">
+                <span aria-hidden="true">🌎</span><b>Kitchen Traveler</b>
+              </button>
+              <button class="gingy-fact" type="button" role="tab" aria-selected="false" tabindex="-1" aria-controls="gingyFactView"
+                data-title="Fresh or Ground?"
+                data-copy="Fresh ginger is juicy and zingy. Ground ginger is dried into a fine powder and is handy for baking or seasoning. Recipes may use either form!"
+                data-speech="“Fresh, sliced, or ground — meet all my forms!”"
+                data-image="assets/Gingy_Card_06.png"
+                data-image-alt="Gingy showing fresh ginger, ginger slices and ground ginger powder">
+                <span aria-hidden="true">🫚</span><b>Fresh or Ground?</b>
+              </button>
+              <button class="gingy-fact" type="button" role="tab" aria-selected="false" tabindex="-1" aria-controls="gingyFactView"
+                data-title="Small but Mighty"
+                data-copy="Ginger contains natural plant compounds, including gingerols, that help give it its distinctive taste. Even a small amount can bring big flavor!"
+                data-speech="“Small plant, BIG personality!”"
+                data-image="assets/Gingy_Card_07.png"
+                data-image-alt="Gingy striking a confident superhero pose">
+                <span aria-hidden="true">⚡</span><b>Small but Mighty</b>
+              </button>
+            </div>
+            <div class="gingy-explainer">
+              <div id="gingyFactView" role="tabpanel" aria-live="polite">
+                <span class="gingy-explainer-label">TAP A GINGER DISCOVERY</span>
+                <h4 id="gingyFactTitle">Flavor Kick</h4>
+                <p id="gingyFactCopy">Ginger has a zesty, slightly peppery flavor. Just a little can add a bold new taste to a savory dish.</p>
+                <button class="gingy-match-button" id="gingyStartMatch" type="button">🍽️ Play Gingy's Flavor Match-Up!</button>
+              </div>
+              <div id="gingyMatchGame" hidden aria-live="polite">
+                <span class="gingy-explainer-label">GINGY'S FLAVOR MATCH-UP</span>
+                <h4 id="gingyMatchTitle">What should Gingy flavor next?</h4>
+                <div class="gingy-match-choices" role="group" aria-label="Choose where Gingy brings flavor">
+                  <button class="gingy-match-choice" type="button" data-match="tea" aria-pressed="false"><span aria-hidden="true">☕</span> Tea</button>
+                  <button class="gingy-match-choice" type="button" data-match="stirfry" aria-pressed="false"><span aria-hidden="true">🥦</span> Stir-Fry</button>
+                  <button class="gingy-match-choice" type="button" data-match="cookies" aria-pressed="false"><span aria-hidden="true">🍪</span> Cookies</button>
+                </div>
+                <p id="gingyMatchCopy">Pick a food or drink. Every choice is a tasty way to use ginger!</p>
+                <button class="gingy-back-button" id="gingyCloseMatch" type="button">← Back to Gingy's facts</button>
+              </div>
+            </div>
           </div>
         </article>
 
@@ -482,4 +552,4 @@
 
     <p class="source-note">Food and nutrition information here is general education for families and is not a substitute for individualized medical or nutrition advice.</p>
   </div>
-</section></main><footer class="footer"><div class="container"><div class="footer-grid"><div><a class="brand" href="index.html"><img src="assets/market-veggies-logo.png" alt="Market Veggies"></a><p>Fresh produce. Big adventures. Stories, recipes and activities built to make healthy habits fun.</p></div><div><h4>Explore</h4><div class="footer-links"><a href="characters.html">Characters</a><a href="recipes.html">Recipes + Activities</a><a href="about.html">About the Series</a><a href="shop.html">Bookstore</a></div></div><div><h4>For Grown-Ups</h4><div class="footer-links"><a href="parents.html">Parents & Educators</a><a href="parents.html#nutrition">Nutrition approach</a><a href="parents.html#schools">Schools & groups</a></div></div></div><div class="footer-bottom"><span>© Market Veggies: Adventures of Produce</span><span>Nutrition content is educational and is not medical advice.</span></div></div></footer><script src="app.js?v=20261009-nanner-original-removed"></script></body></html>
+</section></main><footer class="footer"><div class="container"><div class="footer-grid"><div><a class="brand" href="index.html"><img src="assets/market-veggies-logo.png" alt="Market Veggies"></a><p>Fresh produce. Big adventures. Stories, recipes and activities built to make healthy habits fun.</p></div><div><h4>Explore</h4><div class="footer-links"><a href="characters.html">Characters</a><a href="recipes.html">Recipes + Activities</a><a href="about.html">About the Series</a><a href="shop.html">Bookstore</a></div></div><div><h4>For Grown-Ups</h4><div class="footer-links"><a href="parents.html">Parents & Educators</a><a href="parents.html#nutrition">Nutrition approach</a><a href="parents.html#schools">Schools & groups</a></div></div></div><div class="footer-bottom"><span>© Market Veggies: Adventures of Produce</span><span>Nutrition content is educational and is not medical advice.</span></div></div></footer><script src="app.js?v=20261009-gingy-explainer"></script></body></html>
