@@ -3020,3 +3020,24 @@
     var(--story-background);
   transition:background-color .5s ease;
 }
+
+/* Characters page: exact Home keyword text colors.
+   Only intentionally highlighted prose receives these colors; navigation,
+   buttons, photo panels, and the six character backgrounds stay unchanged. */
+.characters-page .hl{
+  display:inline;
+  background:none!important;
+  padding:0!important;
+  border-radius:0!important;
+  -webkit-box-decoration-break:slice;
+  box-decoration-break:slice;
+  font-weight:inherit;
+}
+.characters-page .hl-orange{color:#f47c20!important}
+.characters-page .hl-yellow{color:#ffd633!important}
+.characters-page .hl-green{color:#5fbf3f!important}
+/* Keep yellow words legible on lighter story panels. */
+.characters-page .character-story-copy .hl-yellow,
+.characters-page .character-story-top .hl-yellow{
+  text-shadow:0 1px 1px rgba(69,54,4,.22);
+}
