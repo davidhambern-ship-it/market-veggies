@@ -759,3 +759,103 @@ startMissionRotation();
     open?.focus();
   });
 })();
+
+
+/* Same three-color keyword treatment as the Home page, including text
+   that changes after a fact or mini-game selection. Controls are untouched. */
+(function initCharacterKeywordAccents(){
+  const slide=document.querySelector('.character-story-section');
+  if(!slide||!('MutationObserver' in window))return;
+
+  const characterTerms={
+    gary:[
+      ['plant compounds','green'],['sulfur compounds','green'],['vitamin B6','yellow'],
+      ['vitamin C','yellow'],['manganese','green'],['selenium','orange'],
+      ['allicin','orange'],['flavor','orange'],['garlic','green'],
+      ['aroma','yellow'],['crushed','orange'],['crushing','orange'],
+      ['energy','yellow'],['minerals','green'],['clove','orange']
+    ],
+    carry:[
+      ['beta-carotene','yellow'],['vitamin A','green'],['eyes','orange'],
+      ['vision','green'],['growth','green'],['fiber','green'],
+      ['carrots','orange'],['carrot','orange'],['crunch','orange'],
+      ['sweetness','yellow'],['raw','green'],['roasted','orange'],
+      ['orange','orange'],['confidence','yellow'],['pigments','green']
+    ],
+    artie:[
+      ['prebiotic fiber','green'],['artichokes','green'],['artichoke','green'],
+      ['digestion','orange'],['fiber','green'],['inulin','yellow'],
+      ['heart','orange'],['leaves','green'],['outer','yellow'],
+      ['tender','orange'],['vitamin','yellow'],['nutrients','green'],
+      ['layers','orange'],['healthy','green']
+    ],
+    tommy:[
+      ['vitamin C','yellow'],['potassium','green'],['lycopene','orange'],
+      ['hydration','green'],['tomatoes','orange'],['tomato','orange'],
+      ['vegetables','green'],['vegetable','green'],['fruit','orange'],
+      ['seeds','yellow'],['red','orange'],['water','green'],
+      ['antioxidants','yellow'],['energy','orange'],['cooking','orange']
+    ],
+    nanner:[
+      ['carbohydrates','yellow'],['potassium','green'],['vitamin B6','yellow'],
+      ['nervous system','green'],['bananas','yellow'],['banana','yellow'],
+      ['muscles','orange'],['energy','orange'],['fiber','green'],
+      ['yellow','yellow'],['green','green'],['spotted','orange'],
+      ['ripe','orange'],['ripen','green'],['starch','yellow'],
+      ['smoothies','orange'],['smoothie','orange']
+    ],
+    gingy:[
+      ['plant compounds','green'],['fresh ginger','green'],
+      ['gingerols','orange'],['gingerol','orange'],['rhizome','green'],
+      ['ginger','orange'],['flavor','orange'],['spicy','yellow'],
+      ['warm','yellow'],['zesty','yellow'],['roots','green'],
+      ['ground','orange'],['fresh','green'],['cookies','orange'],
+      ['tea','yellow'],['stir-fries','green'],['baking','green'],
+      ['sweet','yellow']
+    ]
+  };
+  const textIds={
+    gary:['garyFactTitle','garyFactCopy','crushResult','garySpeech'],
+    carry:['carryFactTitle','carryFactCopy','crunchResultTitle','crunchResultCopy','carrySpeech'],
+    artie:['artieFactTitle','artieFactCopy','peelResultTitle','peelResultCopy','peelResultQuote','artieSpeech'],
+    tommy:['tommyFactTitle','tommyFactCopy','tomatoDebateTitle','tomatoDebateCopy','tomatoDebateQuote','tommySpeech'],
+    nanner:['nannerFactTitle','nannerFactCopy','nannerStageTitle','nannerStageCopy','nannerSpeech'],
+    gingy:['gingyFactTitle','gingyFactCopy','gingyMatchTitle','gingyMatchCopy','gingySpeech']
+  };
+  const escapeRegex=text=>text.replace(/[^A-Za-z0-9 ]/g,char=>'\\'+char);
+
+  Object.entries(textIds).forEach(([character,ids])=>{
+    const sorted=[...characterTerms[character]].sort((a,b)=>b[0].length-a[0].length);
+    const lookup=new Map(sorted.map(([word,color])=>[word.toLowerCase(),color]));
+    const regex=new RegExp('\\b('+sorted.map(([word])=>escapeRegex(word)).join('|')+')\\b','gi');
+    ids.forEach(id=>{
+      const element=document.getElementById(id);
+      if(!element)return;
+      function highlight(){
+        // Ignore our own mutations; future textContent assignments remove the
+        // spans, allowing the next fact or activity answer to be colored again.
+        if(element.querySelector('.hl'))return;
+        const original=element.textContent||'';
+        if(!original.trim())return;
+        regex.lastIndex=0;
+        const fragment=document.createDocumentFragment();
+        let last=0,count=0,match;
+        while((match=regex.exec(original))&&count<3){
+          fragment.appendChild(document.createTextNode(original.slice(last,match.index)));
+          const emphasis=document.createElement('span');
+          emphasis.className='hl hl-'+lookup.get(match[0].toLowerCase());
+          emphasis.textContent=match[0];
+          fragment.appendChild(emphasis);
+          last=regex.lastIndex;
+          count++;
+        }
+        if(!count)return;
+        fragment.appendChild(document.createTextNode(original.slice(last)));
+        element.replaceChildren(fragment);
+      }
+      const observer=new MutationObserver(highlight);
+      observer.observe(element,{childList:true,characterData:true,subtree:true});
+      highlight();
+    });
+  });
+})();
