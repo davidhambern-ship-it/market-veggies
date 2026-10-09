@@ -436,3 +436,80 @@
     transition:none!important;
   }
 }
+
+
+/* Carry soup: live object-based spoon and ingredients.
+   The wooden spoon rests in the soup; food takes an elliptical stirring path. */
+.recipes-page .ck-simmer-countertop{
+  overflow:hidden;
+  max-width:620px;
+  min-height:0;
+  background:linear-gradient(145deg,#f5dfb9,#e2ad73);
+  border:6px solid #dda66b;
+  border-radius:27px;
+  box-shadow:0 12px 23px rgba(100,66,30,.17),inset 0 2px 0 #fce9c4;
+  touch-action:manipulation;
+}
+.recipes-page .ck-simmer-pot{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:none;
+  overflow:hidden;
+  user-select:none;
+  -webkit-user-select:none;
+  touch-action:manipulation;
+}
+.recipes-page .ck-simmer-pot .ck-soup-ingredients{
+  transform-origin:265px 168px;
+  transform-box:view-box;
+  transition:transform 950ms cubic-bezier(.22,.68,.24,1);
+  will-change:transform;
+}
+.recipes-page .ck-simmer-pot .ck-simmer-spoon{
+  transform-origin:265px 174px;
+  transform-box:view-box;
+  filter:drop-shadow(2px 3px 2px rgba(110,64,17,.22));
+}
+.recipes-page .ck-simmer-pot.ck-stir-pulse .ck-simmer-spoon{
+  animation:ckSpoonInSoup 950ms cubic-bezier(.2,.63,.28,1) both;
+}
+.recipes-page .ck-simmer-pot.ck-stir-pulse .ck-soup-ripples{
+  animation:ckSoupSurfaceStir 950ms ease-out both;
+  transform-origin:265px 169px;
+  transform-box:view-box;
+}
+.recipes-page .ck-simmer-pot .ck-stir-bubble{
+  animation:ckSoupBubbleFloat 1.9s ease-in-out infinite alternate;
+  animation-delay:var(--ck-bubble-delay,0ms);
+}
+.recipes-page .ck-simmer-pot .ck-stir-steam{
+  animation:ckSteamDrift 2.3s ease-in-out infinite alternate;
+}
+@keyframes ckSpoonInSoup{
+  0%{transform:translate(-8px,-2px) rotate(-16deg)}
+  25%{transform:translate(10px,4px) rotate(12deg)}
+  52%{transform:translate(15px,-6px) rotate(20deg)}
+  78%{transform:translate(-7px,-9px) rotate(-11deg)}
+  100%{transform:translate(0,0) rotate(0deg)}
+}
+@keyframes ckSoupSurfaceStir{
+  0%{transform:rotate(-12deg) scale(.97);opacity:.22}
+  42%{transform:rotate(12deg) scale(1.025);opacity:.9}
+  100%{transform:rotate(0deg) scale(1);opacity:.48}
+}
+@keyframes ckSoupBubbleFloat{
+  0%{opacity:.27;transform:translateY(3px)}
+  100%{opacity:.84;transform:translateY(-3px)}
+}
+@keyframes ckSteamDrift{
+  0%{opacity:.25;transform:translateY(5px)}
+  100%{opacity:.75;transform:translateY(-5px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .recipes-page .ck-simmer-pot .ck-soup-ingredients{transition:none!important}
+  .recipes-page .ck-simmer-pot.ck-stir-pulse .ck-simmer-spoon,
+  .recipes-page .ck-simmer-pot.ck-stir-pulse .ck-soup-ripples,
+  .recipes-page .ck-simmer-pot .ck-stir-bubble,
+  .recipes-page .ck-simmer-pot .ck-stir-steam{animation:none!important}
+}
