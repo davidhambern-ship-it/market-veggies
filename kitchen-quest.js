@@ -236,8 +236,8 @@
     block(.96,.71,.18,0,636,612,7);
     label(46,748,'MARKET VEGGIES  /  KITCHEN QUEST',13,true,[1,.91,.43]);
     label(46,712,"GARY'S GUACAMOLE",28,true,[1,1,1]);
-    label(46,681,'OFFICIAL CHEF PASSPORT TAKE-HOME CARD',11,true,[1,1,1]);
-    label(46,654,'Family-friendly version  |  Makes 4 small servings  |  Prep: 15 minutes',10,false,[1,1,1]);
+    label(46,681,'CHEF PASSPORT / PRINTABLE FAMILY RECIPE',11,true,[1,1,1]);
+    label(46,654,'Family-friendly adaptation  |  Suggested amounts  |  4 small servings',10,false,[1,1,1]);
     label(46,604,"YOU'LL NEED",15,true,[.12,.39,.20]);
     [
       '2 ripe avocados',
