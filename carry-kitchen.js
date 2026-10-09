@@ -108,16 +108,22 @@
       '<ellipse cx="265" cy="325" rx="181" ry="19" fill="#6a492a" opacity=".18"/>'+serving+
       shape+spoon+steam+'</svg></div>';
   }
+  /* Real four-frame food transformations: each cut changes the ingredient,
+     not merely a counter or decorative pieces over an unchanged photograph. */
   function cuttingArt(id,hits){
     if(!carryArtNames.has(id))return '';
-    const chips=Array.from({length:hits*5},(_,i)=>{
-      const left=28+(i*17)%52,top=47+(i*11)%25;
-      return '<span class="ck-art-chip" style="--ck-chip:'+i+';left:'+left+'%;top:'+top+'%"></span>';
-    }).join('');
-    return '<div class="ck-art-board ck-art-'+id+' ck-art-progress-'+hits+'">'+
-      '<img class="ck-prep-image" src="'+carryArtFile('prep-'+id)+'" '+
-      'alt="" aria-hidden="true" draggable="false">'+
-      '<div class="ck-art-cutpieces" aria-hidden="true">'+chips+'</div>'+
+    const frame=Math.max(0,Math.min(3,hits));
+    const labels={
+      carrot:['whole carrot','first carrot slices separated','more carrot slices','carrot fully sliced'],
+      onion:['onion wedge','first onion pieces diced','onion partly diced','onion fully diced'],
+      garlic:['garlic cloves','garlic roughly chopped','garlic mostly minced','garlic finely minced'],
+      ginger:['whole ginger root','ginger partly grated','more grated ginger','ginger fully grated'],
+      herbs:['whole herbs','herbs partly chopped','herbs mostly chopped','herbs finely chopped']
+    };
+    return '<div class="ck-art-board ck-art-'+id+' ck-art-progress-'+frame+'">'+
+      '<img class="ck-prep-image" src="'+carryArtFile('prep-'+id+'-'+frame)+'" '+
+      'alt="'+labels[id][frame]+'" draggable="false">'+
+      '<span class="ck-slice-flash" aria-hidden="true"></span>'+
       '</div>';
   }
   function controls(){
@@ -148,8 +154,11 @@
           '</strong><span>'+p.hits+'/3</span></div>'+
           '<button type="button" class="kq-prep-art-button" data-action="cut" aria-label="'+prepSteps[p.id].name+'">'+cuttingArt(p.id,p.hits)+'</button>'+
           '<p>'+prepSteps[p.id].safety+'</p><div class="kq-meter"><span style="width:'+(p.hits/3*100)+'%"></span></div>'+
-          '<button type="button" class="kq-main-action" data-action="cut">'+prepSteps[p.id].verb+' again!</button>'+
-          '<button type="button" class="kq-cancel" data-action="cancel">Pick another ingredient</button></div>':
+          (p.hits===3?
+            '<div class="ck-finish-feedback" role="status">✓ Beautifully prepared! Adding to Carry’s pot…</div>'+
+            '<button type="button" class="kq-main-action" data-action="finish-prep">Add to the soup! →</button>':
+            '<button type="button" class="kq-main-action" data-action="cut">'+prepSteps[p.id].verb+'! ✨</button>'+
+            '<button type="button" class="kq-cancel" data-action="cancel">Pick another ingredient</button>')+'</div>':
           '<p class="kq-prep-prompt">'+state.prepped.size+' of five vegetables and herbs ready.</p>')+
         '<button type="button" class="kq-next" data-action="next" '+(state.prepped.size===prepOrder.length?'':'disabled')+
         '>Add the broth →</button>';
@@ -237,17 +246,29 @@
     state.collected.add(id);say('Added '+pantry.find(x=>x.id===id).name+'. '+state.collected.size+' of six gathered.');render();
   }
   function select(id){
-    if(state.phase!=='prep'||!prepSteps[id]||state.prepped.has(id))return;
+    if(state.phase!=='prep'||!prepSteps[id]||state.prepped.has(id)||state.prep?.hits===3)return;
     state.prep={id,hits:0};say(prepSteps[id].name+' — three steps to go!');render();
   }
-  function cut(){
-    if(state.phase!=='prep'||!state.prep)return;
-    const id=state.prep.id;
-    state.prep.hits=Math.min(3,state.prep.hits+1);
-    if(state.prep.hits===3){
-      state.prepped.add(id);state.prep=null;say(prepSteps[id].science+' Added to the pot.');
-    }else say(prepSteps[id].verb+' step '+state.prep.hits+' of three!');
+  function finishPrep(id){
+    if(state.phase!=='prep'||state.prep?.id!==id||state.prep.hits!==3)return;
+    state.prepped.add(id);
+    state.prep=null;
+    say(prepSteps[id].science+' Added to the pot!');
     render();
+  }
+  function cut(){
+    if(state.phase!=='prep'||!state.prep||state.prep.hits>=3)return;
+    const id=state.prep.id;
+    state.prep.hits++;
+    if(state.prep.hits===3){
+      // Keep the FINAL chopped image visible long enough for the child to see it.
+      say('Great job! '+prepSteps[id].name+' complete.');
+      render();
+      window.setTimeout(()=>finishPrep(id),850);
+    }else{
+      say(prepSteps[id].verb+' step '+state.prep.hits+' of three!');
+      render();
+    }
   }
   function pour(){
     if(state.phase!=='pour'||state.poured===3)return;
@@ -366,7 +387,8 @@
     switch(button.dataset.action){
       case 'next':next();break;
       case 'cut':cut();break;
-      case 'cancel':state.prep=null;render();break;
+      case 'finish-prep':if(state.prep)finishPrep(state.prep.id);break;
+      case 'cancel':if(state.prep?.hits!==3){state.prep=null;render()}break;
       case 'pour':pour();break;
       case 'simmer':simmer();break;
       case 'complete':finish();break;
@@ -426,5 +448,14 @@
     // Keep keyboard focus on the selected station button.
   });
   render();
+  // Preload the small food frames so each tap feels instant on Safari and mobile.
+  if(typeof Image!=='undefined'){
+    ['carrot','onion','garlic','ginger','herbs'].forEach(id=>{
+      for(let frame=0;frame<4;frame++){
+        const image=new Image();
+        image.src=carryArtFile('prep-'+id+'-'+frame);
+      }
+    });
+  }
   if(new URLSearchParams(window.location.search).get('chef')==='carry')showStation('carry');
 })();
