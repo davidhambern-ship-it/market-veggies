@@ -666,3 +666,111 @@
     transition:none!important;
   }
 }
+
+
+/* GARY ILLUSTRATED ASSET PASS
+   Only takes effect once the artwork files load correctly.
+   Original procedural bowl remains as a safe fallback. */
+.recipes-page.kq-art-mode,
+.recipes-page .kq-illustrated{--kq-chef-mint:#f7f8db}
+.recipes-page .kq-illustrated .kq-game{
+  border-color:#ffe9ad;
+  box-shadow:0 9px 0 #d49c59,0 25px 60px rgba(36,76,44,.18);
+}
+.recipes-page .kq-illustrated .kq-stage{
+  background:linear-gradient(180deg,rgba(255,250,234,.95),rgba(255,243,211,.92)),
+    url("assets/recipes/gary-kitchen/kitchen/gary-kitchen-background.png")
+    center / cover no-repeat;
+}
+.recipes-page .kq-illustrated-countertop{
+  position:relative;max-width:650px;
+  min-height:300px;
+  margin:20px auto;
+  border:0;
+  background:linear-gradient(180deg,rgba(232,188,116,.13),rgba(157,109,56,.17)),
+    url("assets/recipes/gary-kitchen/kitchen/gary-countertop-scene.png")
+    center / cover no-repeat;
+  border-radius:22px;
+  overflow:visible;
+  display:grid;place-items:center;
+  box-shadow:0 14px 24px rgba(97,56,19,.16);
+}
+.recipes-page .kq-painted-bowl{position:relative;width:min(100%,430px);margin:auto}
+.recipes-page .kq-guac-artwork{
+  display:block;
+  width:100%;height:auto;
+  aspect-ratio:1;
+  object-fit:contain;
+  filter:drop-shadow(0 15px 9px rgba(64,65,30,.2));
+  animation:kqArtSettle .27s ease-out both;
+  user-select:none;-webkit-user-drag:none;
+}
+.recipes-page .kq-art-spoon{
+  position:absolute;right:10%;top:12%;font-size:2.6rem;
+  animation:kq-stir-utensil .8s ease-in-out alternate infinite;
+  transform-origin:40% 80%;
+  pointer-events:none;
+}
+.recipes-page .kq-illustrated .kq-chef-avatar{
+  border-radius:19px;
+  background:linear-gradient(145deg,#fcf7dd,#eaf6df);
+  border-color:#f4d38a;
+}
+.recipes-page .kq-illustrated .kq-chef-avatar img{object-fit:contain}
+.recipes-page .kq-prep-artwork{
+  display:block;width:min(100%,500px);height:190px;
+  object-fit:contain;
+  margin:0 auto;
+  border-radius:15px;
+  filter:drop-shadow(0 9px 7px rgba(84,58,30,.19));
+  animation:kqArtSettle .23s ease-out both;
+}
+.recipes-page .kq-illustrated .kq-prep-panel{
+  background:linear-gradient(180deg,rgba(249,235,207,.35),rgba(244,211,167,.25)),
+    url("assets/recipes/gary-kitchen/kitchen/gary-cutting-board-zone.png")
+    center / cover no-repeat;
+  border:3px solid #bc874c;
+  box-shadow:0 8px 0 rgba(120,66,31,.24);
+}
+.recipes-page .kq-illustrated .kq-prep-panel>p{
+  background:rgba(255,248,229,.9);
+  padding:8px 14px;border-radius:13px;
+}
+.recipes-page .kq-illustrated .kq-ingredient{
+  border-color:#bad39c;
+  border-bottom:5px solid #78aa62;
+  border-radius:19px;
+  background:linear-gradient(#fffdf3,#e7f7d8);
+}
+.recipes-page .kq-painted-rewards .kq-garden-plot>span{
+  display:grid;place-items:center;
+  min-width:58px;width:58px;height:58px;
+}
+.recipes-page .kq-painted-rewards .kq-garden-plot>span img{
+  width:100%;height:100%;object-fit:contain;
+}
+.recipes-page .kq-illustrated .kq-passport{
+  background:linear-gradient(#fffae8,#fff3ce);
+  border-color:#efcf77;
+}
+.recipes-page .kq-illustrated .kq-step.is-done b{
+  background:#23834a;border-color:#186a3d;
+}
+@keyframes kqArtSettle{
+  0%{transform:scale(.94);opacity:.65}
+  100%{transform:scale(1);opacity:1}
+}
+@keyframes kq-stir-utensil{
+  from{transform:rotate(-30deg)}
+  to{transform:rotate(20deg)}
+}
+@media(max-width:700px){
+  .recipes-page .kq-illustrated-countertop{min-height:220px}
+  .recipes-page .kq-painted-bowl{max-width:320px}
+  .recipes-page .kq-prep-artwork{height:160px}
+}
+@media(prefers-reduced-motion:reduce){
+  .recipes-page .kq-guac-artwork,
+  .recipes-page .kq-prep-artwork,
+  .recipes-page .kq-art-spoon{animation:none!important}
+}
