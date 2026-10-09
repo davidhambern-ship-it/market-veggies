@@ -61,7 +61,7 @@
   function soupPot(){
     const done=state.phase==='serve'||state.phase==='complete';
     const simmer=Math.min(5,state.simmer);
-    const liquid=level===0?'#d4a667':simmer>=4?'#eeb44b':simmer>=2?'#efab3c':'#f6c56a';
+    const liquid=state.poured===0?'#d4a667':simmer>=4?'#eeb44b':simmer>=2?'#efab3c':'#f6c56a';
     let pieces='';
     const all=state.phase==='prep'?state.prepped:new Set(prepOrder);
     [...all].forEach((id,k)=>{
