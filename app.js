@@ -70,6 +70,16 @@ startMissionRotation();
   if(!carousel)return;
   const storySection=carousel.closest('.character-story-section');
   const atmosphereLayers=storySection?[...storySection.querySelectorAll('.character-atmosphere-layer')]:[];
+  // Apply a concrete background color on every slide change, including Safari.
+  // Do not rely on CSS custom-property updates alone for this visible theme change.
+  const characterPagePalette={
+    gary:'#eedfc4',
+    carry:'#ffd09d',
+    artie:'#d0e9bf',
+    tommy:'#ffc8c1',
+    nanner:'#ffeba0',
+    gingy:'#ebc79f'
+  };
 
   const track=carousel.querySelector('.character-track');
   const slides=[...carousel.querySelectorAll('.character-story-slide')];
@@ -90,7 +100,10 @@ startMissionRotation();
     slides.forEach((slide,i)=>slide.classList.toggle('active',i===index));
     // Repaint only the surrounding PAGE section; character cards remain unchanged.
     const character=slides[index]?.dataset.character||'gary';
-    if(storySection)storySection.dataset.characterTheme=character;
+    if(storySection){
+      storySection.dataset.characterTheme=character;
+      storySection.style.backgroundColor=characterPagePalette[character]||characterPagePalette.gary;
+    }
     atmosphereLayers.forEach(layer=>layer.classList.toggle('active',layer.dataset.atmosphere===character));
     dots.forEach((dot,i)=>{
       dot.classList.toggle('active',i===index);
