@@ -1,0 +1,70 @@
+name: Install Gary Kitchen Quest Art
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'gary-kitchen-assets-github-upload.zip'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  install-art:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Validate and extract illustrated Kitchen Quest art
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          import sys
+          archive = Path('gary-kitchen-assets-github-upload.zip')
+          if not archive.exists():
+              print('No Gary asset zip on main. Nothing to install.')
+              sys.exit(0)
+          base = Path('assets/recipes/gary-kitchen')
+          with ZipFile(archive) as z:
+              entries = [info for info in z.infolist() if not info.is_dir()]
+              if len(entries) != 72:
+                  raise SystemExit(f'Expected 72 art PNGs, found {len(entries)}')
+              if sum(info.file_size for info in entries) > 35_000_000:
+                  raise SystemExit('Image pack too large.')
+              for entry in entries:
+                  name=entry.filename
+                  p=Path(name)
+                  if (p.is_absolute() or '..' in p.parts or
+                      not name.startswith('assets/recipes/gary-kitchen/') or
+                      p.suffix.lower() != '.png'):
+                      raise SystemExit(f'Unexpected asset path: {name}')
+                  if entry.file_size > 3_000_000:
+                      raise SystemExit(f'Image too large: {name}')
+                  data=z.read(entry)
+                  if not data.startswith(b'\x89PNG\r\n\x1a\n'):
+                      raise SystemExit(f'Invalid PNG signature: {name}')
+                  target=Path(name)
+                  target.parent.mkdir(parents=True,exist_ok=True)
+                  target.write_bytes(data)
+          print('Validated and installed 72 Gary kitchen PNG art files.')
+          PY
+      - name: Commit new art to main
+        shell: bash
+        run: |
+          if [ ! -f gary-kitchen-assets-github-upload.zip ]; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/recipes/gary-kitchen
+          git rm -f gary-kitchen-assets-github-upload.zip
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Install optimized Gary Kitchen Quest illustrated PNG assets"
+            git push origin HEAD:main
+          fi
