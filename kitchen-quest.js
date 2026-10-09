@@ -19,7 +19,7 @@
     {id:'cilantro',name:'Cilantro',emoji:'🌿'}
   ];
   const toppings=pantry.filter(item=>item.id!=='avocado');
-  const steps=['Gather','Mash','Add flavor','Stir','Serve'];
+  const steps=['Gather','Mash','Prep ingredients','Stir','Serve'];
   const storageKey='marketveggies.kitchenquest.v1';
   function restore(){
     try{
@@ -28,8 +28,8 @@
     }catch(error){return {completed:false,downloaded:false,activityDone:false}}
   }
   const saved=restore();
-  let state={phase:saved.completed?'complete':'gather',collected:new Set(),added:new Set(),
-    mash:0,stir:0,prep:null,completed:saved.completed,downloaded:saved.downloaded,
+  let state={phase:saved.completed?'complete':'gather',collected:new Set(),added:new Set(saved.completed?['lime','garlic','tomato','onion','cilantro']:[]),
+    mash:saved.completed?5:0,stir:saved.completed?5:0,prep:null,completed:saved.completed,downloaded:saved.downloaded,
     activityDone:saved.activityDone,quiz:0,quizNotice:'',quizCorrect:false};
   const quiz=[
     {question:'Which ingredient brings fiber and unsaturated fats to the bowl?',
@@ -156,7 +156,7 @@
     const woodTool=spoon?'<g class="kq-wood-spoon" style="--stir-rotation:'+stir*43+'deg"><path d="M358 55 L287 172" stroke="#bb8046" stroke-width="17" stroke-linecap="round"/><ellipse cx="278" cy="187" rx="17" ry="23" transform="rotate(26 278 187)" fill="#b98246"/></g>':'';
     const chips=final?'<g class="kq-served-chips"><path d="M52 107 L101 111 L71 45 Z" fill="#f4bd51" stroke="#df9744" stroke-width="4"/><path d="M420 80 L474 138 L402 149 Z" fill="#f4bd51" stroke="#df9744" stroke-width="4"/><path d="M399 302 L461 306 L437 255 Z" fill="#f2bd56" stroke="#db9854" stroke-width="4"/></g>':'';
     return '<div class="kq-countertop '+(final?'kq-plated':'')+'">'+
-      '<svg class="kq-guac-svg '+(extra||'')+'" viewBox="0 0 520 370" role="img" aria-label="'+
+      '<svg id="kqBowl" class="kq-guac-svg '+(extra||'')+'" viewBox="0 0 520 370" role="img" aria-label="'+
       (final?'Finished bowl of chunky guacamole with tomato, onion and herbs':mash===0?'Two avocado halves in a bowl':mash<5?'Avocado being mashed, step '+mash+' of five':stir?'Guacamole mixing, stir '+stir+' of five':'Mashed avocado with prepared toppings')+'">'+svgDefs+
       ellipse(260,311,170,23,'#684727','opacity=".18"')+
       chips+
@@ -165,7 +165,7 @@
       '<g clip-path="url(#kq-fill-clip)"><g class="kq-contents" style="--kq-mix-angle:'+stir*37+'deg">'+
       contents+toppingsArt()+'</g></g>'+
       ellipse(260,185,152,90,'none','stroke="#f7f5e3" stroke-width="8"')+
-      guacTexture().slice(0,0)+potatoTool+woodTool+
+      potatoTool+woodTool+
       '</svg></div>';
   }
   function prepArtwork(id,hits){
@@ -486,6 +486,9 @@
     render();
   }
   root.addEventListener('click',event=>{
+    if(state.phase==='mash'&&event.target.closest('#kqBowl')){
+      stepTap('mash');return;
+    }
     const button=event.target.closest('button');if(!button||!root.contains(button))return;
     if(button.dataset.collect){addIngredient(button.dataset.collect);return}
     if(button.dataset.season){addTopping(button.dataset.season);return}
