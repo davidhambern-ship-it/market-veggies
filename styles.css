@@ -2511,3 +2511,198 @@
   .characters-page .tomato-debate,
   .characters-page .tomato-debate-choice{transition:none!important;animation:none!important}
 }
+
+/* Nanner interactive explainer: fixed-size artwork and compact in-place game.
+   Keep the shared 690px desktop carousel untouched. */
+.characters-page .nanner-art-frame{
+  width:min(84%,470px);
+  aspect-ratio:4/5;
+  display:grid;
+  place-items:center;
+  position:relative;
+  min-width:0;
+  min-height:0;
+}
+.characters-page .nanner-art-frame img{
+  display:block;
+  width:100%;
+  height:100%;
+  min-width:0;
+  min-height:0;
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+  filter:drop-shadow(0 15px 22px rgba(129,99,7,.18));
+  transition:opacity .24s ease,transform .3s ease;
+}
+.characters-page .nanner-art-frame img.nanner-swapping{
+  animation:nannerSwap .38s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes nannerSwap{
+  from{opacity:.58;transform:scale(.96)}
+  to{opacity:1;transform:scale(1)}
+}
+.characters-page .nanner-speech{
+  position:absolute;
+  left:28px;
+  right:28px;
+  bottom:24px;
+  z-index:3;
+  padding:11px 15px;
+  border-radius:18px;
+  background:#fff;
+  color:#815107;
+  border:3px solid #f6c84f;
+  box-shadow:0 6px 0 rgba(189,145,18,.16);
+  font-weight:900;
+  text-align:center;
+  line-height:1.35;
+  font-size:.92rem;
+}
+.characters-page .nanner-story .character-story-copy{
+  padding:22px 32px;
+}
+.characters-page .nanner-story .character-story-copy h3{
+  font-size:clamp(2.1rem,2.8vw,3.05rem);
+  line-height:1.04;
+  margin:.33rem 0 .52rem;
+}
+.characters-page .nanner-story .story-summary{
+  font-size:.91rem;
+  line-height:1.42;
+  margin:0 0 11px;
+}
+.characters-page .nanner-fact-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:7px;
+  margin:0 0 12px;
+}
+.characters-page .nanner-fact{
+  min-width:0;
+  min-height:67px;
+  padding:7px 10px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:3px;
+  border-radius:14px;
+  border:2px solid #f6dea4;
+  background:#fffaf0;
+  color:#805100;
+  text-align:left;
+  cursor:pointer;
+  transition:background .2s ease,transform .2s ease,border-color .2s ease;
+}
+.characters-page .nanner-fact span{font-size:1.06rem;line-height:1}
+.characters-page .nanner-fact b{font-size:.78rem;line-height:1.2}
+.characters-page .nanner-fact:hover,
+.characters-page .nanner-fact:focus-visible{
+  border-color:#edaf21;
+  background:#fff0ba;
+  transform:translateY(-2px);
+}
+.characters-page .nanner-fact.active{
+  color:#fff;
+  border-color:#986208;
+  background:linear-gradient(130deg,#cb850b,#f1b62e);
+  box-shadow:0 5px 0 #f5d55e;
+}
+.characters-page .nanner-explainer{
+  min-height:174px;
+  padding:13px 16px;
+  border-radius:17px;
+  background:linear-gradient(145deg,#fff8df,#fffdf1);
+  border:2px solid #f3d887;
+}
+.characters-page .nanner-explainer [hidden]{display:none!important}
+.characters-page .nanner-explainer-label{
+  display:block;
+  margin-bottom:2px;
+  font-size:.68rem;
+  font-weight:950;
+  letter-spacing:.1em;
+  color:#986c2d;
+}
+.characters-page .nanner-explainer h4{
+  margin:.15rem 0 .3rem;
+  color:#875700;
+  font-size:1.18rem;
+  line-height:1.13;
+}
+.characters-page .nanner-explainer p{
+  margin:0;
+  color:#6b5e44;
+  line-height:1.37;
+  font-size:.86rem;
+}
+.characters-page .nanner-remix-button{
+  margin-top:10px;
+  border:0;
+  padding:8px 12px;
+  border-radius:999px;
+  font-weight:900;
+  font-size:.85rem;
+  background:#f5c842;
+  color:#173b22;
+  cursor:pointer;
+}
+.characters-page .nanner-remix-button:hover,
+.characters-page .nanner-remix-button:focus-visible{background:#2f7d32;color:white}
+.characters-page .nanner-stage-buttons{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:7px;
+  margin:7px 0;
+}
+.characters-page .nanner-stage{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  min-width:0;
+  border:2px solid #dfc36c;
+  border-radius:10px;
+  background:#fff;
+  color:#815107;
+  padding:6px 4px;
+  font-size:.8rem;
+  font-weight:900;
+  cursor:pointer;
+}
+.characters-page .nanner-stage[aria-pressed="true"]{
+  border-color:#805900;
+  background:#fae59e;
+  box-shadow:inset 0 0 0 1px #805900;
+}
+.characters-page .nanner-stage-icon{display:inline-block;font-size:1rem}
+.characters-page .nanner-stage-green{filter:hue-rotate(55deg) saturate(1.2)}
+.characters-page .nanner-stage-spotted{filter:sepia(.65) brightness(.85)}
+.characters-page .nanner-back-button{
+  display:inline-block;
+  margin-top:8px;
+  padding:4px 0;
+  border:0;
+  background:none;
+  color:#0752a8;
+  text-decoration:underline;
+  font-size:.78rem;
+  font-weight:850;
+  cursor:pointer;
+}
+@media(max-width:980px){
+  .characters-page .nanner-art-frame{width:min(74%,500px);aspect-ratio:1/1}
+  .characters-page .nanner-story .character-story-copy{padding:30px}
+}
+@media(max-width:680px){
+  .characters-page .nanner-art-frame{width:min(88%,390px)}
+  .characters-page .nanner-speech{left:14px;right:14px;bottom:14px;font-size:.82rem}
+  .characters-page .nanner-story .character-story-copy{padding:24px 19px}
+  .characters-page .nanner-fact-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .characters-page .nanner-fact{min-height:74px}
+}
+@media(prefers-reduced-motion:reduce){
+  .characters-page .nanner-art-frame img,
+  .characters-page .nanner-fact{animation:none!important;transition:none!important}
+}
