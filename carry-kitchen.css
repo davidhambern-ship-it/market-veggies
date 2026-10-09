@@ -513,3 +513,22 @@
   .recipes-page .ck-simmer-pot .ck-stir-bubble,
   .recipes-page .ck-simmer-pot .ck-stir-steam{animation:none!important}
 }
+
+
+/* Synced spoon orbit inside carrot soup.
+   The spoon head stays near the broth center while its handle travels around
+   the soup. Ingredient objects complete the same revolution per stir. */
+.recipes-page .ck-simmer-pot .ck-stir-orbit{
+  transform-box:view-box;
+  transform-origin:265px 168px;
+  transition:transform 950ms cubic-bezier(.22,.68,.24,1);
+  will-change:transform;
+}
+.recipes-page .ck-simmer-pot .ck-spoon-offset{
+  /* Offset lives in a separate SVG group so the dipping animation does not
+     override its translation (including on WebKit/Safari). */
+  transform-box:view-box;
+}
+@media(prefers-reduced-motion:reduce){
+  .recipes-page .ck-simmer-pot .ck-stir-orbit{transition:none!important}
+}
