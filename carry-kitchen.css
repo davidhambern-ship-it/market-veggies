@@ -280,3 +280,69 @@
   .recipes-page .ck-art-chip{animation:none!important}
   .recipes-page .ck-prep-image{transition:none!important}
 }
+
+
+/* Carry chopping-game polish: each frame is a different actual food state. */
+.recipes-page .ck-prep-panel .kq-prep-art-button{
+  padding:0;
+  overflow:hidden;
+  border:4px solid #dfa861;
+  background:#eec18a;
+  box-shadow:inset 0 2px 0 #ffedc9,0 6px 0 #bd8951,0 13px 21px rgba(114,65,20,.14);
+  transition:transform .16s ease,box-shadow .16s ease;
+}
+.recipes-page .ck-prep-panel .kq-prep-art-button:hover{
+  transform:translateY(-2px);
+  box-shadow:inset 0 2px 0 #ffedc9,0 8px 0 #bd8951,0 16px 25px rgba(114,65,20,.19);
+}
+.recipes-page .ck-prep-panel .kq-prep-art-button:active{
+  transform:translateY(3px) scale(.995);
+  box-shadow:inset 0 2px 0 #ffedc9,0 2px 0 #bd8951,0 6px 12px rgba(114,65,20,.12);
+}
+.recipes-page .ck-art-board{position:relative;overflow:hidden;background:#f4ce9c}
+.recipes-page .ck-art-board .ck-prep-image{
+  display:block;width:100%;height:auto;aspect-ratio:960 / 475;
+  object-fit:contain;max-width:100%;
+  filter:none;
+  transform-origin:48% 57%;
+  animation:ckRealCut .30s cubic-bezier(.21,.9,.34,1) both;
+  user-select:none;-webkit-user-drag:none;pointer-events:none;
+}
+.recipes-page .ck-art-board .ck-slice-flash{
+  position:absolute;inset:20% 22% 22% 21%;
+  border-radius:50%;pointer-events:none;
+  background:radial-gradient(ellipse,#fffde4b0 0%,#ffdf6f41 31%,transparent 63%);
+  opacity:0;
+}
+.recipes-page .ck-art-progress-1 .ck-slice-flash,
+.recipes-page .ck-art-progress-2 .ck-slice-flash,
+.recipes-page .ck-art-progress-3 .ck-slice-flash{
+  animation:ckCutSpark .30s ease-out both;
+}
+.recipes-page .ck-finish-feedback{
+  margin:10px auto 0;
+  color:#196b3c;background:#e7f8df;border:2px solid #b9dba6;
+  border-radius:12px;font-size:.9rem;font-weight:900;
+  padding:10px;max-width:420px;
+  animation:ckFinishIn .22s ease-out both;
+}
+.recipes-page .ck-prep-panel .kq-meter span{transition:width .32s ease}
+@keyframes ckRealCut{
+  0%{transform:translateY(-5px) scale(1.022);filter:brightness(1.09)}
+  52%{transform:translateY(2px) scale(.995);filter:brightness(1.03)}
+  100%{transform:translateY(0) scale(1);filter:none}
+}
+@keyframes ckCutSpark{
+  0%{opacity:.8;transform:scale(.65)}
+  100%{opacity:0;transform:scale(1.45)}
+}
+@keyframes ckFinishIn{
+  0%{opacity:0;transform:translateY(6px)}
+  100%{opacity:1;transform:translateY(0)}
+}
+@media(prefers-reduced-motion:reduce){
+  .recipes-page .ck-prep-panel .kq-prep-art-button{transition:none!important}
+  .recipes-page .ck-art-board .ck-prep-image,
+  .recipes-page .ck-art-board .ck-slice-flash,
+  .recipes-page .ck-finish-feedback{animation:none!important}
+}
