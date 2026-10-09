@@ -58,8 +58,18 @@
       (i===current?' is-active':'')+'" '+(i===current?'aria-current="step"':'')+
       '><b>'+(i<current?'✓':i+1)+'</b>'+name+'</span>').join('');
   }
+  const carryArtRoot='assets/recipes/carry-kitchen/';
+  const carryArtNames=new Set(['carrot','onion','garlic','ginger','herbs']);
+  function carryArtFile(name){return carryArtRoot+name+'.webp'}
+  function carryServedBowl(){
+    return '<div class="kq-countertop ck-countertop ck-served-countertop">'+
+      '<img class="ck-served-image" src="'+carryArtFile('soup-finished')+
+      '" alt="A warm bowl of orange carrot soup with real-looking carrot rounds, onion, ginger and green herb garnish" draggable="false">'+
+      '<span class="ck-serving-shine" aria-hidden="true">✦</span></div>';
+  }
   function soupPot(){
     const done=state.phase==='serve'||state.phase==='complete';
+    if(done)return carryServedBowl();
     const simmer=Math.min(5,state.simmer);
     const liquid=state.poured===0?'#d4a667':simmer>=4?'#eeb44b':simmer>=2?'#efab3c':'#f6c56a';
     let pieces='';
@@ -99,20 +109,16 @@
       shape+spoon+steam+'</svg></div>';
   }
   function cuttingArt(id,hits){
-    const color=prepSteps[id].color;
-    const count=hits===0?1:hits*4+3;
-    let pieces='';
-    for(let i=0;i<count;i++){
-      const cx=170+(i*37%145),cy=80+(i*23%77),size=hits===0?35:Math.max(6,17-hits*2);
-      if(id==='carrot')pieces+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+size+'" ry="'+(size*.64)+'" fill="'+color+'" stroke="#c75c15" stroke-width="3"/>';
-      else if(id==='herbs')pieces+='<path d="M'+cx+' '+cy+'l'+size+' -'+size+' l'+size+' 7 -'+size+' '+size+'z" fill="'+color+'"/>';
-      else pieces+='<rect x="'+cx+'" y="'+cy+'" width="'+size+'" height="'+size+'" rx="4" fill="'+color+'" stroke="#fff9e2" stroke-width="2"/>';
-    }
-    const tool=id==='ginger'?'<path d="M330 49l51 19 -13 30 -53 -19 Z" fill="#d9e5e9" stroke="#889da6" stroke-width="5"/>':
-      '<path d="M317 37L391 70L310 88Q293 68 317 37Z" fill="#e2e7e8" stroke="#819aa6" stroke-width="4"/>';
-    return '<svg class="ck-prep-svg" viewBox="0 0 445 215" aria-hidden="true">'+
-      '<rect x="27" y="19" width="390" height="179" rx="29" fill="#e9bc7e" stroke="#bf8752" stroke-width="9"/>'+
-      '<rect x="44" y="34" width="353" height="148" rx="19" fill="#f3ce95"/>'+pieces+tool+'</svg>';
+    if(!carryArtNames.has(id))return '';
+    const chips=Array.from({length:hits*5},(_,i)=>{
+      const left=28+(i*17)%52,top=47+(i*11)%25;
+      return '<span class="ck-art-chip" style="--ck-chip:'+i+';left:'+left+'%;top:'+top+'%"></span>';
+    }).join('');
+    return '<div class="ck-art-board ck-art-'+id+' ck-art-progress-'+hits+'">'+
+      '<img class="ck-prep-image" src="'+carryArtFile('prep-'+id)+'" '+
+      'alt="" aria-hidden="true" draggable="false">'+
+      '<div class="ck-art-cutpieces" aria-hidden="true">'+chips+'</div>'+
+      '</div>';
   }
   function controls(){
     if(state.phase==='gather'){
