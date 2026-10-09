@@ -178,3 +178,105 @@
   .recipes-page #ckConfetti.burst i{animation:none!important}
   .recipes-page .kq-station[data-station]{transition:none!important}
 }
+
+/* Carry's original illustrated-food visual pass */
+.recipes-page .ck-visual-welcome{color:#915327}
+.recipes-page .ck-served-countertop{
+  padding:0;
+  overflow:hidden;
+  min-height:0;
+  max-width:610px;
+  border:5px solid #e5ad6e;
+  background:#f2cf9f;
+  box-shadow:0 12px 24px rgba(103,64,31,.16);
+  position:relative;
+}
+.recipes-page .ck-served-image{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:620 / 403;
+  object-fit:cover;
+  border-radius:16px;
+  animation:ckFoodArrive .32s ease-out both;
+}
+.recipes-page .ck-serving-shine{
+  position:absolute;
+  right:8%;top:8%;
+  font-size:2rem;
+  color:#fff4b8;
+  text-shadow:0 2px 6px #ba6919;
+  animation:ckServingShine 1.8s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+.recipes-page .ck-prep-panel .kq-prep-art-button{
+  width:100%;
+  max-width:610px;
+  border:3px solid #e3b474;
+  background:#f5d39c;
+  border-radius:18px;
+  overflow:hidden;
+}
+.recipes-page .ck-art-board{
+  position:relative;
+  width:100%;
+  overflow:hidden;
+  background:#f5d39c;
+  transform:translateZ(0);
+}
+.recipes-page .ck-prep-image{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:2 / 1;
+  object-fit:cover;
+  user-select:none;
+  -webkit-user-drag:none;
+  pointer-events:none;
+  transition:filter .18s ease,transform .18s ease;
+}
+.recipes-page .ck-art-progress-1 .ck-prep-image{filter:saturate(1.08) brightness(1.025)}
+.recipes-page .ck-art-progress-2 .ck-prep-image{filter:saturate(1.12)}
+.recipes-page .ck-art-cutpieces{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+.recipes-page .ck-art-chip{
+  display:block;
+  position:absolute;
+  height:9px;width:10px;
+  background:#f3a129;
+  border:1px solid #cb7527;
+  border-radius:3px;
+  transform:rotate(calc(var(--ck-chip) * 31deg));
+  box-shadow:0 2px 3px rgba(62,42,22,.19);
+  animation:ckChopAppear .24s ease-out both;
+}
+.recipes-page .ck-art-carrot .ck-art-chip{border-radius:50%;width:13px;height:9px;background:#fa9c2c;border-color:#dd6920}
+.recipes-page .ck-art-onion .ck-art-chip{background:#d9a3d8;border-color:#a677ac}
+.recipes-page .ck-art-garlic .ck-art-chip{width:7px;height:6px;background:#fff0be;border-color:#d3c69c}
+.recipes-page .ck-art-ginger .ck-art-chip{width:12px;height:3px;background:#f2dc87;border-color:#be9b5c}
+.recipes-page .ck-art-herbs .ck-art-chip{width:9px;height:6px;background:#318d47;border-color:#226b36;clip-path:polygon(0 100%,40% 0,100% 70%)}
+@keyframes ckFoodArrive{
+  from{opacity:.65;transform:translateY(9px) scale(.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes ckChopAppear{
+  from{opacity:0;transform:translateY(-14px) scale(.55) rotate(30deg)}
+  to{opacity:1;transform:translateY(0) scale(1) rotate(calc(var(--ck-chip) * 31deg))}
+}
+@keyframes ckServingShine{
+  from{opacity:.4;transform:scale(.8) rotate(-8deg)}
+  to{opacity:1;transform:scale(1.18) rotate(9deg)}
+}
+@media(max-width:700px){
+  .recipes-page .ck-art-chip{width:8px;height:7px}
+  .recipes-page .ck-served-image{max-height:420px}
+}
+@media(prefers-reduced-motion:reduce){
+  .recipes-page .ck-served-image,
+  .recipes-page .ck-serving-shine,
+  .recipes-page .ck-art-chip{animation:none!important}
+  .recipes-page .ck-prep-image{transition:none!important}
+}
