@@ -493,7 +493,7 @@ startMissionRotation();
   const stageButtons=[...document.querySelectorAll('.nanner-stage')];
   const stageTitle=document.getElementById('nannerStageTitle');
   const stageCopy=document.getElementById('nannerStageCopy');
-  const fallback='assets/nanner-card.png';
+  const fallback='assets/characters/nanner/nanner-fuel-for-fun.png';
   const stages={
     green:{
       title:'GREEN — FIRM & STARCHY',
@@ -521,8 +521,7 @@ startMissionRotation();
       art.alt=alt||'Nanner the Banana';
       return;
     }
-    // The approved six-image set is staged separately. The original mascot art
-    // remains visible until each illustration is successfully loaded from GitHub.
+    // Keep the approved starting illustration visible if another scene fails to load.
     if(missing.has(src)){
       art.src=fallback;
       art.alt='Nanner the Banana';
