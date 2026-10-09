@@ -774,3 +774,19 @@
   .recipes-page .kq-prep-artwork,
   .recipes-page .kq-art-spoon{animation:none!important}
 }
+/* A few ingredients land one by one instead of showing a fully mixed bowl early. */
+.recipes-page .kq-added-ingredients{
+  position:absolute;
+  inset:48% 22% auto;
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+  justify-content:center;
+  transform:translateY(-50%);
+  pointer-events:none;
+}
+.recipes-page .kq-added-ingredients span{
+  font-size:clamp(1.3rem,2.7vw,1.9rem);
+  filter:drop-shadow(0 2px 2px #23431c80);
+  animation:kqArtSettle .25s ease both;
+}
