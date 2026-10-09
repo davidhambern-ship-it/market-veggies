@@ -111,6 +111,9 @@
   /* Real four-frame food transformations: each cut changes the ingredient,
      not merely a counter or decorative pieces over an unchanged photograph. */
   function cuttingArt(id,hits){
+    // Object-based board/food engine loads before this script.
+    // Keep the previous illustrated frames as a safe fallback.
+    if(window.CarryPrepScene)return window.CarryPrepScene.render(id,hits);
     if(!carryArtNames.has(id))return '';
     const frame=Math.max(0,Math.min(3,hits));
     const labels={
@@ -260,15 +263,28 @@
     if(state.phase!=='prep'||!state.prep||state.prep.hits>=3)return;
     const id=state.prep.id;
     state.prep.hits++;
-    if(state.prep.hits===3){
-      // Keep the FINAL chopped image visible long enough for the child to see it.
-      say('Great job! '+prepSteps[id].name+' complete.');
-      render();
-      window.setTimeout(()=>finishPrep(id),850);
-    }else{
-      say(prepSteps[id].verb+' step '+state.prep.hits+' of three!');
-      render();
-    }
+    const hits=state.prep.hits;
+    // Keep the board, knife and progress controls mounted. Update just the
+    // vegetable pieces: no flash of a different static board on each tap.
+    const board=stage.querySelector('.ck-live-board');
+    const live=window.CarryPrepScene&&window.CarryPrepScene.update(board,id,hits);
+    if(live){
+      const count=stage.querySelector('.kq-prep-top span');
+      if(count)count.textContent=hits+'/3';
+      const bar=stage.querySelector('.ck-prep-panel .kq-meter span');
+      if(bar)bar.style.width=(hits/3*100)+'%';
+      if(hits===3){
+        const action=stage.querySelector('[data-action="cut"]');
+        if(action){action.dataset.action='finish-prep';action.textContent='✓ Add to Carry’s soup →'}
+        const cancel=stage.querySelector('[data-action="cancel"]');
+        if(cancel)cancel.hidden=true;
+      }
+    }else render();
+    if(hits===3){
+      say('Beautifully prepared! '+prepSteps[id].name+' complete.');
+      if(!live)render();
+      window.setTimeout(()=>finishPrep(id),1000);
+    }else say(prepSteps[id].verb+' step '+hits+' of three! The food is changing.');
   }
   function pour(){
     if(state.phase!=='pour'||state.poured===3)return;
@@ -448,14 +464,6 @@
     // Keep keyboard focus on the selected station button.
   });
   render();
-  // Preload the small food frames so each tap feels instant on Safari and mobile.
-  if(typeof Image!=='undefined'){
-    ['carrot','onion','garlic','ginger','herbs'].forEach(id=>{
-      for(let frame=0;frame<4;frame++){
-        const image=new Image();
-        image.src=carryArtFile('prep-'+id+'-'+frame);
-      }
-    });
-  }
+  // Food is drawn as live SVG objects. No old static-image frame preloading.
   if(new URLSearchParams(window.location.search).get('chef')==='carry')showStation('carry');
 })();
