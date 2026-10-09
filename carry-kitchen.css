@@ -1,0 +1,180 @@
+/* Carry's Special Soup — intentionally close to Gary's existing simple 2D game.
+   All new rules are scoped to Carry so Gary stays exactly as approved. */
+.recipes-page [hidden]{display:none!important}
+.recipes-page .kq-station[data-station]{
+  font:inherit;
+  font-weight:inherit;
+  color:#345847;
+  cursor:pointer;
+  touch-action:manipulation;
+  transition:transform .16s ease,box-shadow .16s ease;
+}
+.recipes-page .kq-station[data-station]:hover,
+.recipes-page .kq-station[data-station]:focus-visible{
+  transform:translateY(-3px);
+  box-shadow:0 8px 0 #b3d9a7;
+  border-color:#5cad66;
+}
+.recipes-page .kq-station[data-station]:focus-visible{
+  outline:3px solid #e7a92d;outline-offset:3px;
+}
+.recipes-page .kq-station[data-station].active{
+  opacity:1;
+  border-color:#187448;
+  background:#eaf9df;
+  box-shadow:0 6px 0 #9fca84;
+}
+.recipes-page .ck-layout .kq-game-header{
+  background:linear-gradient(110deg,#bd611c,#df8d26 50%,#d36f20);
+}
+.recipes-page .ck-layout .kq-game-header p{color:#fff8de}
+.recipes-page .ck-layout .kq-chef-avatar{background:#fff4d6;border-color:#fff1ba}
+.recipes-page .ck-layout .kq-chef-avatar img{object-fit:contain}
+.recipes-page .ck-layout .kq-stage{
+  background:
+    radial-gradient(circle at 12% 15%,rgba(247,190,88,.25),transparent 36%),
+    linear-gradient(160deg,#fffdf0,#fff2d6);
+}
+.recipes-page .ck-layout .kq-step-head h3{
+  color:#b95c1c;
+}
+.recipes-page .ck-layout .kq-chapter{
+  color:#af4b16;
+}
+.recipes-page .ck-layout .kq-ingredient.selected{
+  border-color:#e7ad39;
+  background:#fff1d0;
+  box-shadow:0 4px 0 #dbb778;
+}
+.recipes-page .ck-layout .kq-ingredient:disabled{
+  opacity:.72;cursor:default;
+}
+.recipes-page .ck-layout .kq-preparing{
+  border-color:#e49a2f;
+  background:#fff3dc;
+}
+.recipes-page .ck-layout .kq-main-action{
+  background:#d87a25;
+  color:#fff;
+  border-color:#9c4615;
+  box-shadow:0 5px 0 #97441a;
+}
+.recipes-page .ck-layout .kq-main-action:hover:not(:disabled){
+  box-shadow:0 7px 0 #97441a;
+}
+.recipes-page .ck-layout .kq-meter span{
+  background:linear-gradient(90deg,#e6a237,#f1c957);
+}
+.recipes-page .ck-countertop{
+  max-width:610px;
+  min-height:225px;
+  padding:3px 12px;
+  overflow:hidden;
+  border-color:#dfa973;
+}
+.recipes-page .ck-pot-svg{
+  display:block;width:min(100%,520px);height:auto;max-height:355px;
+  margin:0 auto;
+  filter:drop-shadow(0 7px 5px rgba(66,45,23,.15));
+}
+.recipes-page .ck-prep-svg{
+  display:block;width:100%;max-width:450px;height:auto;margin:0 auto;
+}
+.recipes-page .ck-prep-panel{
+  background:linear-gradient(160deg,#fff6dc,#f8e1b2);
+  border-color:#e5ac5c;
+  max-width:610px;
+}
+.recipes-page .ck-prep-list{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:7px;
+}
+.recipes-page .ck-prep-list .kq-ingredient{
+  min-height:92px;padding:8px 5px;
+}
+.recipes-page .ck-prep-list .kq-ingredient span{font-size:1.7rem}
+.recipes-page .ck-prep-list .kq-ingredient b{font-size:.8rem}
+.recipes-page .ck-safe-note{
+  color:#865729;
+  background:#fff1d6;
+  border-radius:12px;
+  font-size:.8rem;
+  line-height:1.45;
+  padding:10px 15px;
+  max-width:550px;
+  margin:17px auto 0;
+}
+.recipes-page .ck-layout .kq-passport{
+  border-color:#f0d08f;
+  background:linear-gradient(#fffdf3,#fff5dd);
+}
+.recipes-page .ck-layout .kq-garden-plot{background:#f9eed3}
+.recipes-page #ckStatus{
+  min-height:27px;
+  background:#f9e5bf;
+  color:#784b19;
+  padding:7px 13px;
+  font-size:.82rem;
+  font-weight:850;
+  border-top:1px solid #e7c082;
+}
+.recipes-page .ck-activity h3{color:#b96c22}
+.recipes-page .ck-activity{
+  border-color:#e9c979;
+  box-shadow:0 10px 0 #ddb579;
+}
+.recipes-page .ck-activity .kq-trail-choice{
+  border-color:#edd8a5;
+  background:#fffae8;
+}
+.recipes-page .ck-activity .kq-trail-choice:hover:not(:disabled){
+  background:#fff1cf;
+  border-color:#d48b28;
+}
+.recipes-page .ck-activity .kq-main-action{
+  background:#dc7b27;border-color:#b75b19;box-shadow:0 5px 0 #a6521f;
+}
+.recipes-page #ckConfetti{
+  position:absolute;inset:0;pointer-events:none;z-index:4;overflow:hidden;
+}
+.recipes-page #ckConfetti i{
+  display:block;position:absolute;top:-20px;
+  left:calc(5% + (var(--i) * 5.5%));
+  width:12px;height:18px;opacity:0;background:#ef8b37;
+}
+.recipes-page #ckConfetti i:nth-child(even){background:#eabf56}
+.recipes-page #ckConfetti i:nth-child(3n){background:#82b54c}
+.recipes-page #ckConfetti.burst i{
+  animation:kqFall 1.8s ease-in forwards;
+  animation-delay:calc(var(--i) * 28ms);
+}
+.recipes-page .ck-stir-spoon{
+  transform-origin:266px 172px;transform:rotate(var(--ck-angle));
+  animation:ckSpoon .8s ease-out both;
+}
+.recipes-page .ck-steam{animation:ckSteam 1.7s ease-in-out infinite alternate}
+@keyframes ckSpoon{
+  from{transform:rotate(calc(var(--ck-angle) - 25deg))}
+  to{transform:rotate(var(--ck-angle))}
+}
+@keyframes ckSteam{
+  from{opacity:.35;transform:translateY(5px)}
+  to{opacity:.8;transform:translateY(-5px)}
+}
+@media(max-width:700px){
+  .recipes-page .ck-prep-list{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .recipes-page .ck-countertop{padding:2px;min-height:190px}
+  .recipes-page .ck-pot-svg{max-height:295px}
+  .recipes-page .ck-prep-panel{padding:13px 10px}
+}
+@media(max-width:430px){
+  .recipes-page .ck-prep-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .recipes-page .ck-prep-list .kq-ingredient{min-height:90px}
+}
+@media(prefers-reduced-motion:reduce){
+  .recipes-page .ck-steam,
+  .recipes-page .ck-stir-spoon,
+  .recipes-page #ckConfetti.burst i{animation:none!important}
+  .recipes-page .kq-station[data-station]{transition:none!important}
+}
