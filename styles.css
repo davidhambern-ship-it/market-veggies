@@ -2912,32 +2912,32 @@
   isolation:isolate;
   background-color:var(--story-background);
   background-image:
-    radial-gradient(circle at 10% 9%,rgba(255,255,255,.75),transparent 35%),
-    radial-gradient(circle at 95% 79%,rgba(255,255,255,.47),transparent 38%);
+    radial-gradient(circle at 10% 9%,rgba(255,255,255,.22),transparent 35%),
+    radial-gradient(circle at 95% 79%,rgba(255,255,255,.12),transparent 38%);
   transition:background-color .5s ease;
 }
 .characters-page .character-story-section[data-character-theme="gary"]{
-  --story-background:#f5eee2;
+  --story-background:#eedfc4;
   --story-ink:#94734e;
 }
 .characters-page .character-story-section[data-character-theme="carry"]{
-  --story-background:#ffe2c4;
+  --story-background:#ffd09d;
   --story-ink:#b76023;
 }
 .characters-page .character-story-section[data-character-theme="artie"]{
-  --story-background:#e2efd9;
+  --story-background:#d0e9bf;
   --story-ink:#387847;
 }
 .characters-page .character-story-section[data-character-theme="tommy"]{
-  --story-background:#fce0dc;
+  --story-background:#ffc8c1;
   --story-ink:#b43d36;
 }
 .characters-page .character-story-section[data-character-theme="nanner"]{
-  --story-background:#fff0b6;
+  --story-background:#ffeba0;
   --story-ink:#9a7114;
 }
 .characters-page .character-story-section[data-character-theme="gingy"]{
-  --story-background:#f5dfc4;
+  --story-background:#ebc79f;
   --story-ink:#8f572c;
 }
 .characters-page .character-story-section > .container{
