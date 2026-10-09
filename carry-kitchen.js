@@ -61,7 +61,6 @@
   function soupPot(){
     const done=state.phase==='serve'||state.phase==='complete';
     const simmer=Math.min(5,state.simmer);
-    const level=state.poured/3;
     const liquid=level===0?'#d4a667':simmer>=4?'#eeb44b':simmer>=2?'#efab3c':'#f6c56a';
     let pieces='';
     const all=state.phase==='prep'?state.prepped:new Set(prepOrder);
@@ -80,7 +79,7 @@
       const x=159+(i*37)%214,y=133+(i*19)%80;
       bubbles+='<circle cx="'+x+'" cy="'+y+'" r="'+(3+i%4)+'" fill="none" stroke="#fff6c8" stroke-width="2.6" opacity=".88"/>';
     }
-    const fill=state.phase==='gather'||state.phase==='prep'?0:1;
+    const fill=state.phase==='pour'?state.poured>0:(state.phase==='simmer'||done);
     const shape=done?
       '<ellipse cx="265" cy="198" rx="157" ry="92" fill="#fafaf4" stroke="#bac4ae" stroke-width="10"/>'+
       '<ellipse cx="265" cy="197" rx="140" ry="78" fill="#eca848" stroke="#d38b34" stroke-width="2"/>'+pieces+
@@ -88,9 +87,9 @@
       '<path d="M112 204 Q135 312 265 311 Q395 313 419 204" fill="none" stroke="#92adb8" stroke-width="5"/>':
       '<path d="M110 155 Q114 303 184 310 Q277 345 359 307 Q418 288 421 155" fill="#9daeb4" stroke="#647b80" stroke-width="9"/>'+
       '<ellipse cx="266" cy="156" rx="169" ry="83" fill="#dce5de" stroke="#607d80" stroke-width="10"/>'+
-      (fill?'<ellipse cx="266" cy="166" rx="151" ry="66" fill="'+liquid+'"/>'+pieces+bubbles:
+      (fill?'<ellipse cx="266" cy="166" rx="'+(state.phase==='pour'?55+state.poured*32:151)+'" ry="'+(state.phase==='pour'?23+state.poured*14:66)+'" fill="'+liquid+'"/>'+pieces+bubbles:
         '<ellipse cx="266" cy="166" rx="151" ry="66" fill="#ffeed1"/>'+pieces)+
-      '<path d="M99 154 Q72 146 69 168 Q66 192 103 199 M427 155 Q460 147 461 170 Q462 193 423 201" fill="none" stroke="#759196" stroke-width="17"/>';
+      '<path d="M99 154 Q72 146 69 168 Q66 192 103 199 M427 155 Q460 147 461 170 Q462 193 423 201" fill="none" stroke="#759196" stroke-width="17"/>'+      (state.phase==='pour'&&state.poured>0?'<path class="ck-broth-stream" d="M390 29 Q365 86 353 143" stroke="#edbd68" stroke-width="'+(7+state.poured*3)+'" stroke-linecap="round" fill="none" opacity=".76"/>':'');
     const spoon=state.phase==='simmer'?'<g class="ck-stir-spoon" style="--ck-angle:'+simmer*48+'deg"><path d="M362 42 L298 177" stroke="#9f703f" stroke-width="16" stroke-linecap="round"/><ellipse cx="293" cy="186" rx="15" ry="22" transform="rotate(25 293 186)" fill="#ba8a51"/></g>':'';
     const steam=state.phase==='simmer'||done?'<path class="ck-steam" d="M210 83 q-15 -23 3 -41 M267 76 q-13 -24 5 -42 M322 87 q-15 -24 4 -40" stroke="#f6f9e7" stroke-width="8" stroke-linecap="round" fill="none" opacity=".8"/>':'';
     const serving=done?'<g aria-hidden="true"><path d="M68 107 l24 -50 l26 49 Z" fill="#edbf5e"/><path d="M411 115 l25 -54 l34 57 Z" fill="#f4c468"/></g>':'';
