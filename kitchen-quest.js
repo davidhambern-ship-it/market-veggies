@@ -203,8 +203,9 @@
       }).join('');
     }
     const tool=cut.tool==='Knife'?'<path class="kq-prep-knife" d="M300 29 L372 59 L294 80 Q282 62 300 29Z" fill="#c5d8df" stroke="#849ba6" stroke-width="4"/>':'';
-    return '<svg class="kq-prep-svg" viewBox="0 0 420 185" aria-hidden="true">'+svgDefs+
-      '<rect x="24" y="20" width="372" height="146" rx="27" fill="url(#kq-board)" stroke="#b87f49" stroke-width="8"/>'+
+    return '<svg class="kq-prep-svg" viewBox="0 0 420 185" aria-hidden="true">'+
+      '<defs><linearGradient id="kq-prep-board" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#f2cd97"/><stop offset="1" stop-color="#d7a267"/></linearGradient></defs>'+
+      '<rect x="24" y="20" width="372" height="146" rx="27" fill="url(#kq-prep-board)" stroke="#b87f49" stroke-width="8"/>'+
       picture+tool+'</svg>';
   }
   function controls(){
