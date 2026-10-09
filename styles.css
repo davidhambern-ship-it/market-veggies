@@ -3009,3 +3009,14 @@
   .characters-page .character-story-section,
   .characters-page .character-atmosphere-layer{transition:none!important}
 }
+
+/* SPECIFICITY FIX: the shared .market-theme main > .section paints an OPAQUE
+   blue-white gradient above background-color. Override the entire background
+   for this single page section, without touching the carousel or explainer. */
+.market-theme.characters-page main > .character-story-section{
+  background:
+    radial-gradient(circle at 10% 9%,rgba(255,255,255,.22),transparent 35%),
+    radial-gradient(circle at 95% 79%,rgba(255,255,255,.12),transparent 38%),
+    var(--story-background);
+  transition:background-color .5s ease;
+}
