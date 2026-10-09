@@ -80,6 +80,17 @@
     onion:['onion-prep-01-half','onion-prep-02-sliced','onion-prep-03-diced'],
     cilantro:['cilantro-prep-01-bunch','cilantro-prep-02-chopping','cilantro-prep-03-chopped']
   };
+  const kqIngredientArt={
+    avocado:'avocado-half-pit',lime:'lime-half',
+    garlic:'garlic-clove',tomato:'tomato-whole',
+    onion:'onion-half',cilantro:'cilantro-bunch'
+  };
+  function kqIngredientIcon(item){
+    return kqArtReady?
+      '<img class="kq-ingredient-art" src="'+kqSource('ingredients',kqIngredientArt[item.id])+
+      '" alt="" aria-hidden="true" loading="lazy">':
+      '<span aria-hidden="true">'+item.emoji+'</span>';
+  }
   const kqHostArt={
     gather:'gary-chef-idle',mash:'gary-chef-excited',
     season:'gary-chef-excited',stir:'gary-chef-approve',
@@ -144,6 +155,8 @@
       kqArtReady=true;
       root.classList.add('kq-illustrated');
       kqUpdateChef();
+      const hero=document.querySelector('.kq-hero-art img');
+      if(hero)hero.src=kqSource('kitchen','gary-serving-scene');
       render();
     };
     tester.onerror=()=>{
@@ -311,7 +324,7 @@
         '<h3>Collect your guacamole ingredients!</h3><p>Tap the food or drag it into the basket. Find all six to unlock the counter.</p></div>'+
         '<div class="kq-pantry">'+pantry.map(item=>'<button class="kq-ingredient'+(state.collected.has(item.id)?' selected':'')+
           '" type="button" draggable="true" data-collect="'+item.id+'" aria-pressed="'+state.collected.has(item.id)+'">'+
-          '<span aria-hidden="true">'+item.emoji+'</span><b>'+item.name+'</b><small>'+(state.collected.has(item.id)?'Added ✓':'Tap or drag')+'</small></button>').join('')+
+          kqIngredientIcon(item)+'<b>'+item.name+'</b><small>'+(state.collected.has(item.id)?'Added ✓':'Tap or drag')+'</small></button>').join('')+
         '</div><div class="kq-basket" id="kqBasket" aria-label="Ingredient basket" role="region">'+
         '<strong>🧺 Your basket · '+state.collected.size+'/6</strong><span>'+
         (state.collected.size?[...state.collected].map(id=>pantry.find(item=>item.id===id)?.emoji||'').join(' '):'Drop ingredients here!')+
@@ -337,7 +350,7 @@
           (state.prep?.id===item.id?' kq-preparing':'')+
           '" type="button" data-season="'+item.id+'" aria-pressed="'+(state.prep?.id===item.id)+'" '+
           (state.added.has(item.id)?'disabled':'')+'>'+
-          '<span aria-hidden="true">'+item.emoji+'</span><b>'+item.name+'</b><small>'+
+          kqIngredientIcon(item)+'<b>'+item.name+'</b><small>'+
           (state.added.has(item.id)?'Prepped ✓':state.prep?.id===item.id?'Preparing...':prepTasks[item.id].verb)+'</small></button>').join('')+'</div>'+
         (active?'<div class="kq-prep-panel"><div class="kq-prep-top"><strong>'+selected.emoji+' '+active.verb+' the '+selected.name.toLowerCase()+
           '</strong><span>'+state.prep.hits+'/3</span></div>'+
