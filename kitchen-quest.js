@@ -93,14 +93,17 @@
     if(state.phase==='complete')return kqSource('bowl','plated-guac-with-chips');
     if(state.phase==='stir')return kqSource('bowl',kqMixArt[Math.min(4,state.stir)]);
     if(state.phase==='season'){
-      if(state.added.size===0)return kqSource('bowl',kqMashArt[5]);
-      // The initial unmixed bowl gives prepared ingredients a distinct look.
-      return kqSource('bowl',kqMixArt[0]);
+      // Keep the true avocado base visible until all add-ins are prepared.
+      return kqSource('bowl',state.added.size===5?kqMixArt[0]:kqMashArt[5]);
     }
     return kqSource('bowl',kqMashArt[Math.min(5,state.mash)]);
   }
   function kqIllustratedBowl(){
     const file=kqBowlFile();
+    const extras=state.phase==='season'&&state.added.size<5&&state.added.size>0?
+      '<div class="kq-added-ingredients" aria-label="Prepared ingredients added">'+
+      [...state.added].map(id=>'<span aria-label="'+htmlEscape(id)+'">'+(pantry.find(x=>x.id===id)?.emoji||'')+'</span>').join('')+
+      '</div>':'';
     return '<div class="kq-countertop kq-illustrated-countertop">'+
       '<div class="kq-painted-bowl">'+
       '<img id="kqBowl" class="kq-guac-artwork" src="'+file+
@@ -109,7 +112,7 @@
         state.phase==='season'?'Guacamole bowl with prepared ingredients':
         'Avocado mash stage '+state.mash+' of five')+'" draggable="false">'+
       (state.phase==='stir'?'<span class="kq-art-spoon" aria-hidden="true">🥄</span>':'')+
-      '</div></div>';
+      extras+'</div></div>';
   }
   function kqIllustratedPrep(id,hits){
     const frames=kqPrepArt[id];
