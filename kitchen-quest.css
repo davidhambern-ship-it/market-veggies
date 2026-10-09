@@ -790,3 +790,37 @@
   filter:drop-shadow(0 2px 2px #23431c80);
   animation:kqArtSettle .25s ease both;
 }
+
+/* Illustration-specific ingredient cards */
+.recipes-page .kq-illustrated .kq-ingredient .kq-ingredient-art{
+  display:block;
+  width:75px;max-width:100%;height:69px;
+  object-fit:contain;margin:0 auto;
+  filter:drop-shadow(0 4px 3px rgba(50,54,30,.11));
+  transition:transform .2s ease;
+}
+.recipes-page .kq-illustrated .kq-ingredient:hover .kq-ingredient-art{
+  transform:translateY(-4px) rotate(-3deg) scale(1.05);
+}
+.recipes-page .kq-illustrated .kq-ingredient{
+  min-height:119px;
+}
+.recipes-page .kq-illustrated .kq-toppings .kq-ingredient{
+  min-height:109px;
+}
+.recipes-page .kq-illustrated .kq-toppings .kq-ingredient .kq-ingredient-art{
+  width:58px;height:54px;
+}
+.recipes-page .kq-illustrated .kq-unlock:before{
+  content:"";
+  display:block;
+  width:min(100%,320px);height:150px;
+  margin:0 auto 9px;
+  background:url("assets/recipes/gary-kitchen/rewards/recipe-unlocked-card.png") center / contain no-repeat;
+}
+@media(max-width:700px){
+  .recipes-page .kq-illustrated .kq-ingredient .kq-ingredient-art{height:58px}
+}
+@media(prefers-reduced-motion:reduce){
+  .recipes-page .kq-illustrated .kq-ingredient .kq-ingredient-art{transition:none!important}
+}
