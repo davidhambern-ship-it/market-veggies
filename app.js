@@ -68,6 +68,8 @@ startMissionRotation();
 (function initCharacterStories(){
   const carousel=document.getElementById('characterCarousel');
   if(!carousel)return;
+  const storySection=carousel.closest('.character-story-section');
+  const atmosphereLayers=storySection?[...storySection.querySelectorAll('.character-atmosphere-layer')]:[];
 
   const track=carousel.querySelector('.character-track');
   const slides=[...carousel.querySelectorAll('.character-story-slide')];
@@ -86,6 +88,10 @@ startMissionRotation();
     index=(nextIndex+slides.length)%slides.length;
     track.style.transform='translateX(-'+(index*100)+'%)';
     slides.forEach((slide,i)=>slide.classList.toggle('active',i===index));
+    // Repaint only the surrounding PAGE section; character cards remain unchanged.
+    const character=slides[index]?.dataset.character||'gary';
+    if(storySection)storySection.dataset.characterTheme=character;
+    atmosphereLayers.forEach(layer=>layer.classList.toggle('active',layer.dataset.atmosphere===character));
     dots.forEach((dot,i)=>{
       dot.classList.toggle('active',i===index);
       dot.setAttribute('aria-selected',i===index?'true':'false');
