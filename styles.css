@@ -2902,3 +2902,110 @@
   .characters-page .gingy-art-frame img,
   .characters-page .gingy-fact{animation:none!important;transition:none!important}
 }
+
+
+/* Character-themed PAGE background (outside and BEHIND the character carousel).
+   The artwork zone, white explainer panels, and shared carousel dimensions stay untouched. */
+.characters-page .character-story-section{
+  --story-background:#f5f0e6;
+  --story-ink:#8e7856;
+  isolation:isolate;
+  background-color:var(--story-background);
+  background-image:
+    radial-gradient(circle at 10% 9%,rgba(255,255,255,.75),transparent 35%),
+    radial-gradient(circle at 95% 79%,rgba(255,255,255,.47),transparent 38%);
+  transition:background-color .5s ease;
+}
+.characters-page .character-story-section[data-character-theme="gary"]{
+  --story-background:#f5eee2;
+  --story-ink:#94734e;
+}
+.characters-page .character-story-section[data-character-theme="carry"]{
+  --story-background:#ffe2c4;
+  --story-ink:#b76023;
+}
+.characters-page .character-story-section[data-character-theme="artie"]{
+  --story-background:#e2efd9;
+  --story-ink:#387847;
+}
+.characters-page .character-story-section[data-character-theme="tommy"]{
+  --story-background:#fce0dc;
+  --story-ink:#b43d36;
+}
+.characters-page .character-story-section[data-character-theme="nanner"]{
+  --story-background:#fff0b6;
+  --story-ink:#9a7114;
+}
+.characters-page .character-story-section[data-character-theme="gingy"]{
+  --story-background:#f5dfc4;
+  --story-ink:#8f572c;
+}
+.characters-page .character-story-section > .container{
+  position:relative;
+  z-index:1;
+}
+.characters-page .character-story-atmosphere{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  z-index:0;
+  pointer-events:none;
+}
+.characters-page .character-atmosphere-layer{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .45s ease,visibility .45s ease;
+}
+.characters-page .character-atmosphere-layer.active{
+  opacity:1;
+  visibility:visible;
+}
+.characters-page .character-atmosphere-layer > span{
+  position:absolute;
+  display:block;
+  white-space:nowrap;
+  user-select:none;
+  line-height:1;
+  pointer-events:none;
+}
+.characters-page .character-atmosphere-icon{
+  font-size:clamp(2.3rem,4.3vw,5.4rem);
+  opacity:.22;
+  filter:saturate(.68);
+}
+.characters-page .character-atmosphere-keyword{
+  color:var(--story-ink);
+  font-weight:950;
+  font-size:clamp(.95rem,1.65vw,1.75rem);
+  letter-spacing:.12em;
+  opacity:.16;
+}
+.characters-page .character-atmosphere-layer > :nth-child(1){top:4%;left:2%;transform:rotate(-15deg)}
+.characters-page .character-atmosphere-layer > :nth-child(2){top:13%;right:3%;transform:rotate(10deg)}
+.characters-page .character-atmosphere-layer > :nth-child(3){top:29%;left:4%;transform:rotate(13deg)}
+.characters-page .character-atmosphere-layer > :nth-child(4){top:39%;right:1%;transform:rotate(-13deg)}
+.characters-page .character-atmosphere-layer > :nth-child(5){top:49%;left:0%;transform:rotate(-18deg)}
+.characters-page .character-atmosphere-layer > :nth-child(6){top:59%;right:0%;transform:rotate(14deg)}
+.characters-page .character-atmosphere-layer > :nth-child(7){bottom:22%;left:1%;transform:rotate(-10deg)}
+.characters-page .character-atmosphere-layer > :nth-child(8){bottom:22%;right:1%;transform:rotate(12deg)}
+.characters-page .character-atmosphere-layer > :nth-child(9){bottom:5%;left:7%;transform:rotate(8deg)}
+.characters-page .character-atmosphere-layer > :nth-child(10){bottom:4%;right:11%;transform:rotate(-12deg)}
+.characters-page .character-atmosphere-layer > :nth-child(11){top:5%;left:46%;transform:rotate(4deg)}
+.characters-page .character-atmosphere-layer > :nth-child(12){bottom:2%;left:47%;transform:rotate(-8deg)}
+@media(max-width:980px){
+  .characters-page .character-atmosphere-icon{font-size:clamp(2rem,6vw,4rem)}
+  .characters-page .character-atmosphere-keyword{font-size:clamp(.8rem,2.2vw,1.3rem)}
+}
+@media(max-width:680px){
+  .characters-page .character-atmosphere-icon{opacity:.17}
+  .characters-page .character-atmosphere-keyword{opacity:.12;font-size:.8rem;letter-spacing:.08em}
+  .characters-page .character-atmosphere-layer > :nth-child(4),
+  .characters-page .character-atmosphere-layer > :nth-child(6),
+  .characters-page .character-atmosphere-layer > :nth-child(11){display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .characters-page .character-story-section,
+  .characters-page .character-atmosphere-layer{transition:none!important}
+}
