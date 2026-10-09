@@ -67,7 +67,78 @@
       '" alt="A warm bowl of orange carrot soup with real-looking carrot rounds, onion, ginger and green herb garnish" draggable="false">'+
       '<span class="ck-serving-shine" aria-hidden="true">✦</span></div>';
   }
+
+  // Object-based soup stirring: a persistent pot, actual rotating ingredients,
+  // visible ripples, and a wooden spoon whose bowl dips into the soup.
+  function simmerPot(){
+    let food='';
+    const cx=265,cy=168;
+    for(let i=0;i<45;i++){
+      const angle=i*2.3999632297;
+      const radial=Math.sqrt((i+.5)/45);
+      const x=Math.round(cx+Math.cos(angle)*radial*131);
+      const y=Math.round(cy+Math.sin(angle)*radial*132);
+      const type=i%7;
+      if(type===0||type===3){
+        food+='<g transform="rotate('+(i*29%80-40)+' '+x+' '+y+')">'+
+          '<circle cx="'+x+'" cy="'+y+'" r="'+(type===0?17:14)+'" fill="#d8751e" stroke="#ae5d18" stroke-width="3"/>'+
+          '<circle cx="'+x+'" cy="'+y+'" r="'+(type===0?12:10)+'" fill="#f39a2d"/>'+
+          '<path d="M'+(x-6)+' '+(y+2)+'q6 5 13 0" fill="none" stroke="#ffc16a" stroke-width="2"/></g>';
+      }else if(type===1||type===5){
+        food+='<rect x="'+(x-9)+'" y="'+(y-9)+'" width="'+(type===1?18:14)+'" height="'+(type===1?17:14)+
+          '" rx="3" transform="rotate('+(i*31%60-30)+' '+x+' '+y+')" fill="'+(type===1?'#c88ed0':'#ffedb8')+
+          '" stroke="'+(type===1?'#a86aab':'#ebdba5')+'" stroke-width="2"/>';
+      }else if(type===2){
+        food+='<path d="M'+(x-10)+' '+(y+5)+'q2 -14 15 -17q12 4 5 17q-8 9 -20 0z" fill="#408b3f" stroke="#2e763f" stroke-width="2"/>';
+      }else if(type===4){
+        food+='<rect x="'+(x-7)+'" y="'+(y-3)+'" width="14" height="6" rx="3" transform="rotate('+(i*39%100-50)+' '+x+' '+y+')" fill="#e8c074" stroke="#c7a45f" stroke-width="1"/>';
+      }else{
+        food+='<circle cx="'+x+'" cy="'+y+'" r="5" fill="#f1e3b0" opacity=".9"/>';
+      }
+    }
+    let bubbles='';
+    for(let i=0;i<12;i++){
+      const x=153+(i*53)%228,y=134+(i*23)%68;
+      bubbles+='<circle class="ck-stir-bubble" style="--ck-bubble-delay:'+(i*80)+'ms" cx="'+x+'" cy="'+y+
+        '" r="'+(3+i%4)+'" fill="none" stroke="#fff2bd" stroke-width="2" opacity=".65"/>';
+    }
+    const defs='<defs>'+
+      '<linearGradient id="ck-stir-pot-metal" x1="0" y1="0" x2=".6" y2="1">'+
+      '<stop stop-color="#c4d2d4"/><stop offset=".55" stop-color="#97aeb3"/><stop offset="1" stop-color="#829da4"/></linearGradient>'+
+      '<radialGradient id="ck-stir-broth" cx="42%" cy="32%">'+
+      '<stop stop-color="#ffe195"/><stop offset=".65" stop-color="#f5c468"/><stop offset="1" stop-color="#e5a546"/></radialGradient>'+
+      '<clipPath id="ck-stir-soup-clip"><ellipse cx="265" cy="170" rx="153" ry="72"/></clipPath>'+
+      '</defs>';
+    return '<div class="kq-countertop ck-countertop ck-simmer-countertop">'+
+      '<svg id="ckPot" class="ck-pot-svg ck-simmer-pot" data-stirs="'+state.simmer+
+      '" viewBox="0 0 530 365" role="img" aria-label="Wooden spoon stirring vegetables in a steaming pot of carrot soup">'+defs+
+      '<ellipse cx="265" cy="327" rx="178" ry="19" fill="#835a32" opacity=".19"/>'+
+      '<path d="M112 174 Q72 151 64 180 Q61 207 113 219 M417 174 Q466 150 469 183 Q472 208 419 219" fill="none" stroke="#78989e" stroke-width="17" stroke-linecap="round"/>'+
+      '<path d="M112 160 Q115 298 185 312 Q261 339 350 310 Q416 294 418 158" fill="url(#ck-stir-pot-metal)" stroke="#698992" stroke-width="8"/>'+
+      '<ellipse cx="265" cy="167" rx="175" ry="91" fill="#e0e9e3" stroke="#688992" stroke-width="8"/>'+
+      '<g clip-path="url(#ck-stir-soup-clip)">'+
+      '<ellipse cx="265" cy="170" rx="155" ry="74" fill="url(#ck-stir-broth)"/>'+
+      '<g transform="translate(0 87) scale(1 .48)">'+
+      '<g id="ckSoupIngredients" class="ck-soup-ingredients" style="transform:rotate('+(state.simmer*245)+'deg)">'+food+'</g></g>'+
+      '<g id="ckSoupRipples" class="ck-soup-ripples">'+
+      '<path d="M172 153 Q222 124 286 137 Q337 145 359 176" fill="none" stroke="#ffe7a6" stroke-width="8" stroke-linecap="round" opacity=".53"/>'+
+      '<path d="M195 194 Q257 220 329 192" fill="none" stroke="#fff0c2" stroke-width="6" stroke-linecap="round" opacity=".5"/>'+
+      '<ellipse cx="265" cy="171" rx="106" ry="42" fill="none" stroke="#fff2c6" stroke-width="3" opacity=".25"/></g>'+
+      bubbles+'</g>'+
+      // Spoon head sits inside soup opening. Handle rises diagonally over rim.
+      '<g id="ckStirSpoon" class="ck-simmer-spoon">'+
+      '<path d="M273 181 Q303 157 321 123 L373 43" fill="none" stroke="#8f5d2d" stroke-width="19" stroke-linecap="round"/>'+
+      '<path d="M275 178 Q308 145 328 116 L372 45" fill="none" stroke="#c49150" stroke-width="12" stroke-linecap="round"/>'+
+      '<ellipse cx="260" cy="190" rx="29" ry="18" transform="rotate(-19 260 190)" fill="#98632f" stroke="#795126" stroke-width="3"/>'+
+      '<ellipse cx="257" cy="185" rx="21" ry="11" transform="rotate(-19 257 185)" fill="#c08b4b"/>'+
+      '<path d="M234 202 Q259 213 286 195" fill="none" stroke="#ffe6a0" stroke-width="5" opacity=".68"/></g>'+
+      '<ellipse cx="265" cy="168" rx="155" ry="74" fill="none" stroke="#fff9e9" stroke-width="9" opacity=".95"/>'+
+      '<g class="ck-stir-steam" fill="none" stroke="#fff4d5" stroke-width="8" stroke-linecap="round" opacity=".75">'+
+      '<path d="M210 77 Q190 57 213 26 M276 66 Q260 43 282 16 M335 81 Q316 55 337 29"/></g>'+
+      '</svg></div>';
+  }
   function soupPot(){
+    if(state.phase==='simmer')return simmerPot();
     const done=state.phase==='serve'||state.phase==='complete';
     if(done)return carryServedBowl();
     const simmer=Math.min(5,state.simmer);
@@ -291,8 +362,31 @@
     state.poured++;say(state.poured===3?'Broth is in! Now it’s ready to simmer.':'Pour '+state.poured+' of three.');render();
   }
   function simmer(){
-    if(state.phase!=='simmer'||state.simmer===5)return;
-    state.simmer++;say(state.simmer===5?'The virtual soup is ready! Let’s serve it.':'Gentle stir '+state.simmer+' of five.');render();
+    if(state.phase!=='simmer'||state.simmer>=5)return;
+    state.simmer++;
+    const pot=stage.querySelector('#ckPot');
+    const food=stage.querySelector('#ckSoupIngredients');
+    if(pot&&food){
+      // Rotating the SAME SVG objects triggers a continuous circular transition,
+      // rather than replacing the whole pot and losing the motion.
+      food.style.transform='rotate('+(state.simmer*245)+'deg)';
+      pot.dataset.stirs=String(state.simmer);
+      pot.classList.remove('ck-stir-pulse');
+      void pot.offsetWidth;
+      pot.classList.add('ck-stir-pulse');
+      const count=stage.querySelector('.kq-count');
+      if(count)count.textContent=state.simmer+' of 5 gentle stirs';
+      const bar=stage.querySelector('.kq-meter span');
+      if(bar)bar.style.width=(state.simmer*20)+'%';
+      const button=stage.querySelector('[data-action="simmer"]');
+      if(state.simmer===5&&button){
+        button.disabled=true;
+        button.textContent='✓ Soup stirred!';
+        // Reveal the Serve control only after the final stir animation.
+        window.setTimeout(()=>{if(state.phase==='simmer'&&state.simmer===5)render()},1050);
+      }
+    }else render();
+    say(state.simmer===5?'The soup is ready! Let’s serve it.':'Stir '+state.simmer+' of five — watch the vegetables swirl!');
   }
   function finish(){
     if(state.phase!=='serve')return;
@@ -431,8 +525,9 @@
   });
   root.addEventListener('pointerup',e=>{
     if(!pointer)return;
-    const distance=Math.hypot(e.clientX-pointer.x,e.clientY-pointer.y);
-    if(state.phase==='simmer'&&distance>40)simmer();
+    // A tap or a short circular drag on the soup counts as one stir.
+    // The on-screen Stir button remains an accessible alternative.
+    if(state.phase==='simmer'&&e.target.closest('#ckPot'))simmer();
     pointer=null;
   });
   root.addEventListener('pointercancel',()=>{pointer=null});
