@@ -508,3 +508,161 @@
   }
   .recipes-page .kq-ingredient,.recipes-page .kq-main-action{transition:none!important}
 }
+
+
+/* Kitchen Quest recipe-preparation and true guacamole vector artwork */
+.recipes-page .kq-countertop{
+  max-width:650px;
+  padding:4px 12px;
+  min-height:0;
+  margin:17px auto;
+  overflow:hidden;
+}
+.recipes-page .kq-guac-svg{
+  display:block;
+  width:min(100%,520px);
+  height:auto;
+  max-height:360px;
+  margin:auto;
+  filter:drop-shadow(0 7px 6px rgba(79,54,22,.18));
+}
+.recipes-page .kq-guac-svg .kq-contents{
+  transform-origin:260px 185px;
+  transform:rotate(var(--kq-mix-angle,0deg));
+}
+.recipes-page .kq-guac-svg.kq-mashing .kq-masher-tool{
+  transform-origin:303px 148px;
+  animation:kq-press .44s ease both;
+}
+.recipes-page .kq-guac-svg.kq-stirring .kq-wood-spoon{
+  transform-origin:260px 186px;
+  transform:rotate(var(--stir-rotation,0deg));
+  animation:kq-spoon-tilt .65s ease both;
+}
+.recipes-page .kq-guac-svg.kq-seasoning .kq-contents,
+.recipes-page .kq-guac-svg.kq-stirring .kq-contents{
+  animation:kq-mixture-settle .45s ease-out both;
+}
+.recipes-page .kq-plated{
+  margin-top:20px;
+  border:7px solid #ebcc91;
+  background:radial-gradient(circle at 50% 30%,#fffaf0,#e0bd8c);
+}
+.recipes-page .kq-prep-panel{
+  border:3px solid #efcc7c;
+  background:linear-gradient(175deg,#fff9e6,#fbe9c5);
+  border-radius:20px;
+  padding:15px 18px 21px;
+  max-width:620px;
+  margin:16px auto;
+  box-shadow:0 7px 0 rgba(169,115,48,.13);
+}
+.recipes-page .kq-prep-top{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  color:#3d6e41;
+  font-size:1.02rem;
+}
+.recipes-page .kq-prep-top span{
+  background:#e6f3d6;
+  color:#346a41;
+  padding:3px 10px;
+  font-size:.8rem;
+  font-weight:900;
+  border-radius:999px;
+}
+.recipes-page .kq-prep-panel>p{
+  margin:8px auto 12px;
+  font-size:.86rem;
+  line-height:1.5;
+  color:#665936;
+  max-width:490px;
+}
+.recipes-page .kq-prep-art-button{
+  display:block;
+  width:100%;
+  max-width:490px;
+  border:0;
+  padding:0;
+  margin:8px auto;
+  border-radius:17px;
+  overflow:hidden;
+  background:transparent;
+  cursor:pointer;
+  touch-action:manipulation;
+  transition:transform .18s ease;
+}
+.recipes-page .kq-prep-art-button:hover,
+.recipes-page .kq-prep-art-button:focus-visible{transform:scale(1.02);outline:3px solid #e3ab3f;outline-offset:2px}
+.recipes-page .kq-prep-svg{width:100%;height:auto;display:block}
+.recipes-page .kq-prep-svg .kq-prep-knife{animation:kq-chop-motion .52s ease both;transform-origin:296px 75px}
+.recipes-page .kq-prep-panel .kq-main-action{margin-top:8px}
+.recipes-page .kq-cancel{
+  display:inline-flex;
+  color:#556a49;
+  border:2px solid #cfc6a5;
+  background:rgba(255,255,255,.74);
+  border-radius:999px;
+  padding:10px 13px;
+  font-size:.8rem;
+  font-weight:800;
+  margin:8px 3px 0;
+  min-height:45px;
+  cursor:pointer;
+}
+.recipes-page .kq-prep-prompt{
+  padding:10px 12px;
+  margin:4px auto;
+  color:#4b724c;
+  font-size:.88rem;
+  font-weight:800;
+}
+.recipes-page .kq-toppings .kq-ingredient.kq-preparing{
+  border-color:#e8ad32;
+  background:#fff4d2;
+  transform:translateY(-3px);
+}
+.recipes-page .kq-toppings .kq-ingredient:disabled{
+  cursor:default;
+  opacity:.79;
+}
+.recipes-page .kq-next:disabled{
+  opacity:.43;
+  cursor:not-allowed;
+  box-shadow:none;
+}
+@keyframes kq-press{
+  0%{transform:translateY(-13px) rotate(-12deg)}
+  62%{transform:translateY(12px) rotate(8deg)}
+  100%{transform:translateY(0) rotate(0deg)}
+}
+@keyframes kq-chop-motion{
+  0%{transform:translateY(-16px) rotate(-20deg)}
+  64%{transform:translateY(8px) rotate(12deg)}
+  100%{transform:translateY(0) rotate(0deg)}
+}
+@keyframes kq-spoon-tilt{
+  0%{transform:rotate(calc(var(--stir-rotation,0deg) - 15deg))}
+  100%{transform:rotate(var(--stir-rotation,0deg))}
+}
+@keyframes kq-mixture-settle{
+  0%{opacity:.65;transform:scale(.95)}
+  100%{opacity:1;transform:scale(1) rotate(var(--kq-mix-angle,0deg))}
+}
+@media(max-width:700px){
+  .recipes-page .kq-prep-panel{padding:12px 10px 18px}
+  .recipes-page .kq-prep-panel .kq-main-action{width:100%}
+  .recipes-page .kq-guac-svg{max-height:300px}
+  .recipes-page .kq-countertop{padding:5px}
+}
+@media(prefers-reduced-motion:reduce){
+  .recipes-page .kq-guac-svg .kq-masher-tool,
+  .recipes-page .kq-guac-svg .kq-wood-spoon,
+  .recipes-page .kq-guac-svg .kq-contents,
+  .recipes-page .kq-prep-svg .kq-prep-knife{
+    animation:none!important;
+    transition:none!important;
+  }
+}
