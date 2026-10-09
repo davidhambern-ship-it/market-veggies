@@ -58,114 +58,6 @@
     }).join('');
   }
 
-
-  /* Gary Kitchen Quest illustrated assets.
-     New graphics are used automatically when the art folder is present.
-     On a missing image the existing SVG game remains fully playable. */
-  const kqAssetRoot='assets/recipes/gary-kitchen/';
-  const kqMashArt=[
-    'guac-stage-01-halves','guac-stage-02-crushed',
-    'guac-stage-03-chunky','guac-stage-04-medium-mash',
-    'guac-stage-05-smooth-base','guac-stage-06-ready-for-mixins'
-  ];
-  const kqMixArt=[
-    'bowl-mix-01-added-not-mixed','bowl-mix-02-light-mix',
-    'bowl-mix-03-mid-mix','bowl-mix-04-nearly-finished',
-    'bowl-mix-05-finished-guac'
-  ];
-  const kqPrepArt={
-    garlic:['garlic-prep-01-clove','garlic-prep-02-crushed','garlic-prep-03-minced'],
-    lime:['lime-prep-01-half','lime-prep-02-squeezing','lime-prep-03-juice-drops'],
-    tomato:['tomato-prep-01-whole','tomato-prep-02-sliced','tomato-prep-03-diced'],
-    onion:['onion-prep-01-half','onion-prep-02-sliced','onion-prep-03-diced'],
-    cilantro:['cilantro-prep-01-bunch','cilantro-prep-02-chopping','cilantro-prep-03-chopped']
-  };
-  const kqIngredientArt={
-    avocado:'avocado-half-pit',lime:'lime-half',
-    garlic:'garlic-clove',tomato:'tomato-whole',
-    onion:'onion-half',cilantro:'cilantro-bunch'
-  };
-  function kqIngredientIcon(item){
-    return kqArtReady?
-      '<img class="kq-ingredient-art" src="'+kqSource('ingredients',kqIngredientArt[item.id])+
-      '" alt="" aria-hidden="true" loading="lazy">':
-      '<span aria-hidden="true">'+item.emoji+'</span>';
-  }
-  const kqHostArt={
-    gather:'gary-chef-idle',mash:'gary-chef-excited',
-    season:'gary-chef-excited',stir:'gary-chef-approve',
-    serve:'gary-chef-celebrate',complete:'gary-chef-celebrate'
-  };
-  let kqArtReady=false;
-  let kqArtBroken=false;
-  function kqSource(folder,name){return kqAssetRoot+folder+'/'+name+'.png'}
-  function kqBowlFile(){
-    if(state.phase==='serve')return kqSource('bowl','finished-guacamole-bowl');
-    if(state.phase==='complete')return kqSource('bowl','plated-guac-with-chips');
-    if(state.phase==='stir')return kqSource('bowl',kqMixArt[Math.min(4,state.stir)]);
-    if(state.phase==='season'){
-      // Keep the true avocado base visible until all add-ins are prepared.
-      return kqSource('bowl',state.added.size===5?kqMixArt[0]:kqMashArt[5]);
-    }
-    return kqSource('bowl',kqMashArt[Math.min(5,state.mash)]);
-  }
-  function kqIllustratedBowl(){
-    const file=kqBowlFile();
-    const extras=state.phase==='season'&&state.added.size<5&&state.added.size>0?
-      '<div class="kq-added-ingredients" aria-label="Prepared ingredients added">'+
-      [...state.added].map(id=>'<span aria-label="'+htmlEscape(id)+'">'+(pantry.find(x=>x.id===id)?.emoji||'')+'</span>').join('')+
-      '</div>':'';
-    return '<div class="kq-countertop kq-illustrated-countertop">'+
-      '<div class="kq-painted-bowl">'+
-      '<img id="kqBowl" class="kq-guac-artwork" src="'+file+
-      '" alt="'+(state.phase==='complete'?'Plated guacamole with crunchy tortilla chips':
-        state.phase==='stir'?'Guacamole becoming more thoroughly mixed, stir '+state.stir+' of five':
-        state.phase==='season'?'Guacamole bowl with prepared ingredients':
-        'Avocado mash stage '+state.mash+' of five')+'" draggable="false">'+
-      (state.phase==='stir'?'<span class="kq-art-spoon" aria-hidden="true">🥄</span>':'')+
-      extras+'</div></div>';
-  }
-  function kqIllustratedPrep(id,hits){
-    const frames=kqPrepArt[id];
-    if(!frames)return '';
-    return '<img class="kq-prep-artwork" src="'+kqSource('ingredients',frames[Math.min(2,hits)])+
-      '" alt="'+htmlEscape(id)+' preparation stage '+(hits+1)+' of three" draggable="false">';
-  }
-  function kqUpdateChef(){
-    const avatar=root.querySelector('.kq-chef-avatar img');
-    if(!avatar)return;
-    const image=kqSource('host',kqHostArt[state.phase]||kqHostArt.gather);
-    if(avatar.getAttribute('src')!==image){
-      avatar.src=image;
-      avatar.alt='Chef Gary cheering you on';
-    }
-  }
-  function kqDecorateRewards(){
-    if(!kqArtReady)return;
-    const box=root.querySelector('#kqReward');
-    if(!box)return;
-    box.classList.add('kq-painted-rewards');
-    const seed=box.querySelector('.kq-garden-plot>span');
-    if(seed&&state.downloaded)seed.innerHTML='<img src="'+kqSource('rewards','garlic-seed-reward')+
-      '" alt="Garlic garden starter">';
-  }
-  function kqActivateArt(){
-    const tester=new Image();
-    tester.onload=()=>{
-      kqArtReady=true;
-      root.classList.add('kq-illustrated');
-      kqUpdateChef();
-      const hero=document.querySelector('.kq-hero-art img');
-      if(hero)hero.src=kqSource('kitchen','gary-serving-scene');
-      render();
-    };
-    tester.onerror=()=>{
-      // Temporary staging: the gameplay remains live until image files land.
-      kqArtBroken=true;
-    };
-    tester.src=kqSource('bowl',kqMashArt[0]);
-  }
-
   /* Original vector bowl art: the avocado, chopped pieces and texture
      genuinely change with each interaction, rather than staying an emoji. */
   const prepTasks={
@@ -244,7 +136,6 @@
     return output;
   }
   function bowl(extra){
-    if(kqArtReady)return kqIllustratedBowl();
     const mash=Math.min(5,state.mash),stir=Math.min(5,state.stir);
     let contents='';
     if(mash===0)contents=avocadoHalf(202,184,-18)+avocadoHalf(318,184,18);
@@ -278,7 +169,6 @@
       '</svg></div>';
   }
   function prepArtwork(id,hits){
-    if(kqArtReady)return kqIllustratedPrep(id,hits);
     const cut=prepTasks[id];
     const colors={
       garlic:['#f5e5bd','#f7d7a8'],lime:['#8fc84a','#d9e984'],
@@ -324,7 +214,7 @@
         '<h3>Collect your guacamole ingredients!</h3><p>Tap the food or drag it into the basket. Find all six to unlock the counter.</p></div>'+
         '<div class="kq-pantry">'+pantry.map(item=>'<button class="kq-ingredient'+(state.collected.has(item.id)?' selected':'')+
           '" type="button" draggable="true" data-collect="'+item.id+'" aria-pressed="'+state.collected.has(item.id)+'">'+
-          kqIngredientIcon(item)+'<b>'+item.name+'</b><small>'+(state.collected.has(item.id)?'Added ✓':'Tap or drag')+'</small></button>').join('')+
+          '<span aria-hidden="true">'+item.emoji+'</span><b>'+item.name+'</b><small>'+(state.collected.has(item.id)?'Added ✓':'Tap or drag')+'</small></button>').join('')+
         '</div><div class="kq-basket" id="kqBasket" aria-label="Ingredient basket" role="region">'+
         '<strong>🧺 Your basket · '+state.collected.size+'/6</strong><span>'+
         (state.collected.size?[...state.collected].map(id=>pantry.find(item=>item.id===id)?.emoji||'').join(' '):'Drop ingredients here!')+
@@ -350,7 +240,7 @@
           (state.prep?.id===item.id?' kq-preparing':'')+
           '" type="button" data-season="'+item.id+'" aria-pressed="'+(state.prep?.id===item.id)+'" '+
           (state.added.has(item.id)?'disabled':'')+'>'+
-          kqIngredientIcon(item)+'<b>'+item.name+'</b><small>'+
+          '<span aria-hidden="true">'+item.emoji+'</span><b>'+item.name+'</b><small>'+
           (state.added.has(item.id)?'Prepped ✓':state.prep?.id===item.id?'Preparing...':prepTasks[item.id].verb)+'</small></button>').join('')+'</div>'+
         (active?'<div class="kq-prep-panel"><div class="kq-prep-top"><strong>'+selected.emoji+' '+active.verb+' the '+selected.name.toLowerCase()+
           '</strong><span>'+state.prep.hits+'/3</span></div>'+
@@ -429,7 +319,6 @@
     stage.innerHTML=controls();
     renderTracker();renderReward();renderActivity();
     root.dataset.phase=state.phase;
-    if(kqArtReady){kqUpdateChef();kqDecorateRewards()}
   }
   function next(){
     const phases=['gather','mash','season','stir','serve'];
@@ -650,5 +539,4 @@
   });
   root.addEventListener('pointercancel',()=>{startPoint=null});
   render();
-  kqActivateArt();
 })();
