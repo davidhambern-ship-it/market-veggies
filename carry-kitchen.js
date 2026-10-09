@@ -126,12 +126,13 @@
       '<ellipse cx="265" cy="171" rx="106" ry="42" fill="none" stroke="#fff2c6" stroke-width="3" opacity=".25"/></g>'+
       bubbles+'</g>'+
       // Spoon head sits inside soup opening. Handle rises diagonally over rim.
-      '<g id="ckStirSpoon" class="ck-simmer-spoon">'+
+      '<g id="ckStirOrbit" class="ck-stir-orbit" style="transform:rotate('+(state.simmer*360)+'deg)">'+
+      '<g id="ckStirSpoon" class="ck-simmer-spoon" transform="translate(48 -7)">'+
       '<path d="M273 181 Q303 157 321 123 L373 43" fill="none" stroke="#8f5d2d" stroke-width="19" stroke-linecap="round"/>'+
       '<path d="M275 178 Q308 145 328 116 L372 45" fill="none" stroke="#c49150" stroke-width="12" stroke-linecap="round"/>'+
       '<ellipse cx="260" cy="190" rx="29" ry="18" transform="rotate(-19 260 190)" fill="#98632f" stroke="#795126" stroke-width="3"/>'+
       '<ellipse cx="257" cy="185" rx="21" ry="11" transform="rotate(-19 257 185)" fill="#c08b4b"/>'+
-      '<path d="M234 202 Q259 213 286 195" fill="none" stroke="#ffe6a0" stroke-width="5" opacity=".68"/></g>'+
+      '<path d="M234 202 Q259 213 286 195" fill="none" stroke="#ffe6a0" stroke-width="5" opacity=".68"/></g></g>'+
       '<ellipse cx="265" cy="168" rx="155" ry="74" fill="none" stroke="#fff9e9" stroke-width="9" opacity=".95"/>'+
       '<g class="ck-stir-steam" fill="none" stroke="#fff4d5" stroke-width="8" stroke-linecap="round" opacity=".75">'+
       '<path d="M210 77 Q190 57 213 26 M276 66 Q260 43 282 16 M335 81 Q316 55 337 29"/></g>'+
@@ -366,10 +367,13 @@
     state.simmer++;
     const pot=stage.querySelector('#ckPot');
     const food=stage.querySelector('#ckSoupIngredients');
+    const spoonOrbit=stage.querySelector('#ckStirOrbit');
     if(pot&&food){
       // Rotating the SAME SVG objects triggers a continuous circular transition,
       // rather than replacing the whole pot and losing the motion.
-      food.style.transform='rotate('+(state.simmer*245)+'deg)';
+      // Rotate ingredients and spoon around the same center for a matched stir.
+      food.style.transform='rotate('+(state.simmer*360)+'deg)';
+      if(spoonOrbit)spoonOrbit.style.transform='rotate('+(state.simmer*360)+'deg)';
       pot.dataset.stirs=String(state.simmer);
       pot.classList.remove('ck-stir-pulse');
       void pot.offsetWidth;
