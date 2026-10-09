@@ -29,7 +29,7 @@
   }
   const saved=restore();
   let state={phase:saved.completed?'complete':'gather',collected:new Set(),added:new Set(),
-    mash:0,stir:0,completed:saved.completed,downloaded:saved.downloaded,
+    mash:0,stir:0,prep:null,completed:saved.completed,downloaded:saved.downloaded,
     activityDone:saved.activityDone,quiz:0,quizNotice:'',quizCorrect:false};
   const quiz=[
     {question:'Which ingredient brings fiber and unsaturated fats to the bowl?',
@@ -57,14 +57,155 @@
         '" '+(active?'aria-current="step"':'')+'><b>'+(done?'✓':i+1)+'</b>'+name+'</span>';
     }).join('');
   }
+
+  /* Original vector bowl art: the avocado, chopped pieces and texture
+     genuinely change with each interaction, rather than staying an emoji. */
+  const prepTasks={
+    garlic:{verb:'Crush & mince',tool:'Knife',note:'Tap to crush, then mince the clove. In a real kitchen an adult handles the knife.',science:'Crushing garlic helps release the compounds behind its unmistakable aroma.'},
+    lime:{verb:'Squeeze',tool:'Juice',note:'Press the lime wedge three times to squeeze juice into the bowl.',science:'Lime juice adds tangy flavor and some vitamin C.'},
+    tomato:{verb:'Dice',tool:'Knife',note:'Tap to slice, then dice the tomato into little pieces. A grown-up uses the knife in real life.',science:'Tomatoes contain lycopene, a pigment behind their red color.'},
+    onion:{verb:'Dice',tool:'Knife',note:'Cut the onion into tiny pieces. A grown-up handles knives in real kitchens.',science:'Onion adds crunch and sharp flavor.'},
+    cilantro:{verb:'Chop',tool:'Knife',note:'Chop the cilantro leaves into small pieces. A grown-up can help with cutting.',science:'Cilantro adds a fresh, leafy aroma.'}
+  };
+  const svgDefs='<defs>'+
+    '<radialGradient id="kq-ceramic" cx="48%" cy="27%"><stop stop-color="#fffdf3"/><stop offset=".72" stop-color="#edf0e9"/><stop offset="1" stop-color="#9dc5bd"/></radialGradient>'+
+    '<radialGradient id="kq-guac" cx="43%" cy="35%"><stop stop-color="#d9e88a"/><stop offset=".63" stop-color="#a3c654"/><stop offset="1" stop-color="#6b9738"/></radialGradient>'+
+    '<linearGradient id="kq-board" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#f2cd97"/><stop offset="1" stop-color="#d7a267"/></linearGradient>'+
+    '<clipPath id="kq-fill-clip"><ellipse cx="260" cy="185" rx="151" ry="88"/></clipPath>'+
+    '</defs>';
+  function ellipse(cx,cy,rx,ry,fill,other){
+    return '<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+rx+'" ry="'+ry+'" fill="'+fill+'" '+(other||'')+'/>';
+  }
+  function avocadoHalf(cx,cy,angle){
+    return '<g transform="rotate('+angle+' '+cx+' '+cy+')">'+
+      ellipse(cx,cy,64,43,'#446e36')+
+      ellipse(cx,cy,58,38,'#a1d54d')+
+      ellipse(cx,cy,47,30,'#d9e69a')+
+      ellipse(cx-2,cy+4,19,19,'#97633c')+
+      ellipse(cx-5,cy+1,11,10,'#bb8450')+
+      '</g>';
+  }
+  function guacBits(count,seed,large){
+    let out='';
+    for(let i=0;i<count;i++){
+      const t=(i*2.39996+seed),rad=Math.sqrt((i+.6)/(count+1));
+      const x=260+Math.cos(t)*rad*126,y=186+Math.sin(t)*rad*68;
+      const rx=(large?15:7)+(i%4)*2,ry=(large?9:5)+(i%3)*1.4;
+      out+=ellipse(x.toFixed(1),y.toFixed(1),rx,ry,
+        i%3===0?'#8bad44':i%3===1?'#c3dd73':'#e4eb98',
+        'transform="rotate('+((i*37)%70-35)+' '+x.toFixed(1)+' '+y.toFixed(1)+')"');
+    }
+    return out;
+  }
+  function guacTexture(){
+    let dots='';
+    for(let i=0;i<36;i++){
+      const theta=i*2.39996,rad=Math.sqrt((i+.35)/36);
+      const x=(260+Math.cos(theta)*rad*131).toFixed(1);
+      const y=(186+Math.sin(theta)*rad*70).toFixed(1);
+      dots+='<circle cx="'+x+'" cy="'+y+'" r="'+(1.6+i%3)+'" fill="'+(i%3===0?'#5c8d34':'#e1e988')+'" opacity=".68"/>';
+    }
+    return dots;
+  }
+  function toppingsArt(){
+    let output='';
+    const mixFactor=Math.min(1,state.stir/5);
+    const configs={
+      garlic:{x:204,y:156,color:'#f4ecc4',light:'#fffae5',size:4},
+      lime:{x:303,y:162,color:'#f3e477',light:'#fff6a6',size:3},
+      tomato:{x:230,y:212,color:'#e9583d',light:'#fa9262',size:7},
+      onion:{x:326,y:206,color:'#c89acb',light:'#edd3e7',size:5},
+      cilantro:{x:282,y:180,color:'#2a823f',light:'#5caa42',size:5}
+    };
+    [...state.added].forEach(id=>{
+      const c=configs[id];if(!c)return;
+      for(let i=0;i<15;i++){
+        const t=i*2.4+(id.length*.39),rad=Math.sqrt((i+.4)/15);
+        const tx=260+Math.cos(t)*rad*124,ty=186+Math.sin(t)*rad*64;
+        const x=c.x*(1-mixFactor)+tx*mixFactor+(Math.cos(t)*i*1.1)*(1-mixFactor);
+        const y=c.y*(1-mixFactor)+ty*mixFactor+(Math.sin(t)*i*.85)*(1-mixFactor);
+        if(id==='cilantro'){
+          output+='<path d="M'+x.toFixed(1)+' '+y.toFixed(1)+'l6 -4 l-2 8z" fill="'+(i%2?c.color:c.light)+'"/>';
+        }else if(id==='lime'){
+          output+=ellipse(x.toFixed(1),y.toFixed(1),c.size,c.size*.55,i%2?c.color:c.light,'opacity=".82"');
+        }else{
+          output+='<rect x="'+(x-c.size/2).toFixed(1)+'" y="'+(y-c.size/2).toFixed(1)+'" width="'+c.size+'" height="'+(c.size*.9)+'" rx="1" transform="rotate('+((i*29)%65-30)+' '+x.toFixed(1)+' '+y.toFixed(1)+')" fill="'+(i%2?c.color:c.light)+'"/>';
+        }
+      }
+    });
+    return output;
+  }
   function bowl(extra){
-    return '<div class="kq-countertop"><div class="kq-bowl '+(extra||'')+
-      '" id="kqBowl" aria-label="Mixing bowl">'+
-      '<div class="kq-food" aria-hidden="true">'+
-      (state.mash?'🥑':'🥑')+
-      '<div class="kq-mix-ins">'+[...state.added].map(id=>{
-        const item=pantry.find(x=>x.id===id);return item?'<span>'+item.emoji+'</span>':'';
-      }).join('')+'</div></div><span class="kq-spoon" aria-hidden="true">🥄</span></div></div>';
+    const mash=Math.min(5,state.mash),stir=Math.min(5,state.stir);
+    let contents='';
+    if(mash===0)contents=avocadoHalf(202,184,-18)+avocadoHalf(318,184,18);
+    else{
+      const baseColors=['','#cee48d','#c1df7c','#afd370','#a3cb66','#99c45b'];
+      contents=ellipse(260,186,149,85,baseColors[mash]);
+      if(mash===1)contents+=avocadoHalf(310,180,18)+guacBits(4,1,true);
+      if(mash===2)contents+=guacBits(12,2,true);
+      if(mash===3)contents+=guacBits(12,3,false);
+      if(mash===4)contents+=guacBits(7,4,false);
+      if(mash===5)contents+=guacBits(4,5,false);
+      contents+=guacTexture();
+    }
+    const final=state.phase==='serve'||state.phase==='complete';
+    const fork=state.phase==='mash';
+    const spoon=state.phase==='stir';
+    const potatoTool=fork?'<g class="kq-masher-tool"><path d="M365 47 L306 152" stroke="#d3a36b" stroke-width="13" stroke-linecap="round"/><path d="M303 146 l-14 34 m14 -34 l-1 36 m1 -36 l16 32" stroke="#b1b9c2" stroke-width="6" stroke-linecap="round"/></g>':'';
+    const woodTool=spoon?'<g class="kq-wood-spoon" style="--stir-rotation:'+stir*43+'deg"><path d="M358 55 L287 172" stroke="#bb8046" stroke-width="17" stroke-linecap="round"/><ellipse cx="278" cy="187" rx="17" ry="23" transform="rotate(26 278 187)" fill="#b98246"/></g>':'';
+    const chips=final?'<g class="kq-served-chips"><path d="M52 107 L101 111 L71 45 Z" fill="#f4bd51" stroke="#df9744" stroke-width="4"/><path d="M420 80 L474 138 L402 149 Z" fill="#f4bd51" stroke="#df9744" stroke-width="4"/><path d="M399 302 L461 306 L437 255 Z" fill="#f2bd56" stroke="#db9854" stroke-width="4"/></g>':'';
+    return '<div class="kq-countertop '+(final?'kq-plated':'')+'">'+
+      '<svg class="kq-guac-svg '+(extra||'')+'" viewBox="0 0 520 370" role="img" aria-label="'+
+      (final?'Finished bowl of chunky guacamole with tomato, onion and herbs':mash===0?'Two avocado halves in a bowl':mash<5?'Avocado being mashed, step '+mash+' of five':stir?'Guacamole mixing, stir '+stir+' of five':'Mashed avocado with prepared toppings')+'">'+svgDefs+
+      ellipse(260,311,170,23,'#684727','opacity=".18"')+
+      chips+
+      '<path d="M90 185 Q87 314 154 322 Q260 354 367 322 Q435 305 430 185" fill="url(#kq-ceramic)" stroke="#acc1ac" stroke-width="6"/>'+
+      ellipse(260,186,176,112,'#fffdf0','stroke="#9dbcb2" stroke-width="5"')+
+      '<g clip-path="url(#kq-fill-clip)"><g class="kq-contents" style="--kq-mix-angle:'+stir*37+'deg">'+
+      contents+toppingsArt()+'</g></g>'+
+      ellipse(260,185,152,90,'none','stroke="#f7f5e3" stroke-width="8"')+
+      guacTexture().slice(0,0)+potatoTool+woodTool+
+      '</svg></div>';
+  }
+  function prepArtwork(id,hits){
+    const cut=prepTasks[id];
+    const colors={
+      garlic:['#f5e5bd','#f7d7a8'],lime:['#8fc84a','#d9e984'],
+      tomato:['#e5573e','#f18a61'],onion:['#c59cce','#e5d1e8'],
+      cilantro:['#3a9153','#77c06d']
+    };
+    const color=colors[id][0],light=colors[id][1],n=Math.min(3,hits);
+    let picture='';
+    if(id==='lime'){
+      const squeezeY=52+n*7;
+      picture='<g transform="translate(150 '+squeezeY+')">'+
+        '<path d="M0 0 Q64 -42 130 0 Q85 65 0 0" fill="'+light+'" stroke="'+color+'" stroke-width="9"/>'+
+        '<path d="M19 3 L60 33 L59 -5 M67 31 L108 5" stroke="#f4f4b4" stroke-width="5" fill="none"/>'+
+        '</g>'+
+        Array.from({length:n*3},(_,i)=>ellipse(201+i*17%98,123+(i*19)%38,4,7,'#d5e95d')).join('');
+    }else if(id==='cilantro'){
+      picture=Array.from({length:n?13:5},(_,i)=>{
+        const x=141+i*17%(n?160:100),y=70+i*13%(n?77:35);
+        const z=n?7+n*1.7:22;
+        return '<path d="M'+x+' '+(y+z)+' Q'+(x-z)+' '+y+' '+x+' '+(y-z)+' Q'+(x+z)+' '+y+' '+x+' '+(y+z)+'" fill="'+(i%2?color:light)+'" stroke="#318249" stroke-width="2"/>';
+      }).join('');
+    }else{
+      const shapes=n?4+n*5:1;
+      picture=Array.from({length:shapes},(_,i)=>{
+        const x=n?142+i*31%155:210,y=n?63+i*27%75:90;
+        const radius=n?Math.max(6,20-n*3):48;
+        const piece= id==='tomato'?'<circle cx="'+x+'" cy="'+y+'" r="'+radius+'" fill="'+color+'" stroke="#b83a2a" stroke-width="3"/>'+
+          (n===0?ellipse(x,y,25,12,light):''):
+          id==='onion'?ellipse(x,y,radius,radius*.87,light,'stroke="'+color+'" stroke-width="5"'):
+          ellipse(x,y,radius*.74,radius*1.12,light,'stroke="'+color+'" stroke-width="4"');
+        return piece;
+      }).join('');
+    }
+    const tool=cut.tool==='Knife'?'<path class="kq-prep-knife" d="M300 29 L372 59 L294 80 Q282 62 300 29Z" fill="#c5d8df" stroke="#849ba6" stroke-width="4"/>':'';
+    return '<svg class="kq-prep-svg" viewBox="0 0 420 185" aria-hidden="true">'+svgDefs+
+      '<rect x="24" y="20" width="372" height="146" rx="27" fill="url(#kq-board)" stroke="#b87f49" stroke-width="8"/>'+
+      picture+tool+'</svg>';
   }
   function controls(){
     if(state.phase==='gather'){
@@ -88,15 +229,28 @@
         (state.mash>=5?'<button class="kq-next" type="button" data-action="next">Next: add flavor →</button>':'');
     }
     if(state.phase==='season'){
-      return '<div class="kq-step-head"><span class="kq-chapter">ROUND 03 / FLAVOR FACTORY</span>'+
-        '<h3>Build your flavor!</h3><p>Add the lime, garlic, tomato, onion and cilantro to your avocado bowl.</p></div>'+
-        bowl('kq-seasoning')+'<div class="kq-pantry kq-toppings">'+toppings.map(item=>
+      const active=state.prep&&prepTasks[state.prep.id];
+      const selected=active?pantry.find(p=>p.id===state.prep.id):null;
+      return '<div class="kq-step-head"><span class="kq-chapter">ROUND 03 / PREP & FLAVOR</span>'+
+        '<h3>Chop, dice and squeeze!</h3><p>Choose an ingredient, prepare it, and watch the finished pieces drop into your guacamole.</p></div>'+
+        bowl('kq-seasoning')+
+        '<div class="kq-pantry kq-toppings">'+toppings.map(item=>
           '<button class="kq-ingredient'+(state.added.has(item.id)?' selected':'')+
-          '" type="button" data-season="'+item.id+'" aria-pressed="'+state.added.has(item.id)+'">'+
+          (state.prep?.id===item.id?' kq-preparing':'')+
+          '" type="button" data-season="'+item.id+'" aria-pressed="'+(state.prep?.id===item.id)+'" '+
+          (state.added.has(item.id)?'disabled':'')+'>'+
           '<span aria-hidden="true">'+item.emoji+'</span><b>'+item.name+'</b><small>'+
-          (state.added.has(item.id)?'In the bowl ✓':'Add to bowl')+'</small></button>').join('')+'</div>'+
-        '<button type="button" class="kq-main-action" data-action="next" '+(state.added.size===toppings.length?'':'disabled')+
-        '>Ready to stir →</button>';
+          (state.added.has(item.id)?'Prepped ✓':state.prep?.id===item.id?'Preparing...':prepTasks[item.id].verb)+'</small></button>').join('')+'</div>'+
+        (active?'<div class="kq-prep-panel"><div class="kq-prep-top"><strong>'+selected.emoji+' '+active.verb+' the '+selected.name.toLowerCase()+
+          '</strong><span>'+state.prep.hits+'/3</span></div>'+
+          '<button type="button" class="kq-prep-art-button" data-action="prep" aria-label="'+active.verb+' '+selected.name+'">'+
+          prepArtwork(state.prep.id,state.prep.hits)+'</button>'+
+          '<p>'+active.note+'</p><div class="kq-meter"><span style="width:'+(state.prep.hits/3*100)+'%"></span></div>'+
+          '<button type="button" class="kq-main-action" data-action="prep">'+active.verb+'! ✨</button> '+
+          '<button type="button" class="kq-cancel" data-action="cancel-prep">Choose a different ingredient</button></div>':
+          '<p class="kq-prep-prompt">'+state.added.size+' of 5 ingredients prepared. Pick the next ingredient above.</p>')+
+        '<button type="button" class="kq-next" data-action="next" '+
+        (state.added.size===toppings.length&&!state.prep?'':'disabled')+'>All prepped! Time to stir →</button>';
     }
     if(state.phase==='stir'){
       return '<div class="kq-step-head"><span class="kq-chapter">ROUND 04 / STIR IT UP</span>'+
@@ -110,12 +264,12 @@
     if(state.phase==='serve'){
       return '<div class="kq-step-head"><span class="kq-chapter">ROUND 05 / CHEF FINISH</span>'+
         '<h3>You made guacamole!</h3><p>Plate your creation, then unlock the real recipe to try with a grown-up.</p></div>'+
-        '<div class="kq-finished-food" aria-hidden="true">🥑<span>✨</span>🥣<span>✨</span>🧄</div>'+
+        bowl('kq-ready-to-serve')+
         '<button type="button" class="kq-main-action" data-action="complete">✨ Serve your guacamole!</button>';
     }
     return '<div class="kq-step-head"><span class="kq-chapter">LEVEL COMPLETED!</span>'+
       '<h3>Chef Gary says: YOU DID IT!</h3><p>You cooked your first virtual Market Veggies recipe. The real-world recipe is ready!</p></div>'+
-      '<div class="kq-finished-food" aria-hidden="true">🎉 🥑 🏆</div>'+
+      bowl('kq-finished-guac')+
       '<div class="kq-unlock"><strong>🔓 Take-home recipe unlocked!</strong>'+
       '<p>Get a printable PDF with ingredients, quantities, grown-up help, and a family activity.</p>'+
       '<button class="kq-main-action" type="button" data-action="download">⬇ Download Gary’s Guacamole PDF</button>'+
@@ -185,16 +339,22 @@
     render();
   }
   function addTopping(id){
-    if(state.phase!=='season'||!toppings.some(x=>x.id===id)||state.added.has(id))return;
-    state.added.add(id);
-    const lines={
-      garlic:'Crushing garlic changes its sulfur compounds and helps release its signature aroma.',
-      lime:'Lime adds bright flavor and some vitamin C.',
-      tomato:'Tomatoes get much of their red color from a plant pigment called lycopene.',
-      onion:'Onion adds crunch and bold flavor to your bowl.',
-      cilantro:'Cilantro is a leafy herb that brings a fresh aroma.'
-    };
-    announce(lines[id]||'Ingredient added!');
+    if(state.phase!=='season'||!prepTasks[id]||state.added.has(id))return;
+    state.prep={id,hits:0};
+    announce('Time to '+prepTasks[id].verb.toLowerCase()+' the '+pantry.find(x=>x.id===id).name.toLowerCase()+'.');
+    render();
+  }
+  function prepHit(){
+    if(state.phase!=='season'||!state.prep)return;
+    state.prep.hits=Math.min(3,state.prep.hits+1);
+    const {id,hits}=state.prep;
+    if(hits===3){
+      state.added.add(id);
+      state.prep=null;
+      announce(prepTasks[id].science+' Added to the bowl! '+state.added.size+' of 5 prepped.');
+    }else{
+      announce(prepTasks[id].verb+' in progress: '+hits+' of 3. Keep going!');
+    }
     render();
   }
   function stepTap(which){
@@ -332,6 +492,8 @@
     if(button.dataset.answer!==undefined){quizAnswer(Number(button.dataset.answer));return}
     switch(button.dataset.action){
       case 'next':next();break;
+      case 'prep':prepHit();break;
+      case 'cancel-prep':state.prep=null;render();break;
       case 'mash':stepTap('mash');break;
       case 'stir':stepTap('stir');break;
       case 'complete':complete();break;
@@ -342,7 +504,7 @@
         break;
       case 'restart':
         state.phase='gather';state.collected.clear();state.added.clear();
-        state.mash=0;state.stir=0;state.quiz=0;state.quizCorrect=false;state.quizNotice='';
+        state.mash=0;state.stir=0;state.prep=null;state.quiz=0;state.quizCorrect=false;state.quizNotice='';
         announce('Welcome back, chef! Your earned Passport stamps will stay.');
         render();break;
     }
