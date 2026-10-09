@@ -412,13 +412,11 @@
     }
     const tag=document.querySelector('.kq-art-sticker');
     if(tag)tag.innerHTML=carry?'LEVEL 02<br>NOW OPEN!':'LEVEL 01<br>NOW OPEN!';
-    const heading=document.querySelector('.kq-game-header h2');
     if(carry)say('Welcome to Carry’s Kitchen! Pick your ingredients and make some soup.');
   }
   stations.addEventListener('click',e=>{
     const button=e.target.closest('[data-station]');if(!button)return;
     showStation(button.dataset.station);
-    const heading=button.closest('.kq-stations')?.previousElementSibling;
     // Keep keyboard focus on the selected station button.
   });
   render();
