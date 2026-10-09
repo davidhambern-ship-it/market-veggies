@@ -605,3 +605,138 @@ startMissionRotation();
     open?.focus();
   });
 })();
+
+/* Gingy: six ginger facts plus an in-place, three-recipe flavor activity.
+   Scoped to the Gingy slide; other character interactions are unchanged. */
+(function initGingyExplainer(){
+  const slide=document.querySelector('.gingy-story');
+  if(!slide)return;
+  const buttons=[...slide.querySelectorAll('.gingy-fact')];
+  const art=slide.querySelector('#gingyMainArt');
+  if(buttons.length!==6||!art)return;
+
+  const title=slide.querySelector('#gingyFactTitle');
+  const copy=slide.querySelector('#gingyFactCopy');
+  const speech=slide.querySelector('#gingySpeech');
+  const factView=slide.querySelector('#gingyFactView');
+  const game=slide.querySelector('#gingyMatchGame');
+  const open=slide.querySelector('#gingyStartMatch');
+  const close=slide.querySelector('#gingyCloseMatch');
+  const choices=[...slide.querySelectorAll('.gingy-match-choice')];
+  const matchTitle=slide.querySelector('#gingyMatchTitle');
+  const matchCopy=slide.querySelector('#gingyMatchCopy');
+  const fallback='assets/Gingy_Card_02.png';
+  const matches={
+    tea:{
+      title:'TEA — A COZY ZING!',
+      copy:'A few slices of ginger can flavor a warm, caffeine-free ginger drink. Ask a grown-up to help with hot water.',
+      speech:'“A cozy cup gets a little zing!”',
+      image:'assets/Gingy_Card_08.png',
+      alt:'Gingy presenting a warm cup of ginger tea'
+    },
+    stirfry:{
+      title:'STIR-FRY — A SAVORY SPARK!',
+      copy:'A little chopped or grated ginger adds bold flavor to vegetables, noodles and stir-fries. Grown-ups can help at the stove.',
+      speech:'“Watch me wake up those veggies!”',
+      image:'assets/Gingy_Card_09.png',
+      alt:'Gingy tossing colorful vegetables in a stir-fry'
+    },
+    cookies:{
+      title:'COOKIES — A SWEET SURPRISE!',
+      copy:'Ground ginger brings warm, spicy flavor to ginger cookies and gingerbread. Baking is a fun way to explore new tastes together.',
+      speech:'“Who knew I could be sweet AND zesty?”',
+      image:'assets/Gingy_Card_10.png',
+      alt:'Gingy baking smiling gingerbread cookies'
+    }
+  };
+  let imageRequest=0;
+  const missing=new Set();
+
+  function setArtwork(src,alt){
+    if(!src)return;
+    const request=++imageRequest;
+    if(art.getAttribute('src')===src){
+      art.alt=alt||'Gingy the Ginger';
+      return;
+    }
+    if(missing.has(src))return;
+    const next=new Image();
+    next.onload=()=>{
+      if(request!==imageRequest)return;
+      art.src=src;
+      art.alt=alt||'Gingy the Ginger';
+      art.classList.remove('gingy-swapping');
+      void art.offsetWidth;
+      art.classList.add('gingy-swapping');
+    };
+    next.onerror=()=>{
+      missing.add(src);
+      if(request!==imageRequest)return;
+      // Keep the last successful illustration rather than show a broken image.
+      if(!art.complete||!art.naturalWidth){
+        art.src=fallback;
+        art.alt='Gingy the Ginger';
+      }
+      console.warn('Gingy illustration unavailable:',src);
+    };
+    next.src=src;
+  }
+
+  function resetMatch(){
+    if(game)game.hidden=true;
+    if(factView)factView.hidden=false;
+    choices.forEach(choice=>choice.setAttribute('aria-pressed','false'));
+  }
+  function selectFact(button,focus){
+    if(!button)return;
+    buttons.forEach(b=>{
+      const selected=b===button;
+      b.classList.toggle('active',selected);
+      b.setAttribute('aria-selected',String(selected));
+      b.tabIndex=selected?0:-1;
+    });
+    if(title)title.textContent=button.dataset.title||'';
+    if(copy)copy.textContent=button.dataset.copy||'';
+    if(speech)speech.textContent=button.dataset.speech||'';
+    resetMatch();
+    setArtwork(button.dataset.image,button.dataset.imageAlt);
+    if(focus)button.focus();
+  }
+
+  buttons.forEach((button,index)=>{
+    button.addEventListener('click',()=>selectFact(button,false));
+    button.addEventListener('keydown',event=>{
+      if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
+      event.preventDefault();
+      event.stopPropagation(); // Do not navigate the outer character carousel.
+      const next=event.key==='Home'?0:event.key==='End'?buttons.length-1:
+        (index+(event.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;
+      selectFact(buttons[next],true);
+    });
+  });
+
+  open?.addEventListener('click',()=>{
+    if(factView)factView.hidden=true;
+    if(game)game.hidden=false;
+    if(matchTitle)matchTitle.textContent='What should Gingy flavor next?';
+    if(matchCopy)matchCopy.textContent='Pick a food or drink. Every choice is a tasty way to use ginger!';
+    choices.forEach(choice=>choice.setAttribute('aria-pressed','false'));
+    choices[0]?.focus();
+  });
+
+  choices.forEach(choice=>choice.addEventListener('click',()=>{
+    const match=matches[choice.dataset.match];
+    if(!match)return;
+    choices.forEach(button=>button.setAttribute('aria-pressed',String(button===choice)));
+    if(matchTitle)matchTitle.textContent=match.title;
+    if(matchCopy)matchCopy.textContent=match.copy;
+    if(speech)speech.textContent=match.speech;
+    setArtwork(match.image,match.alt);
+  }));
+
+  close?.addEventListener('click',()=>{
+    const current=buttons.find(button=>button.classList.contains('active'))||buttons[0];
+    selectFact(current,false);
+    open?.focus();
+  });
+})();
