@@ -1,0 +1,55 @@
+name: Import official Book 1 site artwork
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-book1-site-art.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare image tools
+        run: python3 -m pip install --quiet pillow
+      - name: Download and optimize official book cover and illustration pages
+        env:
+          COVER_URL: "https://d2jqrm6oza8nb6.cloudfront.net/datasets/ff1f6496-65ee-4a2a-b2f7-64df6b39cda0.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiNGMzZTNkMWQyOTA5NmFmMCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTc1ODQ5M30.KjkgVvvy5cFlmHp8h2WhFAFNUpu0ootvm5c94HmC8-k"
+          PAGE_03: "https://media.canva.com/v2/document-image/hash:777508302/height:380/id:DAGFjbjw2XA/type:B/width:524?brand=BADUFbtWeYI&csig=AAAAAAAAAAAAAAAAAAAAAMwnJHbrARMkY4JrizldTnuQBisDDXreEORATGlVMqUH&disableexport=T&exp=1791643542&fallback=https%3A%2F%2Fs3.amazonaws.com%2Fdocument-export.canva.com%2Fjw2XA%2FDAGFjbjw2XA%2F167%2Fthumbnail%2F0003.png%3FX-Amz-Algorithm%3DAWS4-HMAC-SHA256%26X-Amz-Credential%3DAKIAQYCGKMUHTDF2ZFFQ%252F20261009%252Fus-east-1%252Fs3%252Faws4_request%26X-Amz-Date%3D20261009T182515Z%26X-Amz-Expires%3D75927%26X-Amz-Signature%3D9404619fe2e372ab27d529aec90138a0d1a087475c95661eafc2259e6f44f6d6%26X-Amz-SignedHeaders%3Dhost%26response-expires%3DSat%252C%252010%2520Oct%25202026%252015%253A30%253A42%2520GMT&osig=AAAAAAAAAAAAAAAAAAAAAPQjK8D8axW_7FYbeSbBFNsHPZwi7YRrv3Ic40xxIt0D&page=3&signed=brand%2Cdisableexport%2Cfallback%2Cpage%2Cversion&signer=document-rpc&version=167"
+          PAGE_07: "https://media.canva.com/v2/document-image/hash:431902490/height:380/id:DAGFjbjw2XA/type:B/width:524?brand=BADUFbtWeYI&csig=AAAAAAAAAAAAAAAAAAAAAPMNtSLL0muhLzDTnld9BJsDx02Wo5nmLnmBdVzHYBHf&disableexport=T&exp=1791643542&fallback=https%3A%2F%2Fs3.amazonaws.com%2Fdocument-export.canva.com%2Fjw2XA%2FDAGFjbjw2XA%2F167%2Fthumbnail%2F0007.png%3FX-Amz-Algorithm%3DAWS4-HMAC-SHA256%26X-Amz-Credential%3DAKIAQYCGKMUHTDF2ZFFQ%252F20261009%252Fus-east-1%252Fs3%252Faws4_request%26X-Amz-Date%3D20261009T172545Z%26X-Amz-Expires%3D79497%26X-Amz-Signature%3Df15aa928667b91219c9b60d6c7e9139776aa39f79fcbf4d958833709cc4719a7%26X-Amz-SignedHeaders%3Dhost%26response-expires%3DSat%252C%252010%2520Oct%25202026%252015%253A30%253A42%2520GMT&osig=AAAAAAAAAAAAAAAAAAAAAM4wrwDfFKwVGfWlzE6OnHpJrXi8jechpT5-Ngekpu22&page=7&signed=brand%2Cdisableexport%2Cfallback%2Cpage%2Cversion&signer=document-rpc&version=167"
+          PAGE_11: "https://media.canva.com/v2/document-image/hash:-229441267/height:380/id:DAGFjbjw2XA/type:B/width:524?brand=BADUFbtWeYI&csig=AAAAAAAAAAAAAAAAAAAAAGmnF4Q8lkoa7uY8FqsKd_9WNxWcbxFbr_nthf4sDh5F&disableexport=T&exp=1791643542&fallback=https%3A%2F%2Fs3.amazonaws.com%2Fdocument-export.canva.com%2Fjw2XA%2FDAGFjbjw2XA%2F167%2Fthumbnail%2F0011.png%3FX-Amz-Algorithm%3DAWS4-HMAC-SHA256%26X-Amz-Credential%3DAKIAQYCGKMUHTDF2ZFFQ%252F20261010%252Fus-east-1%252Fs3%252Faws4_request%26X-Amz-Date%3D20261010T141539Z%26X-Amz-Expires%3D4503%26X-Amz-Signature%3Dd9fcb45f42dfcf121b52c3ea9fb42a09b61eddf517f8605d33a4d5d998242b0a%26X-Amz-SignedHeaders%3Dhost%26response-expires%3DSat%252C%252010%2520Oct%25202026%252015%253A30%253A42%2520GMT&osig=AAAAAAAAAAAAAAAAAAAAAPKHDkf_kw4RSFIKBWsdxhjonTVaBgEVLMV5ORGaxO82&page=11&signed=brand%2Cdisableexport%2Cfallback%2Cpage%2Cversion&signer=document-rpc&version=167"
+        run: |
+          set -euo pipefail
+          mkdir -p assets/book1
+          curl --fail --location --retry 3 "$COVER_URL" -o /tmp/book1-cover.png
+          curl --fail --location --retry 3 "$PAGE_03" -o /tmp/book1-page3.png
+          curl --fail --location --retry 3 "$PAGE_07" -o /tmp/book1-page7.png
+          curl --fail --location --retry 3 "$PAGE_11" -o /tmp/book1-page11.png
+          python3 - <<'PY'
+          from PIL import Image, ImageOps
+          from pathlib import Path
+          book = Image.open('/tmp/book1-cover.png').convert('RGB')
+          if book.width < 900 or book.width < 1.8*book.height:
+              raise ValueError('Cover image does not appear to contain back and front')
+          mid=book.width//2
+          for name,crop in [('cover-front.webp',(mid,0,book.width,book.height)),('cover-back.webp',(0,0,mid,book.height))]:
+              im=book.crop(crop)
+              im.thumbnail((1200,1000),Image.Resampling.LANCZOS)
+              im.save(Path('assets/book1')/name,'WEBP',quality=85,method=6)
+          for num in [3,7,11]:
+              im=Image.open('/tmp/book1-page%d.png'%num).convert('RGB')
+              if im.width < 350: raise ValueError('Canva preview too small')
+              im.save(Path('assets/book1')/('page-%02d.webp'%num),'WEBP',quality=86,method=6)
+          for im in Path('assets/book1').glob('*.webp'):
+              print(im,im.stat().st_size)
+          PY
+      - name: Commit image files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/book1/
+          git diff --cached --quiet && exit 0
+          git commit -m "Publish original Book 1 cover and interior-page artwork [skip ci]"
+          git push
