@@ -45,6 +45,7 @@ const server=http.createServer(async(req,res)=>{
       return res.end('Image unavailable');
     }
   }
+  if(pathname==='/book1'||pathname==='/book1/') pathname='/book1.html';
   if(pathname==='/') pathname='/index.html';
   let file=path.join(root,pathname);
   if(!file.startsWith(root)){res.writeHead(403);return res.end('Forbidden');}
