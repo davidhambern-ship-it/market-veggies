@@ -1,0 +1,53 @@
+{
+  "name": "Market Veggies — Official Video Template",
+  "version": "1.0",
+  "status": "locked/approved",
+  "date": "2026-10-10",
+  "formats": [
+    {
+      "orientation": "portrait",
+      "resolution": "1080x1920",
+      "durationSeconds": 10,
+      "approvedMaster": "MarketVeggies_APPROVED_Vertical_9x16.mp4",
+      "sha256": "6309f039f86fc8deac95512299222dfcc43733a6e7365847131d3de73085ba"
+    },
+    {
+      "orientation": "landscape",
+      "resolution": "1920x1080",
+      "durationSeconds": 10,
+      "approvedMaster": "MarketVeggies_APPROVED_Landscape_16x9.mp4",
+      "sha256": "b5a7662953a3e63f1967a707d69778a17b82e7bf8af55facd465413c726bc3e6"
+    }
+  ],
+  "font": "large slightly-angled approved Build With Us serif look; exact font unverified",
+  "textTreatment": "yellow orange white; text directly on frame; no boxes",
+  "layout": {
+    "portrait": "art centered; titles above/below",
+    "landscape": "left text; right artwork; zero overlap"
+  },
+  "audio": "original Market Veggies theme song; approved 10s clip",
+  "beats": [
+    {
+      "seconds": "0-3",
+      "role": "hook"
+    },
+    {
+      "seconds": "3-6",
+      "role": "brand"
+    },
+    {
+      "seconds": "6-10",
+      "role": "cta"
+    }
+  ],
+  "customizable": "copy and landing URL only, unless explicitly approved otherwise",
+  "qa": [
+    "no headline overlap or clipping",
+    "original characters only",
+    "both ratios independently composed",
+    "no boxed text",
+    "10 seconds",
+    "audible approved soundtrack"
+  ],
+  "masterArchive": "MarketVeggies_OFFICIAL_Video_Templates_v1.zip (delivered in conversation, binary not committed to GitHub)"
+}
