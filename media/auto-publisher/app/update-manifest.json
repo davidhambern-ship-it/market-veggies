@@ -1,0 +1,13 @@
+{
+  "application": "MarketVeggiesPromoStudio",
+  "version": "4.0.0",
+  "description": "Six cartoon images, both formats at each of six Eastern posting slots; twelve YouTube uploads per week.",
+  "files": {
+    "dashboard.py": "278bc7af47858a16498430ffcafad8c181c7fd60a30fb53577e7219006d8e411",
+    "mvbot.py": "75a3d462821caf0b9244efd21c66ef1f9e3cc74ea9201349e97406b4013a96b4",
+    "mv_auto/weekly.py": "8586b2ebcf19084e104bcfb280b36ccc0d9d5732a1927308376616be26464a5b",
+    "mv_auto/queue.py": "0f905624c6d473cd223dffd01df81d1d242c8510fa1c451a08cbd6ef1961b9c4",
+    "mv_auto/updater.py": "eb2b90c176eca8b44f055c1bc0f7d5d7ebeb491dc2a10c616874a608e7ffea90",
+    "mv_auto/version.txt": "e1d49c569ae09b2ede16e2d83820a3809b35eb6c44c13ba9b5330598d6b8f43c"
+  }
+}
